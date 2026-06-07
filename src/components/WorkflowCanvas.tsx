@@ -16,23 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxApplication, IxContent } from '@siemens/ix-react';
-import { AppHeader } from './components/AppHeader';
-import { AppMenu } from './components/AppMenu';
-import { WorkflowCanvas } from './components/WorkflowCanvas';
-import { WorkflowHierarchy } from './components/WorkflowHierarchy';
-
-export default function App() {
-  return (
-    <IxApplication>
-      <AppHeader />
-
-      <AppMenu />
-
-      <IxContent>
-        <WorkflowCanvas />
-        <WorkflowHierarchy />
-      </IxContent>
-    </IxApplication>
-  );
+export function WorkflowCanvas() {
+  return <></>;
 }
