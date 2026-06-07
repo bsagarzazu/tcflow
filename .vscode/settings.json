@@ -1,11 +1,16 @@
 {
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
   "psi-header.config": {
     "forceToTop": true,
     "blankLinesAfter": 1
   },
   "psi-header.changes-tracking": {
     "isActive": true,
-    "exclude": ["json", "jsonc","markdown", "png", "svg"],
+    "exclude": ["json", "jsonc", "markdown", "png", "svg"],
     "autoHeader": "autoSave",
     "enforceHeader": true
   },
