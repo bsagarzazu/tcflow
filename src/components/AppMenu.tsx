@@ -23,6 +23,8 @@ export function AppMenu() {
     <IxMenu>
       <IxMenuItem>Item 1</IxMenuItem>
       <IxMenuItem>Item 2</IxMenuItem>
+      <IxMenuItem slot="bottom">Item 3</IxMenuItem>
+      <IxMenuItem slot="bottom">Item 4</IxMenuItem>
     </IxMenu>
   );
 }

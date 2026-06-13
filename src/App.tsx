@@ -29,9 +29,11 @@ export default function App() {
 
       <AppMenu />
 
-      <IxContent>
-        <WorkflowCanvas />
-        <WorkflowHierarchy />
+      <IxContent style={{ padding: 0 }}>
+        <div style={{ display: 'flex', width: '100%', height: '100%', overflow: 'hidden' }}>
+          <WorkflowCanvas />
+          <WorkflowHierarchy />
+        </div>
       </IxContent>
     </IxApplication>
   );

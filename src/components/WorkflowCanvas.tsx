@@ -16,6 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { ReactFlow, Background, Controls } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
+
+const initialNodes = [
+  { id: 'n1', position: { x: 0, y: 0 }, data: { label: 'Node 1' } },
+  { id: 'n2', position: { x: 0, y: 100 }, data: { label: 'Node 2' } },
+];
+const initialEdges = [{ id: 'n1-n2', source: 'n1', target: 'n2' }];
+
 export function WorkflowCanvas() {
-  return <></>;
+  return (
+    <div style={{ width: '100vw', height: '100vh' }}>
+      <ReactFlow colorMode="dark" nodes={initialNodes} edges={initialEdges} fitView>
+        <Background />
+        <Controls position="top-left" />
+      </ReactFlow>
+    </div>
+  );
 }

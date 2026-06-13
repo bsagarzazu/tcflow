@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { IxPane } from '@siemens/ix-react';
+
 export function WorkflowHierarchy() {
-  return <></>;
+  return <IxPane composition="right" variant="floating"></IxPane>;
 }

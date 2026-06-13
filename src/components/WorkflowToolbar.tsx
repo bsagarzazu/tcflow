@@ -16,6 +16,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import {
+  iconArrowDownRight,
+  iconCheck,
+  iconUserManagement,
+  iconTasksAll,
+  iconRhombFilled,
+  iconFlare,
+  iconFlag,
+  iconEye,
+  iconConnections,
+} from '@siemens/ix-icons/icons';
+import { IxIconButton } from '@siemens/ix-react';
+
 export function WorkflowToolbar() {
-  return <></>;
+  return (
+    <div slot="secondary">
+      <IxIconButton variant="tertiary" icon={iconArrowDownRight}></IxIconButton>
+      <IxIconButton variant="tertiary" icon={iconRhombFilled}></IxIconButton>
+      <IxIconButton variant="tertiary" icon={iconFlare}></IxIconButton>
+      <IxIconButton variant="tertiary" icon={iconConnections}></IxIconButton>
+      <IxIconButton variant="tertiary" icon={iconEye}></IxIconButton>
+      <IxIconButton variant="tertiary" icon={iconUserManagement}></IxIconButton>
+      <IxIconButton variant="tertiary" icon={iconCheck}></IxIconButton>
+      <IxIconButton variant="tertiary" icon={iconTasksAll}></IxIconButton>
+      <IxIconButton variant="tertiary" icon={iconFlag}></IxIconButton>
+    </div>
+  );
 }
