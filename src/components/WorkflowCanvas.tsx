@@ -16,17 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import {
   ReactFlow,
   Background,
   Controls,
   type Node,
-  type NodeChange,
-  applyNodeChanges,
+  useNodesState,
   type Edge,
-  type EdgeChange,
-  applyEdgeChanges,
+  useEdgesState,
   type Connection,
   addEdge,
   MarkerType,
@@ -53,21 +51,11 @@ const initialEdges: Edge[] = [
 ];
 
 export function WorkflowCanvas() {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+  const [nodes, _, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  const onNodesChange = useCallback(
-    (changes: NodeChange[]) =>
-      setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
-    [],
-  );
-  const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) =>
-      setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
-    [],
-  );
   const onConnect = useCallback(
-    (params: Connection) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
+    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
     [],
   );
 
