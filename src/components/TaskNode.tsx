@@ -17,6 +17,8 @@
  */
 
 import {
+  iconPlay,
+  iconStop,
   iconArrowDownRight,
   iconRhombFilled,
   iconFlare,
@@ -27,20 +29,33 @@ import {
   iconTasksAll,
   iconFlag,
 } from '@siemens/ix-icons/icons';
-import { IxIconButton } from '@siemens/ix-react';
+import { IxActionCard } from '@siemens/ix-react';
+import { Handle, Position, type Node, type NodeProps } from '@xyflow/react';
 
-export function WorkflowToolbar() {
+type TaskNode = Node<{ type: string; name: string }, 'task'>;
+
+export function TaskNode({ data }: NodeProps<TaskNode>) {
+  const iconMap: Record<string, string> = {
+    Start: iconPlay,
+    End: iconStop,
+    Acknowledge: iconArrowDownRight,
+    Condition: iconRhombFilled,
+    Do: iconFlare,
+    Or: iconConnections,
+    Review: iconEye,
+    Route: iconUserManagement,
+    Task: iconTasksAll,
+    Validate: iconCheck,
+    AddStatus: iconFlag,
+  };
+
+  const isStart = data.type === 'Start';
+  const isFinish = data.type === 'End';
+
   return (
-    <div slot="secondary">
-      <IxIconButton variant="tertiary" icon={iconArrowDownRight}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconRhombFilled}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconFlare}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconConnections}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconEye}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconUserManagement}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconCheck}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconTasksAll}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconFlag}></IxIconButton>
-    </div>
+    <IxActionCard icon={iconMap[data.type]} heading={data.name} className="task-node">
+      {!isStart && <Handle type="target" position={Position.Left} />}
+      {!isFinish && <Handle type="source" position={Position.Right} />}
+    </IxActionCard>
   );
 }

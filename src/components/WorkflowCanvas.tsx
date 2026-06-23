@@ -29,14 +29,28 @@ import {
   applyEdgeChanges,
   type Connection,
   addEdge,
+  MarkerType,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { TaskNode } from './TaskNode';
 
+const nodeTypes = {
+  task: TaskNode,
+};
 const initialNodes: Node[] = [
-  { id: 'n1', position: { x: 0, y: 0 }, data: { label: 'Start' } },
-  { id: 'n2', position: { x: 0, y: 100 }, data: { label: 'End' } },
+  { id: 'n1', type: 'task', position: { x: 0, y: 0 }, data: { type: 'Start', name: 'Start' } },
+  {
+    id: 'n2',
+    type: 'task',
+    position: { x: 0, y: 100 },
+    data: { type: 'AddStatus', name: 'Add Status' },
+  },
+  { id: 'n3', type: 'task', position: { x: 0, y: 200 }, data: { type: 'End', name: 'End' } },
 ];
-const initialEdges: Edge[] = [{ id: 'n1-n2', source: 'n1', target: 'n2' }];
+const initialEdges: Edge[] = [
+  { id: 'n1-n2', source: 'n1', target: 'n2' },
+  { id: 'n2-n3', source: 'n2', target: 'n3' },
+];
 
 export function WorkflowCanvas() {
   const [nodes, setNodes] = useState(initialNodes);
@@ -63,9 +77,11 @@ export function WorkflowCanvas() {
         colorMode="dark"
         nodes={nodes}
         edges={edges}
+        nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        defaultEdgeOptions={{ markerEnd: { type: MarkerType.ArrowClosed } }}
         fitView
       >
         <Background />
