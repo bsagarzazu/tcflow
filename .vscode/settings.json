@@ -10,7 +10,7 @@
   },
   "psi-header.changes-tracking": {
     "isActive": true,
-    "exclude": ["json", "jsonc", "markdown", "png", "svg"],
+    "exclude": ["json", "jsonc", "markdown", "png", "svg", "ignore"],
     "autoHeader": "autoSave",
     "enforceHeader": true
   },
