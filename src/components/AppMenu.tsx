@@ -17,14 +17,26 @@
  */
 
 import { IxMenu, IxMenuItem } from '@siemens/ix-react';
+import {
+  iconFolderOpenFilled,
+  iconDownload,
+  iconImageFilled,
+  iconGithubLogo,
+  iconLightDark,
+} from '@siemens/ix-icons/icons';
 
 export function AppMenu() {
   return (
     <IxMenu>
-      <IxMenuItem>Item 1</IxMenuItem>
-      <IxMenuItem>Item 2</IxMenuItem>
-      <IxMenuItem slot="bottom">Item 3</IxMenuItem>
-      <IxMenuItem slot="bottom">Item 4</IxMenuItem>
+      <IxMenuItem icon={iconFolderOpenFilled}>Open</IxMenuItem>
+      <IxMenuItem icon={iconDownload}>Save to...</IxMenuItem>
+      <IxMenuItem icon={iconImageFilled}>Export image...</IxMenuItem>
+      <IxMenuItem icon={iconGithubLogo} slot="bottom">
+        GitHub
+      </IxMenuItem>
+      <IxMenuItem icon={iconLightDark} slot="bottom">
+        Theme
+      </IxMenuItem>
     </IxMenu>
   );
 }
