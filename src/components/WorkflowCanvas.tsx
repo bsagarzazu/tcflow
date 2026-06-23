@@ -39,8 +39,20 @@ const nodeTypes = {
   task: TaskNode,
 };
 const initialNodes: Node[] = [
-  { id: 'n1', type: 'task', position: { x: 0, y: 0 }, data: { type: 'Start', name: 'Start' } },
-  { id: 'n2', type: 'task', position: { x: 0, y: 100 }, data: { type: 'End', name: 'End' } },
+  {
+    id: 'n1',
+    type: 'task',
+    position: { x: 0, y: 0 },
+    data: { type: 'Start', name: 'Start' },
+    deletable: false,
+  },
+  {
+    id: 'n2',
+    type: 'task',
+    position: { x: 0, y: 100 },
+    data: { type: 'End', name: 'End' },
+    deletable: false,
+  },
 ];
 
 export function WorkflowCanvas() {
@@ -78,6 +90,7 @@ export function WorkflowCanvas() {
         type: 'task',
         position,
         data: { type: taskType, name: taskName },
+        deletable: true,
       };
       setNodes((nds) => nds.concat(newTask));
     },
