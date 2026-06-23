@@ -21,20 +21,23 @@ import { AppHeader } from './components/AppHeader';
 import { AppMenu } from './components/AppMenu';
 import { WorkflowCanvas } from './components/WorkflowCanvas';
 import { WorkflowHierarchy } from './components/WorkflowHierarchy';
+import { ReactFlowProvider } from '@xyflow/react';
 
 export default function App() {
   return (
     <IxApplication>
-      <AppHeader />
+      <ReactFlowProvider>
+        <AppHeader />
 
-      <AppMenu />
+        <AppMenu />
 
-      <IxContent style={{ padding: 0 }}>
-        <div style={{ display: 'flex', width: '100%', height: '100%', overflow: 'hidden' }}>
-          <WorkflowCanvas />
-          <WorkflowHierarchy />
-        </div>
-      </IxContent>
+        <IxContent style={{ padding: 0 }}>
+          <div style={{ display: 'flex', width: '100%', height: '100%', overflow: 'hidden' }}>
+            <WorkflowCanvas />
+            <WorkflowHierarchy />
+          </div>
+        </IxContent>
+      </ReactFlowProvider>
     </IxApplication>
   );
 }

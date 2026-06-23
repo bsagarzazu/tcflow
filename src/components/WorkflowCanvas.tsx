@@ -19,11 +19,11 @@
 import { useCallback } from 'react';
 import {
   ReactFlow,
+  useReactFlow,
   Background,
   Controls,
   type Node,
   useNodesState,
-  type Edge,
   useEdgesState,
   type Connection,
   addEdge,
@@ -32,45 +32,72 @@ import {
 import '@xyflow/react/dist/style.css';
 import { TaskNode } from './TaskNode';
 
+let id = 0;
+const getId = () => `tasknode_${id++}`;
+
 const nodeTypes = {
   task: TaskNode,
 };
 const initialNodes: Node[] = [
   { id: 'n1', type: 'task', position: { x: 0, y: 0 }, data: { type: 'Start', name: 'Start' } },
-  {
-    id: 'n2',
-    type: 'task',
-    position: { x: 0, y: 100 },
-    data: { type: 'AddStatus', name: 'Add Status' },
-  },
-  { id: 'n3', type: 'task', position: { x: 0, y: 200 }, data: { type: 'End', name: 'End' } },
-];
-const initialEdges: Edge[] = [
-  { id: 'n1-n2', source: 'n1', target: 'n2' },
-  { id: 'n2-n3', source: 'n2', target: 'n3' },
+  { id: 'n2', type: 'task', position: { x: 0, y: 100 }, data: { type: 'End', name: 'End' } },
 ];
 
 export function WorkflowCanvas() {
-  const [nodes, _, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const { screenToFlowPosition } = useReactFlow();
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
     [],
   );
 
+  const onDragOver = useCallback((event: React.DragEvent) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  }, []);
+
+  const onDrop = useCallback(
+    (event: React.DragEvent) => {
+      event.preventDefault();
+
+      const taskType = event.dataTransfer.getData('application/tcflow');
+      if (!taskType) {
+        return;
+      }
+
+      const position = screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+
+      const taskName = `${taskType.replace(/([A-Z])/g, ' $1').trim()} Task`;
+      const newTask = {
+        id: getId(),
+        type: 'task',
+        position,
+        data: { type: taskType, name: taskName },
+      };
+      setNodes((nds) => nds.concat(newTask));
+    },
+    [screenToFlowPosition, setNodes],
+  );
+
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <ReactFlow
-        colorMode="dark"
+        nodeTypes={nodeTypes}
         nodes={nodes}
         edges={edges}
-        nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
         defaultEdgeOptions={{ markerEnd: { type: MarkerType.ArrowClosed } }}
         fitView
+        colorMode="dark"
       >
         <Background />
         <Controls position="top-left" />

@@ -28,19 +28,38 @@ import {
   iconFlag,
 } from '@siemens/ix-icons/icons';
 import { IxIconButton } from '@siemens/ix-react';
+import { type DragEvent } from 'react';
+
+const toolbar_buttons = [
+  { icon: iconArrowDownRight, nodeType: 'Acknowledge' },
+  { icon: iconRhombFilled, nodeType: 'Condition' },
+  { icon: iconFlare, nodeType: 'Do' },
+  { icon: iconConnections, nodeType: 'Or' },
+  { icon: iconEye, nodeType: 'Review' },
+  { icon: iconUserManagement, nodeType: 'Route' },
+  { icon: iconCheck, nodeType: 'Validate' },
+  { icon: iconTasksAll, nodeType: 'Task' },
+  { icon: iconFlag, nodeType: 'AddStatus' },
+];
 
 export function WorkflowToolbar() {
+  const onDragStart = (event: DragEvent, taskType: string) => {
+    if (event.dataTransfer) {
+      event.dataTransfer.setData('application/tcflow', taskType);
+      event.dataTransfer.effectAllowed = 'move';
+    }
+  };
+
   return (
     <div slot="secondary">
-      <IxIconButton variant="tertiary" icon={iconArrowDownRight}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconRhombFilled}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconFlare}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconConnections}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconEye}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconUserManagement}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconCheck}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconTasksAll}></IxIconButton>
-      <IxIconButton variant="tertiary" icon={iconFlag}></IxIconButton>
+      {toolbar_buttons.map((button) => (
+        <IxIconButton
+          draggable
+          onDragStart={(event) => onDragStart(event, button.nodeType)}
+          variant="tertiary"
+          icon={button.icon}
+        ></IxIconButton>
+      ))}
     </div>
   );
 }
