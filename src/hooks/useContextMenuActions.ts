@@ -19,6 +19,7 @@
 import { useReactFlow } from '@xyflow/react';
 import { useCallback } from 'react';
 
+import { generateId } from '../core/utils';
 import { serializeNode } from '../core/serializer';
 
 export function useContextMenuActions(id: string) {
@@ -43,7 +44,7 @@ export function useContextMenuActions(id: string) {
 
         addNodes({
           ...nodeData.payload,
-          id: `${nodeData.payload.id}_pasted`,
+          id: generateId(),
           position,
           selected: true,
         });
@@ -61,7 +62,7 @@ export function useContextMenuActions(id: string) {
       ...node,
       selected: false,
       dragging: false,
-      id: `${node.id}_copy`,
+      id: generateId(),
       position,
     });
   }, [id, getNode, addNodes]);

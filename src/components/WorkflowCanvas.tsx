@@ -32,11 +32,9 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
+import { generateId } from '../core/utils';
 import { TaskNode } from './TaskNode';
 import { ContextMenu } from './ContextMenu';
-
-let id = 0;
-const getId = () => `tasknode_${id++}`;
 
 const nodeTypes = {
   task: TaskNode,
@@ -44,14 +42,14 @@ const nodeTypes = {
 
 const initialNodes: Node[] = [
   {
-    id: 'n1',
+    id: generateId(),
     type: 'task',
     position: { x: 0, y: 0 },
     data: { type: 'Start', name: 'Start' },
     deletable: false,
   },
   {
-    id: 'n2',
+    id: generateId(),
     type: 'task',
     position: { x: 500, y: 0 },
     data: { type: 'End', name: 'End' },
@@ -98,7 +96,7 @@ export function WorkflowCanvas() {
 
       const taskName = `${taskType.replace(/([A-Z])/g, ' $1').trim()} Task`;
       const newTask = {
-        id: getId(),
+        id: generateId(),
         type: 'task',
         position,
         data: { type: taskType, name: taskName },
