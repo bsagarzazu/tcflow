@@ -23,16 +23,13 @@ import {
   Background,
   Controls,
   type Node,
-  useNodesState,
   type Edge,
-  useEdgesState,
-  type Connection,
-  addEdge,
   MarkerType,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
 import { useAppStore } from '../store/useAppStore';
+import { useWorkflowStore } from '../store/useWorkflowStore';
 import { generateId } from '../core/utils';
 import { TaskNode } from './TaskNode';
 import { ContextMenu } from './ContextMenu';
@@ -40,23 +37,6 @@ import { ContextMenu } from './ContextMenu';
 const nodeTypes = {
   task: TaskNode,
 };
-
-const initialNodes: Node[] = [
-  {
-    id: generateId(),
-    type: 'task',
-    position: { x: 0, y: 0 },
-    data: { type: 'Start', name: 'Start' },
-    deletable: false,
-  },
-  {
-    id: generateId(),
-    type: 'task',
-    position: { x: 500, y: 0 },
-    data: { type: 'End', name: 'End' },
-    deletable: false,
-  },
-];
 
 interface MenuState {
   id: string;
@@ -67,15 +47,18 @@ interface MenuState {
 
 export function WorkflowCanvas() {
   const theme = useAppStore((state) => state.theme);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+
+  const nodes = useWorkflowStore((state) => state.nodes);
+  const edges = useWorkflowStore((state) => state.edges);
+  const viewport = useWorkflowStore((state) => state.viewport);
+  const onNodesChange = useWorkflowStore((state) => state.onNodesChange);
+  const onEdgesChange = useWorkflowStore((state) => state.onEdgesChange);
+  const onViewportChange = useWorkflowStore((state) => state.onViewportChange);
+  const onConnect = useWorkflowStore((state) => state.onConnect);
+  const setNodes = useWorkflowStore((state) => state.setNodes);
+
   const { screenToFlowPosition } = useReactFlow();
   const [menu, setMenu] = useState<MenuState | null>(null);
-
-  const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
-    [],
-  );
 
   const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();
@@ -104,9 +87,9 @@ export function WorkflowCanvas() {
         data: { type: taskType, name: taskName },
         deletable: true,
       };
-      setNodes((nds) => nds.concat(newTask));
+      setNodes(nodes.concat(newTask));
     },
-    [screenToFlowPosition, setNodes],
+    [screenToFlowPosition, nodes, setNodes],
   );
 
   const onNodeContextMenu = useCallback(
@@ -156,8 +139,10 @@ export function WorkflowCanvas() {
         nodeTypes={nodeTypes}
         nodes={nodes}
         edges={edges}
+        viewport={viewport}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onViewportChange={onViewportChange}
         onConnect={onConnect}
         onDrop={onDrop}
         onDragOver={onDragOver}
