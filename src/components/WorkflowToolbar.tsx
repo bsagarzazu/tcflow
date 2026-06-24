@@ -22,10 +22,10 @@ import {
   iconFlare,
   iconConnections,
   iconEye,
-  iconUserManagement,
+  iconUserManagementFilled,
   iconCheck,
   iconTasksAll,
-  iconFlag,
+  iconFlagFilled,
 } from '@siemens/ix-icons/icons';
 import { IxIconButton } from '@siemens/ix-react';
 import { type DragEvent } from 'react';
@@ -36,10 +36,10 @@ const toolbar_buttons = [
   { icon: iconFlare, nodeType: 'Do' },
   { icon: iconConnections, nodeType: 'Or' },
   { icon: iconEye, nodeType: 'Review' },
-  { icon: iconUserManagement, nodeType: 'Route' },
+  { icon: iconUserManagementFilled, nodeType: 'Route' },
   { icon: iconCheck, nodeType: 'Validate' },
   { icon: iconTasksAll, nodeType: 'Task' },
-  { icon: iconFlag, nodeType: 'AddStatus' },
+  { icon: iconFlagFilled, nodeType: 'AddStatus' },
 ];
 
 export function WorkflowToolbar() {
@@ -57,7 +57,7 @@ export function WorkflowToolbar() {
           key={index}
           draggable
           onDragStart={(event) => onDragStart(event, button.nodeType)}
-          variant="tertiary"
+          variant="subtle-tertiary"
           icon={button.icon}
         ></IxIconButton>
       ))}

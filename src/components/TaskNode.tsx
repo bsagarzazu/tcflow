@@ -17,17 +17,17 @@
  */
 
 import {
-  iconPlay,
-  iconStop,
+  iconPlayFilled,
+  iconStopFilled,
   iconArrowDownRight,
   iconRhombFilled,
   iconFlare,
   iconConnections,
   iconEye,
-  iconUserManagement,
+  iconUserManagementFilled,
   iconCheck,
   iconTasksAll,
-  iconFlag,
+  iconFlagFilled,
 } from '@siemens/ix-icons/icons';
 import { IxActionCard } from '@siemens/ix-react';
 import { Handle, Position, type Node, type NodeProps } from '@xyflow/react';
@@ -36,24 +36,29 @@ type TaskNode = Node<{ type: string; name: string }, 'task'>;
 
 export function TaskNode({ data }: NodeProps<TaskNode>) {
   const iconMap: Record<string, string> = {
-    Start: iconPlay,
-    End: iconStop,
+    Start: iconPlayFilled,
+    End: iconStopFilled,
     Acknowledge: iconArrowDownRight,
     Condition: iconRhombFilled,
     Do: iconFlare,
     Or: iconConnections,
     Review: iconEye,
-    Route: iconUserManagement,
+    Route: iconUserManagementFilled,
     Task: iconTasksAll,
     Validate: iconCheck,
-    AddStatus: iconFlag,
+    AddStatus: iconFlagFilled,
   };
 
   const isStart = data.type === 'Start';
   const isFinish = data.type === 'End';
 
   return (
-    <IxActionCard icon={iconMap[data.type]} heading={data.name} className="task-node">
+    <IxActionCard
+      icon={iconMap[data.type]}
+      heading={data.name}
+      variant="filled"
+      style={{ width: '200px' }}
+    >
       {!isStart && <Handle type="target" position={Position.Left} />}
       {!isFinish && <Handle type="source" position={Position.Right} />}
     </IxActionCard>
