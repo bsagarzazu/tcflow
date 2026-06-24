@@ -32,6 +32,7 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
+import { useAppStore } from '../store/useAppStore';
 import { generateId } from '../core/utils';
 import { TaskNode } from './TaskNode';
 import { ContextMenu } from './ContextMenu';
@@ -65,6 +66,7 @@ interface MenuState {
 }
 
 export function WorkflowCanvas() {
+  const theme = useAppStore((state) => state.theme);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { screenToFlowPosition } = useReactFlow();
@@ -165,7 +167,7 @@ export function WorkflowCanvas() {
         onPaneClick={onPaneClick}
         defaultEdgeOptions={{ markerEnd: { type: MarkerType.ArrowClosed } }}
         fitView
-        colorMode="dark"
+        colorMode={theme}
       >
         <Background />
         <Controls position="top-left" />

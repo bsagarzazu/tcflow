@@ -16,8 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useRef, useState } from 'react';
-import { themeSwitcher, type ThemeVariant } from '@siemens/ix';
+import { useRef } from 'react';
 import { IxMenu, IxMenuCategory, IxMenuItem } from '@siemens/ix-react';
 import {
   iconFolderOpenFilled,
@@ -27,20 +26,15 @@ import {
   iconLightDark,
 } from '@siemens/ix-icons/icons';
 
+import { useAppStore } from '../store/useAppStore';
 import { useWorkflowExport } from '../hooks/useWorkflowExport';
 import { useWorkflowImport } from '../hooks/useWorkflowImport';
 
 export function AppMenu() {
-  const [selectedVariant, setSelectedVariant] = useState<ThemeVariant>('dark');
+  const toggleTheme = useAppStore((state) => state.toggleTheme);
   const { exportAsImage, exportAsJson } = useWorkflowExport();
   const { importFromJson } = useWorkflowImport();
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleThemeChange = () => {
-    themeSwitcher.toggleMode();
-    const newVariant = selectedVariant === 'light' ? 'dark' : 'light';
-    setSelectedVariant(newVariant);
-  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -70,7 +64,7 @@ export function AppMenu() {
       >
         GitHub
       </IxMenuItem>
-      <IxMenuItem icon={iconLightDark} slot="bottom" onClick={handleThemeChange}>
+      <IxMenuItem icon={iconLightDark} slot="bottom" onClick={toggleTheme}>
         Toggle Theme
       </IxMenuItem>
       <input
