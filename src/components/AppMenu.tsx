@@ -16,7 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { themeSwitcher, type ThemeVariant } from '@siemens/ix';
 import { IxMenu, IxMenuCategory, IxMenuItem } from '@siemens/ix-react';
 import {
   iconFolderOpenFilled,
@@ -30,9 +31,16 @@ import { useWorkflowExport } from '../hooks/useWorkflowExport';
 import { useWorkflowImport } from '../hooks/useWorkflowImport';
 
 export function AppMenu() {
+  const [selectedVariant, setSelectedVariant] = useState<ThemeVariant>('dark');
   const { exportAsImage, exportAsJson } = useWorkflowExport();
   const { importFromJson } = useWorkflowImport();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleThemeChange = () => {
+    themeSwitcher.toggleMode();
+    const newVariant = selectedVariant === 'light' ? 'dark' : 'light';
+    setSelectedVariant(newVariant);
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -62,8 +70,8 @@ export function AppMenu() {
       >
         GitHub
       </IxMenuItem>
-      <IxMenuItem icon={iconLightDark} slot="bottom">
-        Theme
+      <IxMenuItem icon={iconLightDark} slot="bottom" onClick={handleThemeChange}>
+        Toggle Theme
       </IxMenuItem>
       <input
         type="file"
