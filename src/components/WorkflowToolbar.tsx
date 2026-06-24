@@ -52,8 +52,9 @@ export function WorkflowToolbar() {
 
   return (
     <div slot="secondary">
-      {toolbar_buttons.map((button) => (
+      {toolbar_buttons.map((button, index) => (
         <IxIconButton
+          key={index}
           draggable
           onDragStart={(event) => onDragStart(event, button.nodeType)}
           variant="tertiary"
