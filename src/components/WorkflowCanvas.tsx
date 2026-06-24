@@ -152,6 +152,8 @@ export function WorkflowCanvas() {
         onPaneClick={onPaneClick}
         defaultEdgeOptions={{ markerEnd: { type: MarkerType.ArrowClosed } }}
         fitView
+        minZoom={0.8}
+        maxZoom={1.2}
         colorMode={theme}
       >
         <Background />

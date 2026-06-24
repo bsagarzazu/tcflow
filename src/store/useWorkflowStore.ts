@@ -52,7 +52,7 @@ const initialNodes: Node[] = [
   {
     id: 'end',
     type: 'task',
-    position: { x: 500, y: 0 },
+    position: { x: 800, y: 0 },
     data: { type: 'End', name: 'End' },
     deletable: false,
   },
