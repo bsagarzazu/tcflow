@@ -55,7 +55,11 @@ export function AppMenu() {
         <IxMenuItem onClick={() => exportAsImage('png')}>PNG</IxMenuItem>
         <IxMenuItem onClick={() => exportAsImage('svg')}>SVG</IxMenuItem>
       </IxMenuCategory>
-      <IxMenuItem icon={iconGithubLogo} slot="bottom">
+      <IxMenuItem
+        icon={iconGithubLogo}
+        slot="bottom"
+        onClick={() => window.open('https://github.com/bsagarzazu/tcflow', '_blank')}
+      >
         GitHub
       </IxMenuItem>
       <IxMenuItem icon={iconLightDark} slot="bottom">
