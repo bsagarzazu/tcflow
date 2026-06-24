@@ -33,7 +33,14 @@ interface ContextMenuProps {
 }
 
 export function ContextMenu({ id, type, top, left, onClick }: ContextMenuProps) {
-  const { duplicateTaskNode, deleteTaskNode, deleteEdge } = useContextMenuActions(id);
+  const {
+    cutTaskNode,
+    copyTaskNode,
+    pasteTaskNode,
+    duplicateTaskNode,
+    deleteTaskNode,
+    deleteEdge,
+  } = useContextMenuActions(id);
   const { getNode } = useReactFlow();
 
   return (
@@ -50,14 +57,31 @@ export function ContextMenu({ id, type, top, left, onClick }: ContextMenuProps) 
           <>
             {getNode(id)?.deletable !== false && (
               <>
+                <IxDropdownItem icon={iconCut} label="Cut" onClick={cutTaskNode}></IxDropdownItem>
                 <IxDropdownItem
-                  icon={iconCut}
-                  label="Cut"
-                  onClick={duplicateTaskNode}
+                  icon={iconCopy}
+                  label="Copy"
+                  onClick={() => {
+                    copyTaskNode();
+                    onClick?.();
+                  }}
                 ></IxDropdownItem>
-                <IxDropdownItem icon={iconCopy} label="Copy"></IxDropdownItem>
-                <IxDropdownItem icon={iconPaste} label="Paste"></IxDropdownItem>
-                <IxDropdownItem icon={iconDuplicate} label="Duplicate"></IxDropdownItem>
+                <IxDropdownItem
+                  icon={iconPaste}
+                  label="Paste"
+                  onClick={() => {
+                    pasteTaskNode();
+                    onClick?.();
+                  }}
+                ></IxDropdownItem>
+                <IxDropdownItem
+                  icon={iconDuplicate}
+                  label="Duplicate"
+                  onClick={() => {
+                    duplicateTaskNode();
+                    onClick?.();
+                  }}
+                ></IxDropdownItem>
                 <IxDropdownItem
                   icon={iconTrashcan}
                   label="Delete"
@@ -71,7 +95,14 @@ export function ContextMenu({ id, type, top, left, onClick }: ContextMenuProps) 
 
             {getNode(id)?.deletable === false && (
               <>
-                <IxDropdownItem icon={iconPaste} label="Paste"></IxDropdownItem>
+                <IxDropdownItem
+                  icon={iconPaste}
+                  label="Paste"
+                  onClick={() => {
+                    pasteTaskNode();
+                    onClick?.();
+                  }}
+                ></IxDropdownItem>
               </>
             )}
           </>
@@ -92,7 +123,14 @@ export function ContextMenu({ id, type, top, left, onClick }: ContextMenuProps) 
 
         {type === 'pane' && (
           <>
-            <IxDropdownItem icon={iconPaste} label="Paste"></IxDropdownItem>
+            <IxDropdownItem
+              icon={iconPaste}
+              label="Paste"
+              onClick={() => {
+                pasteTaskNode();
+                onClick?.();
+              }}
+            ></IxDropdownItem>
           </>
         )}
       </IxDropdown>

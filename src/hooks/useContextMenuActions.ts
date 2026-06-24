@@ -22,6 +22,22 @@ import { useCallback } from 'react';
 export function useContextMenuActions(id: string) {
   const { getNode, setNodes, addNodes, setEdges } = useReactFlow();
 
+  const cutTaskNode = useCallback(() => {
+    const node = getNode(id);
+    if (!node) return;
+    // TODO
+  }, [id, getNode]);
+
+  const copyTaskNode = useCallback(() => {
+    const node = getNode(id);
+    if (!node) return;
+    // TODO
+  }, [id, getNode]);
+
+  const pasteTaskNode = useCallback(() => {
+    // TODO
+  }, [id, addNodes]);
+
   const duplicateTaskNode = useCallback(() => {
     const node = getNode(id);
     if (!node) return;
@@ -38,6 +54,7 @@ export function useContextMenuActions(id: string) {
 
   const deleteTaskNode = useCallback(() => {
     setNodes((nodes) => nodes.filter((node) => node.id !== id));
+    setEdges((edges) => edges.filter((edge) => edge.source !== id && edge.target !== id));
   }, [id, setNodes, setEdges]);
 
   const deleteEdge = useCallback(() => {
@@ -45,6 +62,9 @@ export function useContextMenuActions(id: string) {
   }, [id, setEdges]);
 
   return {
+    cutTaskNode,
+    copyTaskNode,
+    pasteTaskNode,
     duplicateTaskNode,
     deleteTaskNode,
     deleteEdge,
