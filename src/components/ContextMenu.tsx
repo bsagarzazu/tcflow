@@ -18,6 +18,7 @@
 
 import { IxDropdown, IxDropdownItem } from '@siemens/ix-react';
 import { iconCopy, iconCut, iconPaste, iconDuplicate, iconTrashcan } from '@siemens/ix-icons/icons';
+import { useReactFlow } from '@xyflow/react';
 
 import { useContextMenuActions } from '../hooks/useContextMenuActions';
 
@@ -33,6 +34,7 @@ interface ContextMenuProps {
 
 export function ContextMenu({ id, type, top, left, onClick }: ContextMenuProps) {
   const { duplicateTaskNode, deleteTaskNode, deleteEdge } = useContextMenuActions(id);
+  const { getNode } = useReactFlow();
 
   return (
     <div
@@ -46,18 +48,32 @@ export function ContextMenu({ id, type, top, left, onClick }: ContextMenuProps) 
       <IxDropdown show={true}>
         {type === 'node' && (
           <>
-            <IxDropdownItem icon={iconCut} label="Cut" onClick={duplicateTaskNode}></IxDropdownItem>
-            <IxDropdownItem icon={iconCopy} label="Copy"></IxDropdownItem>
-            <IxDropdownItem icon={iconPaste} label="Paste"></IxDropdownItem>
-            <IxDropdownItem icon={iconDuplicate} label="Duplicate"></IxDropdownItem>
-            <IxDropdownItem
-              icon={iconTrashcan}
-              label="Delete"
-              onClick={() => {
-                deleteTaskNode();
-                onClick?.();
-              }}
-            ></IxDropdownItem>
+            {getNode(id)?.deletable !== false && (
+              <>
+                <IxDropdownItem
+                  icon={iconCut}
+                  label="Cut"
+                  onClick={duplicateTaskNode}
+                ></IxDropdownItem>
+                <IxDropdownItem icon={iconCopy} label="Copy"></IxDropdownItem>
+                <IxDropdownItem icon={iconPaste} label="Paste"></IxDropdownItem>
+                <IxDropdownItem icon={iconDuplicate} label="Duplicate"></IxDropdownItem>
+                <IxDropdownItem
+                  icon={iconTrashcan}
+                  label="Delete"
+                  onClick={() => {
+                    deleteTaskNode();
+                    onClick?.();
+                  }}
+                ></IxDropdownItem>
+              </>
+            )}
+
+            {getNode(id)?.deletable === false && (
+              <>
+                <IxDropdownItem icon={iconPaste} label="Paste"></IxDropdownItem>
+              </>
+            )}
           </>
         )}
 
