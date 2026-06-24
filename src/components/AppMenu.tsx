@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { useRef } from 'react';
 import { IxMenu, IxMenuCategory, IxMenuItem } from '@siemens/ix-react';
 import {
   iconFolderOpenFilled,
@@ -24,20 +25,33 @@ import {
   iconGithubLogo,
   iconLightDark,
 } from '@siemens/ix-icons/icons';
+
 import { useWorkflowExport } from '../hooks/useWorkflowExport';
+import { useWorkflowImport } from '../hooks/useWorkflowImport';
 
 export function AppMenu() {
   const { exportAsImage, exportAsJson } = useWorkflowExport();
+  const { importFromJson } = useWorkflowImport();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      importFromJson(file);
+    }
+
+    event.target.value = '';
+  };
 
   return (
     <IxMenu>
-      <IxMenuCategory icon={iconFolderOpenFilled} label="Open">
-        <IxMenuItem>JSON</IxMenuItem>
+      <IxMenuCategory icon={iconFolderOpenFilled} label="Open workflow">
+        <IxMenuItem onClick={() => fileInputRef.current?.click()}>JSON</IxMenuItem>
       </IxMenuCategory>
       <IxMenuCategory icon={iconDownload} label="Save workflow">
         <IxMenuItem onClick={exportAsJson}>JSON</IxMenuItem>
       </IxMenuCategory>
-      <IxMenuCategory icon={iconImageFilled} label="Export image...">
+      <IxMenuCategory icon={iconImageFilled} label="Export image">
         <IxMenuItem onClick={() => exportAsImage('png')}>PNG</IxMenuItem>
         <IxMenuItem onClick={() => exportAsImage('svg')}>SVG</IxMenuItem>
       </IxMenuCategory>
@@ -47,6 +61,13 @@ export function AppMenu() {
       <IxMenuItem icon={iconLightDark} slot="bottom">
         Theme
       </IxMenuItem>
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        accept=".json,.tcflow"
+        onChange={handleFileChange}
+      />
     </IxMenu>
   );
 }

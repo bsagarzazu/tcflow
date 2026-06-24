@@ -38,4 +38,13 @@ export const serialize = (data: ReactFlowJsonObject): string => {
   return JSON.stringify(fileContent, null, 2) + '\n';
 };
 
-export const deserialize = () => {};
+export const deserialize = (content: string) => {
+  const flowData = JSON.parse(content);
+
+  if (flowData.type !== 'tcflow') {
+    console.error('Invalid file type');
+    return null;
+  }
+
+  return flowData.elements;
+};
