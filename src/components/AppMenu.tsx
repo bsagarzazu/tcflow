@@ -27,15 +27,15 @@ import {
 import { useWorkflowExport } from '../hooks/useWorkflowExport';
 
 export function AppMenu() {
-  const { exportAsPng, exportAsSvg } = useWorkflowExport();
+  const { exportAsImage } = useWorkflowExport();
 
   return (
     <IxMenu>
       <IxMenuItem icon={iconFolderOpenFilled}>Open</IxMenuItem>
       <IxMenuItem icon={iconDownload}>Save to...</IxMenuItem>
       <IxMenuCategory icon={iconImageFilled} label="Export image...">
-        <IxMenuItem onClick={exportAsPng}>PNG</IxMenuItem>
-        <IxMenuItem onClick={exportAsSvg}>SVG</IxMenuItem>
+        <IxMenuItem onClick={() => exportAsImage('png')}>PNG</IxMenuItem>
+        <IxMenuItem onClick={() => exportAsImage('svg')}>SVG</IxMenuItem>
       </IxMenuCategory>
       <IxMenuItem icon={iconGithubLogo} slot="bottom">
         GitHub

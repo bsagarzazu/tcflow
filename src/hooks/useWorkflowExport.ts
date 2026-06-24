@@ -25,21 +25,21 @@ const imageHeight = 768;
 export function useWorkflowExport() {
   const { getNodes } = useReactFlow();
 
-  function downloadImage(dataUrl: string, extension: 'png' | 'svg' = 'png') {
+  function triggerDownload(url: string, filename: string) {
     const a = document.createElement('a');
-    a.setAttribute('download', `tcflow_export.${extension}`);
-    a.setAttribute('href', dataUrl);
+    a.href = url;
+    a.download = filename;
     a.click();
   }
 
-  const exportAsPng = () => {
+  const exportAsImage = (format: 'png' | 'svg') => {
     const element = document.querySelector('.react-flow__viewport') as HTMLElement;
     if (!element) return;
 
     const nodesBounds = getNodesBounds(getNodes());
     const viewport = getViewportForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2, 2);
 
-    toPng(element, {
+    const props = {
       backgroundColor: '#23233C',
       width: imageWidth,
       height: imageHeight,
@@ -48,27 +48,14 @@ export function useWorkflowExport() {
         height: `${imageHeight}px`,
         transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
       },
-    }).then((dataUrl) => downloadImage(dataUrl, 'png'));
+    };
+
+    if (format === 'png') {
+      toPng(element, props).then((dataUrl) => triggerDownload(dataUrl, 'tcflow_export.png'));
+    } else {
+      toSvg(element, props).then((dataUrl) => triggerDownload(dataUrl, 'tcflow_export.svg'));
+    }
   };
 
-  const exportAsSvg = () => {
-    const element = document.querySelector('.react-flow__viewport') as HTMLElement;
-    if (!element) return;
-
-    const nodesBounds = getNodesBounds(getNodes());
-    const viewport = getViewportForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2, 2);
-
-    toSvg(element, {
-      backgroundColor: '#23233C',
-      width: imageWidth,
-      height: imageHeight,
-      style: {
-        width: `${imageWidth}px`,
-        height: `${imageHeight}px`,
-        transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
-      },
-    }).then((dataUrl) => downloadImage(dataUrl, 'svg'));
-  };
-
-  return { exportAsPng, exportAsSvg };
+  return { exportAsImage };
 }
