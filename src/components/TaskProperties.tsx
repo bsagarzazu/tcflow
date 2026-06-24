@@ -16,6 +16,37 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import {
+  IxButton,
+  IxModalContent,
+  IxModalFooter,
+  IxModalHeader,
+  Modal,
+  type ModalRef,
+} from '@siemens/ix-react';
+import { useRef } from 'react';
+
 export function TaskProperties() {
-  return <></>;
+  const modalRef = useRef<ModalRef>(null);
+
+  const close = () => {
+    modalRef.current?.close('close');
+  };
+
+  const dismiss = () => {
+    modalRef.current?.dismiss('dismiss');
+  };
+
+  return (
+    <Modal ref={modalRef}>
+      <IxModalHeader onCloseClick={() => dismiss()}>Task Properties</IxModalHeader>
+      <IxModalContent>Content</IxModalContent>
+      <IxModalFooter>
+        <IxButton onClick={() => dismiss()}>Cancel</IxButton>
+        <IxButton autoFocus onClick={() => close()}>
+          Save
+        </IxButton>
+      </IxModalFooter>
+    </Modal>
+  );
 }
