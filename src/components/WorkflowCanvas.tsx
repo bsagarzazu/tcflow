@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import {
   ReactFlow,
   useReactFlow,
@@ -24,13 +24,16 @@ import {
   Controls,
   type Node,
   useNodesState,
+  type Edge,
   useEdgesState,
   type Connection,
   addEdge,
   MarkerType,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+
 import { TaskNode } from './TaskNode';
+import { ContextMenu } from './ContextMenu';
 
 let id = 0;
 const getId = () => `tasknode_${id++}`;
@@ -38,6 +41,7 @@ const getId = () => `tasknode_${id++}`;
 const nodeTypes = {
   task: TaskNode,
 };
+
 const initialNodes: Node[] = [
   {
     id: 'n1',
@@ -55,10 +59,18 @@ const initialNodes: Node[] = [
   },
 ];
 
+interface MenuState {
+  id: string;
+  type: 'node' | 'edge' | 'pane';
+  top?: number | false;
+  left?: number | false;
+}
+
 export function WorkflowCanvas() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { screenToFlowPosition } = useReactFlow();
+  const [menu, setMenu] = useState<MenuState | null>(null);
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
@@ -97,6 +109,47 @@ export function WorkflowCanvas() {
     [screenToFlowPosition, setNodes],
   );
 
+  const onNodeContextMenu = useCallback(
+    (event: React.MouseEvent, node: Node) => {
+      event.preventDefault();
+      setMenu({
+        id: node.id,
+        type: 'node',
+        top: event.clientY,
+        left: event.clientX,
+      });
+    },
+    [setMenu],
+  );
+
+  const onEdgeContextMenu = useCallback(
+    (event: React.MouseEvent, edge: Edge) => {
+      event.preventDefault();
+      setMenu({
+        id: edge.id,
+        type: 'edge',
+        top: event.clientY,
+        left: event.clientX,
+      });
+    },
+    [setMenu],
+  );
+
+  const onPaneContextMenu = useCallback(
+    (event: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
+      event.preventDefault();
+      setMenu({
+        id: 'pane',
+        type: 'pane',
+        top: event.clientY,
+        left: event.clientX,
+      });
+    },
+    [setMenu],
+  );
+
+  const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
+
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <ReactFlow
@@ -108,12 +161,17 @@ export function WorkflowCanvas() {
         onConnect={onConnect}
         onDrop={onDrop}
         onDragOver={onDragOver}
+        onNodeContextMenu={onNodeContextMenu}
+        onEdgeContextMenu={onEdgeContextMenu}
+        onPaneContextMenu={onPaneContextMenu}
+        onPaneClick={onPaneClick}
         defaultEdgeOptions={{ markerEnd: { type: MarkerType.ArrowClosed } }}
         fitView
         colorMode="dark"
       >
         <Background />
         <Controls position="top-left" />
+        {menu && <ContextMenu onClick={onPaneClick} {...menu} />}
       </ReactFlow>
     </div>
   );
