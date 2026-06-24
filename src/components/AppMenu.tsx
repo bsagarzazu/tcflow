@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxMenu, IxMenuItem } from '@siemens/ix-react';
+import { IxMenu, IxMenuCategory, IxMenuItem } from '@siemens/ix-react';
 import {
   iconFolderOpenFilled,
   iconDownload,
@@ -24,13 +24,19 @@ import {
   iconGithubLogo,
   iconLightDark,
 } from '@siemens/ix-icons/icons';
+import { useWorkflowExport } from '../hooks/useWorkflowExport';
 
 export function AppMenu() {
+  const { exportAsPng, exportAsSvg } = useWorkflowExport();
+
   return (
     <IxMenu>
       <IxMenuItem icon={iconFolderOpenFilled}>Open</IxMenuItem>
       <IxMenuItem icon={iconDownload}>Save to...</IxMenuItem>
-      <IxMenuItem icon={iconImageFilled}>Export image...</IxMenuItem>
+      <IxMenuCategory icon={iconImageFilled} label="Export image...">
+        <IxMenuItem onClick={exportAsPng}>PNG</IxMenuItem>
+        <IxMenuItem onClick={exportAsSvg}>SVG</IxMenuItem>
+      </IxMenuCategory>
       <IxMenuItem icon={iconGithubLogo} slot="bottom">
         GitHub
       </IxMenuItem>
