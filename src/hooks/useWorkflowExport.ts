@@ -19,11 +19,13 @@
 import { useReactFlow, getNodesBounds, getViewportForBounds } from '@xyflow/react';
 import { toPng, toSvg } from 'html-to-image';
 
+import { serialize } from '../core/serializer';
+
 const imageWidth = 1024;
 const imageHeight = 768;
 
 export function useWorkflowExport() {
-  const { getNodes } = useReactFlow();
+  const { getNodes, toObject } = useReactFlow();
 
   function triggerDownload(url: string, filename: string) {
     const a = document.createElement('a');
@@ -57,5 +59,16 @@ export function useWorkflowExport() {
     }
   };
 
-  return { exportAsImage };
+  const exportAsJson = () => {
+    const flowData = toObject();
+
+    const jsonString = serialize(flowData);
+
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    triggerDownload(url, 'tcflow_export.json');
+    URL.revokeObjectURL(url);
+  };
+
+  return { exportAsImage, exportAsJson };
 }

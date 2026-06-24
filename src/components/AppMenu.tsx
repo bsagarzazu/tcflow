@@ -27,12 +27,16 @@ import {
 import { useWorkflowExport } from '../hooks/useWorkflowExport';
 
 export function AppMenu() {
-  const { exportAsImage } = useWorkflowExport();
+  const { exportAsImage, exportAsJson } = useWorkflowExport();
 
   return (
     <IxMenu>
-      <IxMenuItem icon={iconFolderOpenFilled}>Open</IxMenuItem>
-      <IxMenuItem icon={iconDownload}>Save to...</IxMenuItem>
+      <IxMenuCategory icon={iconFolderOpenFilled} label="Open">
+        <IxMenuItem>JSON</IxMenuItem>
+      </IxMenuCategory>
+      <IxMenuCategory icon={iconDownload} label="Save workflow">
+        <IxMenuItem onClick={exportAsJson}>JSON</IxMenuItem>
+      </IxMenuCategory>
       <IxMenuCategory icon={iconImageFilled} label="Export image...">
         <IxMenuItem onClick={() => exportAsImage('png')}>PNG</IxMenuItem>
         <IxMenuItem onClick={() => exportAsImage('svg')}>SVG</IxMenuItem>
