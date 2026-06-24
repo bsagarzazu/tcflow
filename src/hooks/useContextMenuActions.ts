@@ -19,11 +19,17 @@
 import { useReactFlow } from '@xyflow/react';
 import { useCallback } from 'react';
 
+import { useWorkflowStore } from '../store/useWorkflowStore';
 import { generateId } from '../core/utils';
 import { serializeNode } from '../core/serializer';
 
 export function useContextMenuActions(id: string) {
-  const { getNode, setNodes, addNodes, setEdges, screenToFlowPosition } = useReactFlow();
+  const { getNode, screenToFlowPosition } = useReactFlow();
+
+  const nodes = useWorkflowStore((state) => state.nodes);
+  const edges = useWorkflowStore((state) => state.edges);
+  const setNodes = useWorkflowStore((state) => state.setNodes);
+  const setEdges = useWorkflowStore((state) => state.setEdges);
 
   const copyTaskNode = useCallback(() => {
     const node = getNode(id);
@@ -42,15 +48,17 @@ export function useContextMenuActions(id: string) {
 
         const position = screenToFlowPosition(screenPosition);
 
-        addNodes({
+        const newNode = {
           ...nodeData.payload,
           id: generateId(),
           position,
           selected: true,
-        });
+        };
+
+        setNodes(nodes.concat(newNode));
       });
     },
-    [addNodes, screenToFlowPosition],
+    [nodes, setNodes, screenToFlowPosition],
   );
 
   const duplicateTaskNode = useCallback(() => {
@@ -58,18 +66,20 @@ export function useContextMenuActions(id: string) {
     if (!node) return;
     const position = { x: node.position.x + 50, y: node.position.y + 50 };
 
-    addNodes({
+    const newNode = {
       ...node,
       selected: false,
       dragging: false,
       id: generateId(),
       position,
-    });
-  }, [id, getNode, addNodes]);
+    };
+
+    setNodes(nodes.concat(newNode));
+  }, [id, getNode, nodes, setNodes]);
 
   const deleteTaskNode = useCallback(() => {
-    setNodes((nodes) => nodes.filter((node) => node.id !== id));
-    setEdges((edges) => edges.filter((edge) => edge.source !== id && edge.target !== id));
+    setNodes(nodes.filter((node) => node.id !== id));
+    setEdges(edges.filter((edge) => edge.source !== id && edge.target !== id));
   }, [id, setNodes, setEdges]);
 
   const cutTaskNode = useCallback(() => {
@@ -78,7 +88,7 @@ export function useContextMenuActions(id: string) {
   }, [id, copyTaskNode, deleteTaskNode]);
 
   const deleteEdge = useCallback(() => {
-    setEdges((edges) => edges.filter((edge) => edge.id !== id));
+    setEdges(edges.filter((edge) => edge.id !== id));
   }, [id, setEdges]);
 
   return {
