@@ -19,24 +19,38 @@
 import { useReactFlow } from '@xyflow/react';
 import { useCallback } from 'react';
 
-export function useContextMenuActions(id: string) {
-  const { getNode, setNodes, addNodes, setEdges } = useReactFlow();
+import { serializeNode } from '../core/serializer';
 
-  const cutTaskNode = useCallback(() => {
-    const node = getNode(id);
-    if (!node) return;
-    // TODO
-  }, [id, getNode]);
+export function useContextMenuActions(id: string) {
+  const { getNode, setNodes, addNodes, setEdges, screenToFlowPosition } = useReactFlow();
 
   const copyTaskNode = useCallback(() => {
     const node = getNode(id);
     if (!node) return;
-    // TODO
+
+    const nodeData = serializeNode(node);
+    navigator.clipboard.writeText(JSON.stringify(nodeData));
   }, [id, getNode]);
 
-  const pasteTaskNode = useCallback(() => {
-    // TODO
-  }, [id, addNodes]);
+  const pasteTaskNode = useCallback(
+    (screenPosition: { x: number; y: number }) => {
+      navigator.clipboard.readText().then((text) => {
+        const nodeData = JSON.parse(text);
+
+        if (nodeData.source !== 'tcflow-clipboard') return;
+
+        const position = screenToFlowPosition(screenPosition);
+
+        addNodes({
+          ...nodeData.payload,
+          id: `${nodeData.payload.id}_pasted`,
+          position,
+          selected: true,
+        });
+      });
+    },
+    [addNodes, screenToFlowPosition],
+  );
 
   const duplicateTaskNode = useCallback(() => {
     const node = getNode(id);
@@ -56,6 +70,11 @@ export function useContextMenuActions(id: string) {
     setNodes((nodes) => nodes.filter((node) => node.id !== id));
     setEdges((edges) => edges.filter((edge) => edge.source !== id && edge.target !== id));
   }, [id, setNodes, setEdges]);
+
+  const cutTaskNode = useCallback(() => {
+    copyTaskNode();
+    deleteTaskNode();
+  }, [id, copyTaskNode, deleteTaskNode]);
 
   const deleteEdge = useCallback(() => {
     setEdges((edges) => edges.filter((edge) => edge.id !== id));

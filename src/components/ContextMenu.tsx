@@ -25,10 +25,8 @@ import { useContextMenuActions } from '../hooks/useContextMenuActions';
 interface ContextMenuProps {
   id: string;
   type: 'node' | 'edge' | 'pane';
-  top?: number | false;
-  left?: number | false;
-  right?: number | false;
-  bottom?: number | false;
+  top: number;
+  left: number;
   onClick?: () => void;
 }
 
@@ -48,8 +46,8 @@ export function ContextMenu({ id, type, top, left, onClick }: ContextMenuProps) 
       style={{
         position: 'fixed',
         zIndex: 1000,
-        top: top !== false ? top : 'auto',
-        left: left !== false ? left : 'auto',
+        top: top,
+        left: left,
       }}
     >
       <IxDropdown show={true}>
@@ -70,7 +68,7 @@ export function ContextMenu({ id, type, top, left, onClick }: ContextMenuProps) 
                   icon={iconPaste}
                   label="Paste"
                   onClick={() => {
-                    pasteTaskNode();
+                    pasteTaskNode({ x: top, y: left });
                     onClick?.();
                   }}
                 ></IxDropdownItem>
@@ -99,7 +97,7 @@ export function ContextMenu({ id, type, top, left, onClick }: ContextMenuProps) 
                   icon={iconPaste}
                   label="Paste"
                   onClick={() => {
-                    pasteTaskNode();
+                    pasteTaskNode({ x: top, y: left });
                     onClick?.();
                   }}
                 ></IxDropdownItem>
@@ -127,7 +125,7 @@ export function ContextMenu({ id, type, top, left, onClick }: ContextMenuProps) 
               icon={iconPaste}
               label="Paste"
               onClick={() => {
-                pasteTaskNode();
+                pasteTaskNode({ x: top, y: left });
                 onClick?.();
               }}
             ></IxDropdownItem>

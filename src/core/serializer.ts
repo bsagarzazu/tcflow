@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { type ReactFlowJsonObject } from '@xyflow/react';
+import { type ReactFlowJsonObject, type Node } from '@xyflow/react';
 
 export const serialize = (data: ReactFlowJsonObject): string => {
   const cleanNodes = data.nodes.map((node) => ({
@@ -48,3 +48,13 @@ export const deserialize = (content: string) => {
 
   return flowData.elements;
 };
+
+export const serializeNode = (node: Node) => ({
+  source: 'tcflow-clipboard',
+  version: '0.2.0',
+  payload: {
+    type: node.type,
+    data: node.data,
+    deletable: node.deletable,
+  },
+});
