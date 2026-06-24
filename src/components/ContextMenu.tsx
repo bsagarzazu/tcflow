@@ -55,7 +55,14 @@ export function ContextMenu({ id, type, top, left, onClick }: ContextMenuProps) 
           <>
             {getNode(id)?.deletable !== false && (
               <>
-                <IxDropdownItem icon={iconCut} label="Cut" onClick={cutTaskNode}></IxDropdownItem>
+                <IxDropdownItem
+                  icon={iconCut}
+                  label="Cut"
+                  onClick={() => {
+                    cutTaskNode();
+                    onClick?.();
+                  }}
+                ></IxDropdownItem>
                 <IxDropdownItem
                   icon={iconCopy}
                   label="Copy"
