@@ -16,22 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {
-  IxApplication,
-  IxContent,
-  IxTabs,
-  IxTabItem,
-  IxIconButton,
-  IxIcon,
-} from '@siemens/ix-react';
+import { IxApplication, IxContent, IxTabs, IxTabItem, IxIcon } from '@siemens/ix-react';
 import { iconAddCircleFilled } from '@siemens/ix-icons/icons';
+import { ReactFlowProvider } from '@xyflow/react';
+
+import { useWorkflowStore } from './store/useWorkflowStore';
 import { AppHeader } from './components/AppHeader';
 import { AppMenu } from './components/AppMenu';
 import { WorkflowCanvas } from './components/WorkflowCanvas';
 import { WorkflowHierarchy } from './components/WorkflowHierarchy';
-import { ReactFlowProvider } from '@xyflow/react';
 
 export default function App() {
+  const workflows = useWorkflowStore((state) => state.workflows);
+  const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
+  const addWorkflow = useWorkflowStore((state) => state.addWorkflow);
+  const setActiveWorkflow = useWorkflowStore((state) => state.setActiveWorkflow);
+  const closeWorkflow = useWorkflowStore((state) => state.closeWorkflow);
+
+  const workflowList = Object.entries(workflows);
+
   return (
     <IxApplication>
       <ReactFlowProvider>
@@ -40,14 +43,25 @@ export default function App() {
         <AppMenu />
 
         <IxContent style={{ padding: 0 }}>
-          <IxTabs>
-            <IxTabItem tabKey="tab-1" closable>
-              Tab 1
-            </IxTabItem>
-            <IxTabItem tabKey="tab-2" closable>
-              Tab 2
-            </IxTabItem>
-            <IxTabItem tabKey="tab-add">
+          <IxTabs
+            activeTabKey={activeWorkflowId}
+            onTabChange={(e) => {
+              if (e.detail && e.detail !== 'tab-add') {
+                setActiveWorkflow(e.detail);
+              }
+            }}
+          >
+            {workflowList.map(([id, workflow]) => (
+              <IxTabItem
+                key={id}
+                tabKey={id}
+                closable
+                onTabClose={(e) => e.detail.tabKey && closeWorkflow(e.detail.tabKey)}
+              >
+                {workflow.name}
+              </IxTabItem>
+            ))}
+            <IxTabItem tabKey="tab-add" onTabClick={() => addWorkflow('New Workflow')}>
               <IxIcon name={iconAddCircleFilled}></IxIcon>
             </IxTabItem>
           </IxTabs>
