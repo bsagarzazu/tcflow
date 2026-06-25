@@ -19,3 +19,5 @@
 import { type Node } from '@xyflow/react';
 
 export type TaskNodeType = Node<{ type: string; name: string }, 'task'>;
+
+export type TreeData = TaskNodeType['data'] & { icon: string };

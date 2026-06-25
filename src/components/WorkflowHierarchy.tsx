@@ -18,9 +18,10 @@
 
 import { useState } from 'react';
 import { type TreeContext } from '@siemens/ix';
-import { IxPane, IxTree } from '@siemens/ix-react';
+import { IxPane, IxTree, IxIcon } from '@siemens/ix-react';
 
 import { useBuildWorkflowHierarchy } from '../hooks/useWorkflowHierarchy';
+import { type TreeData } from '../types';
 
 export function WorkflowHierarchy() {
   const treeModel = useBuildWorkflowHierarchy();
@@ -35,6 +36,23 @@ export function WorkflowHierarchy() {
         onContextChange={({ detail }) => {
           setContext(detail);
         }}
+        renderItem={(data: TreeData) => (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <IxIcon
+              name={data.icon}
+              size="16"
+              style={{
+                marginInlineEnd: '0.5rem',
+              }}
+            />
+            {data.name}
+          </div>
+        )}
       ></IxTree>
     </IxPane>
   );

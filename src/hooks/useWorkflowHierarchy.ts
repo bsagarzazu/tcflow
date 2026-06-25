@@ -17,20 +17,21 @@
  */
 
 import { type TreeModel } from '@siemens/ix';
-
-import { type TaskNodeType } from '../types';
-import { useWorkflowStore } from '../store/useWorkflowStore';
 import { useMemo } from 'react';
+
+import { useWorkflowStore } from '../store/useWorkflowStore';
+import { TASK_ICON_MAP } from '../constants';
+import { type TreeData } from '../types';
 
 export function useBuildWorkflowHierarchy() {
   const nodes = useWorkflowStore((state) => state.nodes);
   const edges = useWorkflowStore((state) => state.edges);
 
   const workflowHierarchy = useMemo(() => {
-    const model: TreeModel<TaskNodeType['data']> = {
+    const model: TreeModel<TreeData> = {
       root: {
         id: 'root',
-        data: { name: 'Root', type: 'root' },
+        data: { name: '', type: '', icon: '' },
         hasChildren: false,
         children: [],
       },
@@ -46,6 +47,7 @@ export function useBuildWorkflowHierarchy() {
         data: {
           name: node.data.name as string,
           type: node.data.type as string,
+          icon: TASK_ICON_MAP[node.data.type as string],
         },
         hasChildren: false,
         children: [],
