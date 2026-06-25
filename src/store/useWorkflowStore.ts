@@ -44,6 +44,7 @@ interface WorkflowState {
   activeWorkflowId: string;
 
   addWorkflow: (name: string) => void;
+  renameWorkflow: (workflowId: string, newName: string) => void;
   setActiveWorkflow: (workflowId: string) => void;
   closeWorkflow: (workflowId: string) => void;
 
@@ -96,6 +97,18 @@ export const useWorkflowStore = create<WorkflowState>()(
             [id]: { name, nodes: getInitialNodes(), edges: [], viewport: { x: 0, y: 0, zoom: 1 } },
           },
           activeWorkflowId: id,
+        }));
+      },
+
+      renameWorkflow: (id: string, newName: string) => {
+        set((state) => ({
+          workflows: {
+            ...state.workflows,
+            [id]: {
+              ...state.workflows[id],
+              name: newName,
+            },
+          },
         }));
       },
 

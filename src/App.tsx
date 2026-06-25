@@ -16,26 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxApplication, IxContent, IxTabs, IxTabItem, IxIcon, IxSpinner } from '@siemens/ix-react';
-import { iconAddCircleFilled } from '@siemens/ix-icons/icons';
+import { IxApplication, IxContent, IxSpinner } from '@siemens/ix-react';
 import { ReactFlowProvider } from '@xyflow/react';
 
 import { useAppStore } from './store/useAppStore';
 import { useWorkflowStore } from './store/useWorkflowStore';
 import { AppHeader } from './components/AppHeader';
 import { AppMenu } from './components/AppMenu';
+import { AppTabs } from './components/AppTabs';
 import { WorkflowCanvas } from './components/WorkflowCanvas';
 import { WorkflowHierarchy } from './components/WorkflowHierarchy';
 
 export default function App() {
   const hasHydrated = useWorkflowStore.persist.hasHydrated() && useAppStore.persist.hasHydrated();
-  const workflows = useWorkflowStore((state) => state.workflows);
-  const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
-  const addWorkflow = useWorkflowStore((state) => state.addWorkflow);
-  const setActiveWorkflow = useWorkflowStore((state) => state.setActiveWorkflow);
-  const closeWorkflow = useWorkflowStore((state) => state.closeWorkflow);
-
-  const workflowList = Object.entries(workflows);
 
   if (!hasHydrated) {
     return <IxSpinner></IxSpinner>;
@@ -49,27 +42,8 @@ export default function App() {
         <AppMenu />
 
         <IxContent style={{ padding: 0 }}>
-          <IxTabs
-            activeTabKey={activeWorkflowId}
-            onTabChange={(e) => e.detail && e.detail !== 'tab-add' && setActiveWorkflow(e.detail)}
-          >
-            {workflowList.map(([id, workflow]) => (
-              <IxTabItem
-                key={id}
-                tabKey={id}
-                closable={workflowList.length > 1}
-                onTabClose={(e) => e.detail.tabKey && closeWorkflow(e.detail.tabKey)}
-              >
-                {workflow.name}
-              </IxTabItem>
-            ))}
-            <IxTabItem
-              tabKey="tab-add"
-              onTabClick={() => addWorkflow(`New Workflow (${workflowList.length})`)}
-            >
-              <IxIcon name={iconAddCircleFilled}></IxIcon>
-            </IxTabItem>
-          </IxTabs>
+          <AppTabs />
+
           <div style={{ display: 'flex', width: '100%', height: '100%', overflow: 'hidden' }}>
             <WorkflowCanvas />
             <WorkflowHierarchy />
