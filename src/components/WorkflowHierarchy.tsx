@@ -16,8 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxPane } from '@siemens/ix-react';
+import { useState } from 'react';
+import { type TreeContext } from '@siemens/ix';
+import { IxPane, IxTree } from '@siemens/ix-react';
+
+import { useBuildWorkflowHierarchy } from '../hooks/useWorkflowHierarchy';
 
 export function WorkflowHierarchy() {
-  return <IxPane composition="right" variant="floating"></IxPane>;
+  const treeModel = useBuildWorkflowHierarchy();
+  const [context, setContext] = useState<TreeContext>({});
+
+  return (
+    <IxPane composition="right" variant="floating">
+      <IxTree
+        root="root"
+        model={treeModel}
+        context={context}
+        onContextChange={({ detail }) => {
+          setContext(detail);
+        }}
+      ></IxTree>
+    </IxPane>
+  );
 }
