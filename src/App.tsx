@@ -16,7 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxApplication, IxContent } from '@siemens/ix-react';
+import {
+  IxApplication,
+  IxContent,
+  IxTabs,
+  IxTabItem,
+  IxIconButton,
+  IxIcon,
+} from '@siemens/ix-react';
+import { iconAddCircleFilled } from '@siemens/ix-icons/icons';
 import { AppHeader } from './components/AppHeader';
 import { AppMenu } from './components/AppMenu';
 import { WorkflowCanvas } from './components/WorkflowCanvas';
@@ -32,6 +40,17 @@ export default function App() {
         <AppMenu />
 
         <IxContent style={{ padding: 0 }}>
+          <IxTabs>
+            <IxTabItem tabKey="tab-1" closable>
+              Tab 1
+            </IxTabItem>
+            <IxTabItem tabKey="tab-2" closable>
+              Tab 2
+            </IxTabItem>
+            <IxTabItem tabKey="tab-add">
+              <IxIcon name={iconAddCircleFilled}></IxIcon>
+            </IxTabItem>
+          </IxTabs>
           <div style={{ display: 'flex', width: '100%', height: '100%', overflow: 'hidden' }}>
             <WorkflowCanvas />
             <WorkflowHierarchy />
