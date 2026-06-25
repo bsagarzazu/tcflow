@@ -16,10 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxApplication, IxContent, IxTabs, IxTabItem, IxIcon } from '@siemens/ix-react';
+import { IxApplication, IxContent, IxTabs, IxTabItem, IxIcon, IxSpinner } from '@siemens/ix-react';
 import { iconAddCircleFilled } from '@siemens/ix-icons/icons';
 import { ReactFlowProvider } from '@xyflow/react';
 
+import { useAppStore } from './store/useAppStore';
 import { useWorkflowStore } from './store/useWorkflowStore';
 import { AppHeader } from './components/AppHeader';
 import { AppMenu } from './components/AppMenu';
@@ -27,6 +28,7 @@ import { WorkflowCanvas } from './components/WorkflowCanvas';
 import { WorkflowHierarchy } from './components/WorkflowHierarchy';
 
 export default function App() {
+  const hasHydrated = useWorkflowStore.persist.hasHydrated() && useAppStore.persist.hasHydrated();
   const workflows = useWorkflowStore((state) => state.workflows);
   const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
   const addWorkflow = useWorkflowStore((state) => state.addWorkflow);
@@ -34,6 +36,10 @@ export default function App() {
   const closeWorkflow = useWorkflowStore((state) => state.closeWorkflow);
 
   const workflowList = Object.entries(workflows);
+
+  if (!hasHydrated) {
+    return <IxSpinner></IxSpinner>;
+  }
 
   return (
     <IxApplication>
@@ -45,11 +51,7 @@ export default function App() {
         <IxContent style={{ padding: 0 }}>
           <IxTabs
             activeTabKey={activeWorkflowId}
-            onTabChange={(e) => {
-              if (e.detail && e.detail !== 'tab-add') {
-                setActiveWorkflow(e.detail);
-              }
-            }}
+            onTabChange={(e) => e.detail && e.detail !== 'tab-add' && setActiveWorkflow(e.detail)}
           >
             {workflowList.map(([id, workflow]) => (
               <IxTabItem
