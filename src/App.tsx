@@ -55,13 +55,16 @@ export default function App() {
               <IxTabItem
                 key={id}
                 tabKey={id}
-                closable
+                closable={workflowList.length > 1}
                 onTabClose={(e) => e.detail.tabKey && closeWorkflow(e.detail.tabKey)}
               >
                 {workflow.name}
               </IxTabItem>
             ))}
-            <IxTabItem tabKey="tab-add" onTabClick={() => addWorkflow('New Workflow')}>
+            <IxTabItem
+              tabKey="tab-add"
+              onTabClick={() => addWorkflow(`New Workflow (${workflowList.length})`)}
+            >
               <IxIcon name={iconAddCircleFilled}></IxIcon>
             </IxTabItem>
           </IxTabs>
