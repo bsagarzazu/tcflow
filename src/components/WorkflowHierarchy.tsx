@@ -16,16 +16,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { type TreeContext } from '@siemens/ix';
-import { IxPane, IxTree, IxIcon } from '@siemens/ix-react';
+import { IxPane, IxTree, IxIcon, showModal } from '@siemens/ix-react';
+import { useReactFlow } from '@xyflow/react';
 
 import { useBuildWorkflowHierarchy } from '../hooks/useWorkflowHierarchy';
-import { type TreeData } from '../types';
+import { type TreeData, type TaskNodeType } from '../types';
+import { TaskProperties } from './TaskProperties';
 
 export function WorkflowHierarchy() {
-  const treeModel = useBuildWorkflowHierarchy();
+  const { getNode } = useReactFlow();
   const [context, setContext] = useState<TreeContext>({});
+  const treeModel = useBuildWorkflowHierarchy();
+
+  const onNodeClick = useCallback(
+    async (event: any) => {
+      const node = getNode(event.detail);
+      if (node) {
+        await showModal({
+          content: <TaskProperties node={node as TaskNodeType} />,
+        });
+      }
+    },
+    [getNode, showModal],
+  );
 
   return (
     <IxPane composition="right" variant="floating">
@@ -53,6 +68,7 @@ export function WorkflowHierarchy() {
             {data.name}
           </div>
         )}
+        onNodeClicked={onNodeClick}
       ></IxTree>
     </IxPane>
   );
