@@ -25,8 +25,13 @@ import {
   type ModalRef,
 } from '@siemens/ix-react';
 import { useRef } from 'react';
+import { type Node } from '@xyflow/react';
 
-export function TaskProperties() {
+type TaskPropertiesProps = {
+  node: Node;
+};
+
+export function TaskProperties({ node }: TaskPropertiesProps) {
   const modalRef = useRef<ModalRef>(null);
 
   const close = () => {
@@ -40,12 +45,10 @@ export function TaskProperties() {
   return (
     <Modal ref={modalRef}>
       <IxModalHeader onCloseClick={() => dismiss()}>Task Properties</IxModalHeader>
-      <IxModalContent>Content</IxModalContent>
+      <IxModalContent>{node.id}</IxModalContent>
       <IxModalFooter>
         <IxButton onClick={() => dismiss()}>Cancel</IxButton>
-        <IxButton autoFocus onClick={() => close()}>
-          Save
-        </IxButton>
+        <IxButton onClick={() => close()}>Save</IxButton>
       </IxModalFooter>
     </Modal>
   );

@@ -27,12 +27,14 @@ import {
   MarkerType,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { showModal } from '@siemens/ix-react';
 
 import { useAppStore } from '../store/useAppStore';
 import { useWorkflowStore } from '../store/useWorkflowStore';
 import { generateId } from '../core/utils';
 import { TaskNode } from './TaskNode';
 import { ContextMenu } from './ContextMenu';
+import { TaskProperties } from './TaskProperties';
 
 const nodeTypes = {
   task: TaskNode,
@@ -133,6 +135,16 @@ export function WorkflowCanvas() {
 
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
+  const onNodeDoubleClick = useCallback(
+    async (event: React.MouseEvent, node: Node) => {
+      event.preventDefault();
+      await showModal({
+        content: <TaskProperties node={node} />,
+      });
+    },
+    [showModal],
+  );
+
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <ReactFlow
@@ -150,6 +162,7 @@ export function WorkflowCanvas() {
         onEdgeContextMenu={onEdgeContextMenu}
         onPaneContextMenu={onPaneContextMenu}
         onPaneClick={onPaneClick}
+        onNodeDoubleClick={onNodeDoubleClick}
         defaultEdgeOptions={{ markerEnd: { type: MarkerType.ArrowClosed } }}
         fitView
         minZoom={0.8}
