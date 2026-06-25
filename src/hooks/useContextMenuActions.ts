@@ -26,8 +26,8 @@ import { serializeNode } from '../core/serializer';
 export function useContextMenuActions(id: string) {
   const { getNode, screenToFlowPosition } = useReactFlow();
 
-  const nodes = useWorkflowStore((state) => state.nodes);
-  const edges = useWorkflowStore((state) => state.edges);
+  const nodes = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].nodes);
+  const edges = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].edges);
   const setNodes = useWorkflowStore((state) => state.setNodes);
   const setEdges = useWorkflowStore((state) => state.setEdges);
 

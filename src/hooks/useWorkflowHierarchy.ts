@@ -24,8 +24,8 @@ import { TASK_ICON_MAP } from '../constants';
 import { type TreeData } from '../types';
 
 export function useBuildWorkflowHierarchy() {
-  const nodes = useWorkflowStore((state) => state.nodes);
-  const edges = useWorkflowStore((state) => state.edges);
+  const nodes = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].nodes);
+  const edges = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].edges);
 
   const workflowHierarchy = useMemo(() => {
     const model: TreeModel<TreeData> = {

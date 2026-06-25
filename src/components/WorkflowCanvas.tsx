@@ -51,9 +51,9 @@ interface MenuState {
 export function WorkflowCanvas() {
   const theme = useAppStore((state) => state.theme);
 
-  const nodes = useWorkflowStore((state) => state.nodes);
-  const edges = useWorkflowStore((state) => state.edges);
-  const viewport = useWorkflowStore((state) => state.viewport);
+  const nodes = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].nodes);
+  const edges = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].edges);
+  const viewport = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].viewport);
   const onNodesChange = useWorkflowStore((state) => state.onNodesChange);
   const onEdgesChange = useWorkflowStore((state) => state.onEdgesChange);
   const onViewportChange = useWorkflowStore((state) => state.onViewportChange);
