@@ -30,11 +30,11 @@ import {
   iconFlagFilled,
 } from '@siemens/ix-icons/icons';
 import { IxActionCard } from '@siemens/ix-react';
-import { Handle, Position, type Node, type NodeProps } from '@xyflow/react';
+import { Handle, Position, type NodeProps } from '@xyflow/react';
 
-type TaskNode = Node<{ type: string; name: string }, 'task'>;
+import { type TaskNodeType } from '../types';
 
-export function TaskNode({ data }: NodeProps<TaskNode>) {
+export function TaskNode({ data }: NodeProps<TaskNodeType>) {
   const iconMap: Record<string, string> = {
     Start: iconPlayFilled,
     End: iconStopFilled,

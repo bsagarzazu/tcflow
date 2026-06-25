@@ -39,6 +39,7 @@ interface WorkflowState {
   onConnect: (connection: Connection) => void;
   setNodes: (nodes: Node[]) => void;
   setEdges: (edges: Edge[]) => void;
+  updateNodeData: (id: string, newData: Partial<Node['data']>) => void;
 }
 
 const initialNodes: Node[] = [
@@ -91,5 +92,13 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
 
   setEdges: (edges: Edge[]) => {
     set({ edges });
+  },
+
+  updateNodeData: (id: string, newData: Partial<Node['data']>) => {
+    set({
+      nodes: get().nodes.map((node) =>
+        node.id === id ? { ...node, data: { ...node.data, ...newData } } : node,
+      ),
+    });
   },
 }));

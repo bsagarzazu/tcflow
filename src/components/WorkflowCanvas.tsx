@@ -29,6 +29,7 @@ import {
 import '@xyflow/react/dist/style.css';
 import { showModal } from '@siemens/ix-react';
 
+import { type TaskNodeType } from '../types';
 import { useAppStore } from '../store/useAppStore';
 import { useWorkflowStore } from '../store/useWorkflowStore';
 import { generateId } from '../core/utils';
@@ -139,7 +140,7 @@ export function WorkflowCanvas() {
     async (event: React.MouseEvent, node: Node) => {
       event.preventDefault();
       await showModal({
-        content: <TaskProperties node={node} />,
+        content: <TaskProperties node={node as TaskNodeType} />,
       });
     },
     [showModal],

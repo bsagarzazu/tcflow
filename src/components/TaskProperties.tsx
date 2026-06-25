@@ -18,6 +18,8 @@
 
 import {
   IxButton,
+  IxLayoutAuto,
+  IxInput,
   IxModalContent,
   IxModalFooter,
   IxModalHeader,
@@ -25,30 +27,54 @@ import {
   type ModalRef,
 } from '@siemens/ix-react';
 import { useRef } from 'react';
-import { type Node } from '@xyflow/react';
+import { useForm } from 'react-hook-form';
+
+import { type TaskNodeType } from '../types';
+import { useWorkflowStore } from '../store/useWorkflowStore';
 
 type TaskPropertiesProps = {
-  node: Node;
+  node: TaskNodeType;
 };
 
 export function TaskProperties({ node }: TaskPropertiesProps) {
   const modalRef = useRef<ModalRef>(null);
+  const updateNodeData = useWorkflowStore((state) => state.updateNodeData);
 
-  const close = () => {
-    modalRef.current?.close('close');
-  };
+  const { register, handleSubmit } = useForm<TaskNodeType['data']>({
+    mode: 'onTouched',
+    defaultValues: {
+      name: node.data.name,
+      type: node.data.type,
+    },
+  });
 
   const dismiss = () => {
     modalRef.current?.dismiss('dismiss');
   };
 
+  const onSubmit = (data: TaskNodeType['data']) => {
+    updateNodeData(node.id, data);
+    modalRef.current?.close(data);
+  };
+
   return (
     <Modal ref={modalRef}>
       <IxModalHeader onCloseClick={() => dismiss()}>Task Properties</IxModalHeader>
-      <IxModalContent>{node.id}</IxModalContent>
+      <IxModalContent>
+        <form id="task-properties-form" onSubmit={handleSubmit(onSubmit)}>
+          <IxLayoutAuto>
+            <IxInput label="Task Name" {...register('name', { required: true })}></IxInput>
+            <IxInput label="Task Type" {...register('type', { required: true })}></IxInput>
+          </IxLayoutAuto>
+        </form>
+      </IxModalContent>
       <IxModalFooter>
-        <IxButton onClick={() => dismiss()}>Cancel</IxButton>
-        <IxButton onClick={() => close()}>Save</IxButton>
+        <IxButton variant="secondary" onClick={() => dismiss()}>
+          Cancel
+        </IxButton>
+        <IxButton variant="primary" type="submit" form="task-properties-form">
+          Save
+        </IxButton>
       </IxModalFooter>
     </Modal>
   );
