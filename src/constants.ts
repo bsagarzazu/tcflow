@@ -16,4 +16,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import {
+  iconPlayFilled,
+  iconStopFilled,
+  iconArrowDownRight,
+  iconRhombFilled,
+  iconFlare,
+  iconConnections,
+  iconEye,
+  iconUserManagementFilled,
+  iconCheck,
+  iconTasksAll,
+  iconFlagFilled,
+} from '@siemens/ix-icons/icons';
+
 export const APP_VERSION = '0.2.0';
+
+export const TASK_ICON_MAP: Record<string, string> = {
+  Start: iconPlayFilled,
+  End: iconStopFilled,
+  Acknowledge: iconArrowDownRight,
+  Condition: iconRhombFilled,
+  Do: iconFlare,
+  Or: iconConnections,
+  Review: iconEye,
+  Route: iconUserManagementFilled,
+  Task: iconTasksAll,
+  Validate: iconCheck,
+  AddStatus: iconFlagFilled,
+};

@@ -16,31 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {
-  iconArrowDownRight,
-  iconRhombFilled,
-  iconFlare,
-  iconConnections,
-  iconEye,
-  iconUserManagementFilled,
-  iconCheck,
-  iconTasksAll,
-  iconFlagFilled,
-} from '@siemens/ix-icons/icons';
 import { IxIconButton } from '@siemens/ix-react';
 import { type DragEvent } from 'react';
 
-const toolbar_buttons = [
-  { icon: iconArrowDownRight, nodeType: 'Acknowledge' },
-  { icon: iconRhombFilled, nodeType: 'Condition' },
-  { icon: iconFlare, nodeType: 'Do' },
-  { icon: iconConnections, nodeType: 'Or' },
-  { icon: iconEye, nodeType: 'Review' },
-  { icon: iconUserManagementFilled, nodeType: 'Route' },
-  { icon: iconCheck, nodeType: 'Validate' },
-  { icon: iconTasksAll, nodeType: 'Task' },
-  { icon: iconFlagFilled, nodeType: 'AddStatus' },
-];
+import { TASK_ICON_MAP } from '../constants';
 
 export function WorkflowToolbar() {
   const onDragStart = (event: DragEvent, taskType: string) => {
@@ -50,15 +29,19 @@ export function WorkflowToolbar() {
     }
   };
 
+  const toolbarButtons = Object.keys(TASK_ICON_MAP).filter(
+    (type) => type !== 'Start' && type !== 'End',
+  );
+
   return (
     <div slot="secondary">
-      {toolbar_buttons.map((button, index) => (
+      {toolbarButtons.map((type) => (
         <IxIconButton
-          key={index}
+          key={type}
           draggable
-          onDragStart={(event) => onDragStart(event, button.nodeType)}
+          onDragStart={(event) => onDragStart(event, type)}
           variant="subtle-tertiary"
-          icon={button.icon}
+          icon={TASK_ICON_MAP[type]}
         ></IxIconButton>
       ))}
     </div>

@@ -16,45 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {
-  iconPlayFilled,
-  iconStopFilled,
-  iconArrowDownRight,
-  iconRhombFilled,
-  iconFlare,
-  iconConnections,
-  iconEye,
-  iconUserManagementFilled,
-  iconCheck,
-  iconTasksAll,
-  iconFlagFilled,
-} from '@siemens/ix-icons/icons';
 import { IxActionCard } from '@siemens/ix-react';
 import { Handle, Position, type NodeProps } from '@xyflow/react';
 
 import { type TaskNodeType } from '../types';
+import { TASK_ICON_MAP } from '../constants';
 
 export function TaskNode({ data }: NodeProps<TaskNodeType>) {
-  const iconMap: Record<string, string> = {
-    Start: iconPlayFilled,
-    End: iconStopFilled,
-    Acknowledge: iconArrowDownRight,
-    Condition: iconRhombFilled,
-    Do: iconFlare,
-    Or: iconConnections,
-    Review: iconEye,
-    Route: iconUserManagementFilled,
-    Task: iconTasksAll,
-    Validate: iconCheck,
-    AddStatus: iconFlagFilled,
-  };
-
   const isStart = data.type === 'Start';
   const isFinish = data.type === 'End';
 
   return (
     <IxActionCard
-      icon={iconMap[data.type]}
+      icon={TASK_ICON_MAP[data.type]}
       heading={data.name}
       variant="filled"
       style={{ width: '200px' }}
