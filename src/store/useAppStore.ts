@@ -17,6 +17,7 @@
  */
 
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { themeSwitcher } from '@siemens/ix';
 
 interface AppState {
@@ -24,12 +25,19 @@ interface AppState {
   toggleTheme: () => void;
 }
 
-export const useAppStore = create<AppState>((set) => ({
-  theme: 'dark',
-  toggleTheme: () => {
-    themeSwitcher.toggleMode();
-    set((state) => ({
-      theme: state.theme === 'light' ? 'dark' : 'light',
-    }));
-  },
-}));
+export const useAppStore = create<AppState>()(
+  persist(
+    (set) => ({
+      theme: 'dark',
+      toggleTheme: () => {
+        themeSwitcher.toggleMode();
+        set((state) => ({
+          theme: state.theme === 'light' ? 'dark' : 'light',
+        }));
+      },
+    }),
+    {
+      name: 'tcflow-app-config',
+    },
+  ),
+);
