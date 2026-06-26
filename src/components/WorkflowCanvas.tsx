@@ -37,6 +37,7 @@ import { TaskNode } from './TaskNode';
 import { ContextMenu } from './ContextMenu';
 import { TaskProperties } from './TaskProperties';
 import { WorkflowUndoRedo } from './WorkflowUndoRedo';
+import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 
 const nodeTypes = {
   task: TaskNode,
@@ -63,6 +64,8 @@ export function WorkflowCanvas() {
 
   const { screenToFlowPosition } = useReactFlow();
   const [menu, setMenu] = useState<MenuState | null>(null);
+
+  useKeyboardShortcuts();
 
   const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();
