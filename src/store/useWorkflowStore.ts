@@ -263,9 +263,21 @@ export const useWorkflowStore = create<WorkflowState>()(
       }),
       {
         partialize: (state) => ({
-          workflows: state.workflows,
           activeWorkflowId: state.activeWorkflowId,
+          workflows: Object.fromEntries(
+            Object.entries(state.workflows).map(([id, workflow]) => [
+              id,
+              { name: workflow.name, nodes: workflow.nodes, edges: workflow.edges },
+            ]),
+          ),
         }),
+        handleSet: (handleSet) => {
+          let timeout: ReturnType<typeof setTimeout>;
+          return (state) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => handleSet(state), 300);
+          };
+        },
         limit: 50,
       },
     ),
