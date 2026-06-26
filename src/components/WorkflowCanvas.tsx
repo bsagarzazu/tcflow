@@ -36,6 +36,7 @@ import { generateId } from '../core/utils';
 import { TaskNode } from './TaskNode';
 import { ContextMenu } from './ContextMenu';
 import { TaskProperties } from './TaskProperties';
+import { WorkflowUndoRedo } from './WorkflowUndoRedo';
 
 const nodeTypes = {
   task: TaskNode,
@@ -147,7 +148,7 @@ export function WorkflowCanvas() {
   );
 
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div style={{ width: '100%', height: '100%' }}>
       <ReactFlow
         nodeTypes={nodeTypes}
         nodes={nodes}
@@ -172,6 +173,7 @@ export function WorkflowCanvas() {
       >
         <Background />
         <Controls position="top-left" />
+        <WorkflowUndoRedo position="bottom-left" />
         {menu && <ContextMenu onClick={onPaneClick} {...menu} />}
       </ReactFlow>
     </div>
