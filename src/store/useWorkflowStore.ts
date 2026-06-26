@@ -18,6 +18,7 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { temporal } from 'zundo';
 import {
   type Node,
   type NodeChange,
@@ -78,184 +79,202 @@ const initialId = generateId();
 
 export const useWorkflowStore = create<WorkflowState>()(
   persist(
-    (set) => ({
-      workflows: {
-        [initialId]: {
-          name: 'New Workflow',
-          nodes: getInitialNodes(),
-          edges: [],
-          viewport: { x: 0, y: 0, zoom: 1 },
+    temporal(
+      (set) => ({
+        workflows: {
+          [initialId]: {
+            name: 'New Workflow',
+            nodes: getInitialNodes(),
+            edges: [],
+            viewport: { x: 0, y: 0, zoom: 1 },
+          },
         },
-      },
-      activeWorkflowId: initialId,
+        activeWorkflowId: initialId,
 
-      addWorkflow: (name: string) => {
-        const id = generateId();
-        set((state) => ({
-          workflows: {
-            ...state.workflows,
-            [id]: { name, nodes: getInitialNodes(), edges: [], viewport: { x: 0, y: 0, zoom: 1 } },
-          },
-          activeWorkflowId: id,
-        }));
-      },
-
-      renameWorkflow: (id: string, newName: string) => {
-        set((state) => ({
-          workflows: {
-            ...state.workflows,
-            [id]: {
-              ...state.workflows[id],
-              name: newName,
-            },
-          },
-        }));
-      },
-
-      setActiveWorkflow: (id: string) => {
-        set({ activeWorkflowId: id });
-      },
-
-      closeWorkflow: (id: string) => {
-        set((state) => {
-          const { [id]: _, ...remainingWorkflows } = state.workflows;
-          const keys = Object.keys(remainingWorkflows);
-
-          let nextActiveId = state.activeWorkflowId;
-          if (id === state.activeWorkflowId) {
-            nextActiveId = keys[0] || '';
-          }
-
-          return {
-            workflows: remainingWorkflows,
-            activeWorkflowId: nextActiveId,
-          };
-        });
-      },
-
-      onNodesChange: (changes: NodeChange[]) => {
-        set((state) => {
-          const activeId = state.activeWorkflowId;
-          const activeWorkflow = state.workflows[activeId];
-
-          return {
+        addWorkflow: (name: string) => {
+          const id = generateId();
+          set((state) => ({
             workflows: {
               ...state.workflows,
-              [activeId]: {
-                ...activeWorkflow,
-                nodes: applyNodeChanges(changes, activeWorkflow.nodes),
+              [id]: {
+                name,
+                nodes: getInitialNodes(),
+                edges: [],
+                viewport: { x: 0, y: 0, zoom: 1 },
               },
             },
-          };
-        });
-      },
+            activeWorkflowId: id,
+          }));
+        },
 
-      onEdgesChange: (changes: EdgeChange[]) => {
-        set((state) => {
-          const activeId = state.activeWorkflowId;
-          const activeWorkflow = state.workflows[activeId];
-
-          return {
+        renameWorkflow: (id: string, newName: string) => {
+          set((state) => ({
             workflows: {
               ...state.workflows,
-              [activeId]: {
-                ...activeWorkflow,
-                edges: applyEdgeChanges(changes, activeWorkflow.edges),
+              [id]: {
+                ...state.workflows[id],
+                name: newName,
               },
             },
-          };
-        });
-      },
+          }));
+        },
 
-      onViewportChange: (viewport: Viewport) => {
-        set((state) => {
-          const activeId = state.activeWorkflowId;
-          const activeWorkflow = state.workflows[activeId];
+        setActiveWorkflow: (id: string) => {
+          set({ activeWorkflowId: id });
+        },
 
-          return {
-            workflows: {
-              ...state.workflows,
-              [activeId]: {
-                ...activeWorkflow,
-                viewport,
+        closeWorkflow: (id: string) => {
+          set((state) => {
+            const { [id]: _, ...remainingWorkflows } = state.workflows;
+            const keys = Object.keys(remainingWorkflows);
+
+            let nextActiveId = state.activeWorkflowId;
+            if (id === state.activeWorkflowId) {
+              nextActiveId = keys[0] || '';
+            }
+
+            return {
+              workflows: remainingWorkflows,
+              activeWorkflowId: nextActiveId,
+            };
+          });
+        },
+
+        onNodesChange: (changes: NodeChange[]) => {
+          set((state) => {
+            const activeId = state.activeWorkflowId;
+            const activeWorkflow = state.workflows[activeId];
+
+            return {
+              workflows: {
+                ...state.workflows,
+                [activeId]: {
+                  ...activeWorkflow,
+                  nodes: applyNodeChanges(changes, activeWorkflow.nodes),
+                },
               },
-            },
-          };
-        });
-      },
+            };
+          });
+        },
 
-      onConnect: (connection: Connection) => {
-        set((state) => {
-          const activeId = state.activeWorkflowId;
-          const activeWorkflow = state.workflows[activeId];
+        onEdgesChange: (changes: EdgeChange[]) => {
+          set((state) => {
+            const activeId = state.activeWorkflowId;
+            const activeWorkflow = state.workflows[activeId];
 
-          return {
-            workflows: {
-              ...state.workflows,
-              [activeId]: {
-                ...activeWorkflow,
-                edges: addEdge(connection, activeWorkflow.edges),
+            return {
+              workflows: {
+                ...state.workflows,
+                [activeId]: {
+                  ...activeWorkflow,
+                  edges: applyEdgeChanges(changes, activeWorkflow.edges),
+                },
               },
-            },
-          };
-        });
-      },
+            };
+          });
+        },
 
-      setNodes: (nodes: Node[]) => {
-        set((state) => {
-          const activeId = state.activeWorkflowId;
-          const activeWorkflow = state.workflows[activeId];
+        onViewportChange: (viewport: Viewport) => {
+          set((state) => {
+            const activeId = state.activeWorkflowId;
+            const activeWorkflow = state.workflows[activeId];
 
-          return {
-            workflows: {
-              ...state.workflows,
-              [activeId]: {
-                ...activeWorkflow,
-                nodes,
+            return {
+              workflows: {
+                ...state.workflows,
+                [activeId]: {
+                  ...activeWorkflow,
+                  viewport,
+                },
               },
-            },
-          };
-        });
-      },
+            };
+          });
+        },
 
-      setEdges: (edges: Edge[]) => {
-        set((state) => {
-          const activeId = state.activeWorkflowId;
-          const activeWorkflow = state.workflows[activeId];
+        onConnect: (connection: Connection) => {
+          set((state) => {
+            const activeId = state.activeWorkflowId;
+            const activeWorkflow = state.workflows[activeId];
 
-          return {
-            workflows: {
-              ...state.workflows,
-              [activeId]: {
-                ...activeWorkflow,
-                edges,
+            return {
+              workflows: {
+                ...state.workflows,
+                [activeId]: {
+                  ...activeWorkflow,
+                  edges: addEdge(connection, activeWorkflow.edges),
+                },
               },
-            },
-          };
-        });
-      },
+            };
+          });
+        },
 
-      updateNodeData: (id: string, newData: Partial<Node['data']>) => {
-        set((state) => {
-          const activeId = state.activeWorkflowId;
-          const activeWorkflow = state.workflows[activeId];
+        setNodes: (nodes: Node[]) => {
+          set((state) => {
+            const activeId = state.activeWorkflowId;
+            const activeWorkflow = state.workflows[activeId];
 
-          return {
-            workflows: {
-              ...state.workflows,
-              [activeId]: {
-                ...activeWorkflow,
-                nodes: activeWorkflow.nodes.map((node) =>
-                  node.id === id ? { ...node, data: { ...node.data, ...newData } } : node,
-                ),
+            return {
+              workflows: {
+                ...state.workflows,
+                [activeId]: {
+                  ...activeWorkflow,
+                  nodes,
+                },
               },
-            },
-          };
-        });
+            };
+          });
+        },
+
+        setEdges: (edges: Edge[]) => {
+          set((state) => {
+            const activeId = state.activeWorkflowId;
+            const activeWorkflow = state.workflows[activeId];
+
+            return {
+              workflows: {
+                ...state.workflows,
+                [activeId]: {
+                  ...activeWorkflow,
+                  edges,
+                },
+              },
+            };
+          });
+        },
+
+        updateNodeData: (id: string, newData: Partial<Node['data']>) => {
+          set((state) => {
+            const activeId = state.activeWorkflowId;
+            const activeWorkflow = state.workflows[activeId];
+
+            return {
+              workflows: {
+                ...state.workflows,
+                [activeId]: {
+                  ...activeWorkflow,
+                  nodes: activeWorkflow.nodes.map((node) =>
+                    node.id === id ? { ...node, data: { ...node.data, ...newData } } : node,
+                  ),
+                },
+              },
+            };
+          });
+        },
+      }),
+      {
+        partialize: (state) => ({
+          workflows: state.workflows,
+          activeWorkflowId: state.activeWorkflowId,
+        }),
+        limit: 50,
       },
-    }),
+    ),
     {
       name: 'tcflow-workflow-data',
+      partialize: (state) => ({
+        workflows: state.workflows,
+        activeWorkflowId: state.activeWorkflowId,
+      }),
     },
   ),
 );
