@@ -267,7 +267,11 @@ export const useWorkflowStore = create<WorkflowState>()(
           workflows: Object.fromEntries(
             Object.entries(state.workflows).map(([id, workflow]) => [
               id,
-              { name: workflow.name, nodes: workflow.nodes, edges: workflow.edges },
+              {
+                name: workflow.name,
+                nodes: workflow.nodes.map(({ selected, dragging, measured, ...rest }) => rest),
+                edges: workflow.edges.map(({ selected, ...rest }) => rest),
+              },
             ]),
           ),
         }),
@@ -275,10 +279,10 @@ export const useWorkflowStore = create<WorkflowState>()(
           let timeout: ReturnType<typeof setTimeout>;
           return (state) => {
             clearTimeout(timeout);
-            timeout = setTimeout(() => handleSet(state), 300);
+            timeout = setTimeout(() => handleSet(state), 500);
           };
         },
-        limit: 50,
+        limit: 100,
       },
     ),
     {
