@@ -42,11 +42,21 @@ export default function App() {
         <AppMenu />
 
         <IxContent style={{ padding: 0 }}>
-          <AppTabs />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '100%',
+              height: '100%',
+              overflow: 'hidden',
+            }}
+          >
+            <AppTabs />
 
-          <div style={{ display: 'flex', width: '100%', height: '100%', overflow: 'hidden' }}>
-            <WorkflowCanvas />
-            <WorkflowHierarchy />
+            <div style={{ display: 'flex', width: '100%', flex: '1', overflow: 'hidden' }}>
+              <WorkflowCanvas />
+              <WorkflowHierarchy />
+            </div>
           </div>
         </IxContent>
       </ReactFlowProvider>
