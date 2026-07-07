@@ -40,5 +40,7 @@ export function useWorkflowImport() {
     reader.readAsText(file);
   };
 
-  return { importFromJson };
+  const importFromPlmxml = (file: File) => {};
+
+  return { importFromJson, importFromPlmxml };
 }

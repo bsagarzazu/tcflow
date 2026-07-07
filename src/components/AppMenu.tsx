@@ -32,26 +32,21 @@ import { useWorkflowImport } from '../hooks/useWorkflowImport';
 
 export function AppMenu() {
   const toggleTheme = useAppStore((state) => state.toggleTheme);
-  const { exportAsImage, exportAsJson } = useWorkflowExport();
-  const { importFromJson } = useWorkflowImport();
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { exportAsImage, exportAsJson, exportAsPlmxml } = useWorkflowExport();
+  const { importFromJson, importFromPlmxml } = useWorkflowImport();
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      importFromJson(file);
-    }
-
-    event.target.value = '';
-  };
+  const jsonInputRef = useRef<HTMLInputElement>(null);
+  const plmxmlInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <IxMenu>
       <IxMenuCategory icon={iconFolderOpenFilled} label="Open workflow">
-        <IxMenuItem onClick={() => fileInputRef.current?.click()}>JSON</IxMenuItem>
+        <IxMenuItem onClick={() => jsonInputRef.current?.click()}>JSON</IxMenuItem>
+        <IxMenuItem onClick={() => plmxmlInputRef.current?.click()}>PLMXML</IxMenuItem>
       </IxMenuCategory>
       <IxMenuCategory icon={iconDownload} label="Save workflow">
         <IxMenuItem onClick={exportAsJson}>JSON</IxMenuItem>
+        <IxMenuItem onClick={exportAsPlmxml}>PLMXML</IxMenuItem>
       </IxMenuCategory>
       <IxMenuCategory icon={iconImageFilled} label="Export image">
         <IxMenuItem onClick={() => exportAsImage('png')}>PNG</IxMenuItem>
@@ -69,10 +64,25 @@ export function AppMenu() {
       </IxMenuItem>
       <input
         type="file"
-        ref={fileInputRef}
+        ref={jsonInputRef}
         style={{ display: 'none' }}
         accept=".json,.tcflow"
-        onChange={handleFileChange}
+        onChange={(event) => {
+          const file = event.target.files?.[0];
+          if (file) importFromJson(file);
+          event.target.value = '';
+        }}
+      />
+      <input
+        type="file"
+        ref={plmxmlInputRef}
+        style={{ display: 'none' }}
+        accept=".xml,.plmxml"
+        onChange={(event) => {
+          const file = event.target.files?.[0];
+          if (file) importFromPlmxml(file);
+          event.target.value = '';
+        }}
       />
     </IxMenu>
   );

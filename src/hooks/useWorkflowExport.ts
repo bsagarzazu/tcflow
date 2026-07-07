@@ -70,5 +70,7 @@ export function useWorkflowExport() {
     URL.revokeObjectURL(url);
   };
 
-  return { exportAsImage, exportAsJson };
+  const exportAsPlmxml = () => {};
+
+  return { exportAsImage, exportAsJson, exportAsPlmxml };
 }
