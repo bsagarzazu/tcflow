@@ -21,7 +21,7 @@ import { useCallback } from 'react';
 
 import { useWorkflowStore } from '../store/useWorkflowStore';
 import { generateId } from '../core/utils';
-import { serializeNode } from '../core/serializer';
+import { serializeNode } from '../core/json-serializer';
 
 export function useContextMenuActions(id: string) {
   const { getNode, screenToFlowPosition } = useReactFlow();

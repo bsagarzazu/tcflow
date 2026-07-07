@@ -18,7 +18,7 @@
 
 import { useReactFlow } from '@xyflow/react';
 
-import { deserialize } from '../core/serializer';
+import { deserialize } from '../core/json-serializer';
 
 export function useWorkflowImport() {
   const { setNodes, setEdges, setViewport } = useReactFlow();

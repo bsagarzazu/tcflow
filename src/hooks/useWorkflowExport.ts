@@ -19,7 +19,7 @@
 import { useReactFlow, getNodesBounds, getViewportForBounds } from '@xyflow/react';
 import { toPng, toSvg } from 'html-to-image';
 
-import { serialize } from '../core/serializer';
+import { serialize } from '../core/json-serializer';
 
 const imageWidth = 1024;
 const imageHeight = 768;
