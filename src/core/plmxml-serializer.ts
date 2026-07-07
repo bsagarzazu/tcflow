@@ -20,7 +20,7 @@ import { create } from 'xmlbuilder2';
 import { type ReactFlowJsonObject } from '@xyflow/react';
 
 import { formatTCLocation } from './utils';
-import { APP_VERSION, OBJECT_TYPE_MAP } from '../constants';
+import { APP_VERSION, APP_AUTHOR, OBJECT_TYPE_MAP } from '../constants';
 
 export const serialize = (data: ReactFlowJsonObject): string => {
   const idMap = new Map<string, string>();
@@ -34,7 +34,7 @@ export const serialize = (data: ReactFlowJsonObject): string => {
     language: 'en-us',
     time: now.toISOString().split('T')[1].slice(0, 8),
     schemaVersion: '6',
-    author: `TCFlow v${APP_VERSION} by Beñat Sagarzazu`,
+    author: `TCFlow v${APP_VERSION} - ${APP_AUTHOR}`,
     date: now.toISOString().split('T')[0],
   });
 

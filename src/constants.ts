@@ -30,7 +30,9 @@ import {
   iconFlagFilled,
 } from '@siemens/ix-icons/icons';
 
-export const APP_VERSION = '0.2.0';
+export const APP_VERSION = '0.5.0';
+export const APP_AUTHOR = 'Beñat Sagarzazu';
+export const APP_SOURCE = 'https://bsagarzazu.github.io/tcflow';
 
 export const TASK_ICON_MAP: Record<string, string> = {
   Start: iconPlayFilled,
