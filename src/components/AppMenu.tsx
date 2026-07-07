@@ -32,7 +32,7 @@ import { useWorkflowImport } from '../hooks/useWorkflowImport';
 
 export function AppMenu() {
   const toggleTheme = useAppStore((state) => state.toggleTheme);
-  const { exportAsImage, exportAsJson, exportAsPlmxml } = useWorkflowExport();
+  const { exportAsImage, exportAsFile } = useWorkflowExport();
   const { importFromJson, importFromPlmxml } = useWorkflowImport();
 
   const jsonInputRef = useRef<HTMLInputElement>(null);
@@ -45,8 +45,8 @@ export function AppMenu() {
         <IxMenuItem onClick={() => plmxmlInputRef.current?.click()}>PLMXML</IxMenuItem>
       </IxMenuCategory>
       <IxMenuCategory icon={iconDownload} label="Save workflow">
-        <IxMenuItem onClick={exportAsJson}>JSON</IxMenuItem>
-        <IxMenuItem onClick={exportAsPlmxml}>PLMXML</IxMenuItem>
+        <IxMenuItem onClick={() => exportAsFile('tcflow')}>JSON</IxMenuItem>
+        <IxMenuItem onClick={() => exportAsFile('plmxml')}>PLMXML</IxMenuItem>
       </IxMenuCategory>
       <IxMenuCategory icon={iconImageFilled} label="Export image">
         <IxMenuItem onClick={() => exportAsImage('png')}>PNG</IxMenuItem>

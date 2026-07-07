@@ -19,7 +19,9 @@
 import { useReactFlow, getNodesBounds, getViewportForBounds } from '@xyflow/react';
 import { toPng, toSvg } from 'html-to-image';
 
-import { serialize } from '../core/json-serializer';
+import { useWorkflowStore } from '../store/useWorkflowStore';
+import { serialize as workflowToJson } from '../core/json-serializer';
+import { serialize as workflowToPlmxml } from '../core/plmxml-serializer';
 
 const imageWidth = 1024;
 const imageHeight = 768;
@@ -27,12 +29,20 @@ const imageHeight = 768;
 export function useWorkflowExport() {
   const { getNodes, toObject } = useReactFlow();
 
-  function triggerDownload(url: string, filename: string) {
+  const workflowName = useWorkflowStore((state) => state.workflows[state.activeWorkflowId]?.name);
+
+  const getFilename = (format: string) => {
+    const cleanName = workflowName.replace(/[^a-zA-Z0-9]/gi, '_').toLowerCase();
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    return `tcflow_${cleanName}_${timestamp}.${format}`;
+  };
+
+  const triggerDownload = (url: string, filename: string) => {
     const a = document.createElement('a');
     a.href = url;
     a.download = filename;
     a.click();
-  }
+  };
 
   const exportAsImage = (format: 'png' | 'svg') => {
     const element = document.querySelector('.react-flow__viewport') as HTMLElement;
@@ -53,24 +63,30 @@ export function useWorkflowExport() {
     };
 
     if (format === 'png') {
-      toPng(element, props).then((dataUrl) => triggerDownload(dataUrl, 'tcflow_export.png'));
+      toPng(element, props).then((dataUrl) => triggerDownload(dataUrl, getFilename('png')));
     } else {
-      toSvg(element, props).then((dataUrl) => triggerDownload(dataUrl, 'tcflow_export.svg'));
+      toSvg(element, props).then((dataUrl) => triggerDownload(dataUrl, getFilename('svg')));
     }
   };
 
-  const exportAsJson = () => {
+  const exportAsFile = (format: 'tcflow' | 'plmxml') => {
     const flowData = toObject();
 
-    const jsonString = serialize(flowData);
+    let string = '';
+    let type = '';
+    if (format === 'plmxml') {
+      string = workflowToPlmxml(flowData);
+      type = 'application/xml';
+    } else {
+      string = workflowToJson(flowData);
+      type = 'application/json';
+    }
 
-    const blob = new Blob([jsonString], { type: 'application/json' });
+    const blob = new Blob([string], { type: type });
     const url = URL.createObjectURL(blob);
-    triggerDownload(url, 'tcflow_export.json');
+    triggerDownload(url, getFilename(format));
     URL.revokeObjectURL(url);
   };
 
-  const exportAsPlmxml = () => {};
-
-  return { exportAsImage, exportAsJson, exportAsPlmxml };
+  return { exportAsImage, exportAsFile };
 }
