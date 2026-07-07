@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import {
   ReactFlow,
   useReactFlow,
@@ -53,6 +53,7 @@ interface MenuState {
 export function WorkflowCanvas() {
   const theme = useAppStore((state) => state.theme);
 
+  const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
   const nodes = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].nodes);
   const edges = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].edges);
   const viewport = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].viewport);
@@ -62,10 +63,18 @@ export function WorkflowCanvas() {
   const onConnect = useWorkflowStore((state) => state.onConnect);
   const setNodes = useWorkflowStore((state) => state.setNodes);
 
-  const { screenToFlowPosition } = useReactFlow();
+  const { screenToFlowPosition, fitView, setViewport } = useReactFlow();
   const [menu, setMenu] = useState<MenuState | null>(null);
 
   useKeyboardShortcuts();
+
+  useEffect(() => {
+    if (viewport && (viewport.x !== 0 || viewport.y !== 0)) {
+      setViewport(viewport, { duration: 500 });
+    } else {
+      fitView({ padding: 0.2, duration: 500 });
+    }
+  }, [activeWorkflowId, fitView, setViewport]);
 
   const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();
@@ -156,7 +165,6 @@ export function WorkflowCanvas() {
         nodeTypes={nodeTypes}
         nodes={nodes}
         edges={edges}
-        viewport={viewport}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onViewportChange={onViewportChange}
@@ -169,7 +177,6 @@ export function WorkflowCanvas() {
         onPaneClick={onPaneClick}
         onNodeDoubleClick={onNodeDoubleClick}
         defaultEdgeOptions={{ markerEnd: { type: MarkerType.ArrowClosed } }}
-        fitView
         minZoom={0.8}
         maxZoom={1.2}
         colorMode={theme}
