@@ -34,7 +34,7 @@ import { useAppStore } from '../store/useAppStore';
 import { useWorkflowStore } from '../store/useWorkflowStore';
 import { generateId } from '../core/utils';
 import { TaskNode } from './TaskNode';
-import { ContextMenu } from './ContextMenu';
+import { WorkflowContextMenu } from './WorkflowContextMenu';
 import { TaskProperties } from './TaskProperties';
 import { WorkflowUndoRedo } from './WorkflowUndoRedo';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
@@ -184,7 +184,7 @@ export function WorkflowCanvas() {
         <Background />
         <Controls position="top-left" />
         <WorkflowUndoRedo position="bottom-left" />
-        {menu && <ContextMenu onClick={onPaneClick} {...menu} />}
+        {menu && <WorkflowContextMenu onClick={onPaneClick} {...menu} />}
       </ReactFlow>
     </div>
   );

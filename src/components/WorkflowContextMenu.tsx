@@ -30,7 +30,7 @@ interface ContextMenuProps {
   onClick?: () => void;
 }
 
-export function ContextMenu({ id, type, top, left, onClick }: ContextMenuProps) {
+export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMenuProps) {
   const {
     cutTaskNode,
     copyTaskNode,
