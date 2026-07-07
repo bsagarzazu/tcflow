@@ -18,17 +18,24 @@
 
 import { useReactFlow } from '@xyflow/react';
 
-import { deserialize } from '../core/json-serializer';
+import { deserialize as jsonToWorkflow } from '../core/json-serializer';
+import { deserialize as plmxmlToWorkflow } from '../core/plmxml-serializer';
 
 export function useWorkflowImport() {
   const { setNodes, setEdges, setViewport } = useReactFlow();
 
-  const importFromJson = (file: File) => {
+  const importFromFile = (file: File, format: 'tcflow' | 'plmxml') => {
     const reader = new FileReader();
 
     reader.onload = (event) => {
       const content = event.target?.result as string;
-      const workflow = deserialize(content);
+
+      let workflow;
+      if (format === 'tcflow') {
+        workflow = jsonToWorkflow(content);
+      } else if (format === 'plmxml') {
+        workflow = plmxmlToWorkflow(content);
+      }
 
       if (workflow) {
         setNodes(workflow.nodes);
@@ -40,7 +47,5 @@ export function useWorkflowImport() {
     reader.readAsText(file);
   };
 
-  const importFromPlmxml = (file: File) => {};
-
-  return { importFromJson, importFromPlmxml };
+  return { importFromFile };
 }

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { XMLBuilder } from 'fast-xml-parser';
+import { XMLBuilder, XMLParser } from 'fast-xml-parser';
 import { type ReactFlowJsonObject } from '@xyflow/react';
 
 import { APP_VERSION, APP_AUTHOR, OBJECT_TYPE_MAP } from '../constants';
@@ -76,3 +76,5 @@ export const serialize = (data: ReactFlowJsonObject): string => {
 
   return builder.build(xmlObject);
 };
+
+export const deserialize = (content: string) => {};

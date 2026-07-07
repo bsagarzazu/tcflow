@@ -33,7 +33,7 @@ import { useWorkflowImport } from '../hooks/useWorkflowImport';
 export function AppMenu() {
   const toggleTheme = useAppStore((state) => state.toggleTheme);
   const { exportAsImage, exportAsFile } = useWorkflowExport();
-  const { importFromJson, importFromPlmxml } = useWorkflowImport();
+  const { importFromFile } = useWorkflowImport();
 
   const jsonInputRef = useRef<HTMLInputElement>(null);
   const plmxmlInputRef = useRef<HTMLInputElement>(null);
@@ -69,7 +69,7 @@ export function AppMenu() {
         accept=".json,.tcflow"
         onChange={(event) => {
           const file = event.target.files?.[0];
-          if (file) importFromJson(file);
+          if (file) importFromFile(file, 'tcflow');
           event.target.value = '';
         }}
       />
@@ -80,7 +80,7 @@ export function AppMenu() {
         accept=".xml,.plmxml"
         onChange={(event) => {
           const file = event.target.files?.[0];
-          if (file) importFromPlmxml(file);
+          if (file) importFromFile(file, 'plmxml');
           event.target.value = '';
         }}
       />
