@@ -45,3 +45,15 @@ export const TASK_ICON_MAP: Record<string, string> = {
   Validate: iconCheck,
   AddStatus: iconFlagFilled,
 };
+
+export const OBJECT_TYPE_MAP: Record<string, string> = {
+  Acknowledge: 'EPMAcknowledgeTaskTemplate',
+  Condition: 'EPMConditionTaskTemplate',
+  Do: 'EPMDoTaskTemplate',
+  Or: 'EPMOrTaskTemplate',
+  Review: 'EPMReviewTaskTemplate',
+  Route: 'EPMRouteTaskTemplate',
+  Task: 'EPMTaskTemplate',
+  Validate: 'EPMValidateTaskTemplate',
+  AddStatus: 'EPMAddStatusTaskTemplate',
+};
