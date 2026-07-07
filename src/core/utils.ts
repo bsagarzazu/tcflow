@@ -19,6 +19,7 @@
 export const generateId = () => `tcflow-${crypto.randomUUID()}`;
 
 export const decimalToHex = (decimal: number): string => Math.round(decimal).toString(16);
+export const hexToDecimal = (hex: string): number => parseInt(hex, 16);
 
 export const formatTCLocation = (x: number, y: number): string => {
   const hexX = decimalToHex(x);
