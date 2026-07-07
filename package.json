@@ -14,11 +14,11 @@
     "@siemens/ix-icons": "^3.4.0",
     "@siemens/ix-react": "^5.0.0",
     "@xyflow/react": "^12.11.0",
+    "fast-xml-parser": "^5.9.3",
     "html-to-image": "^1.11.13",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-hook-form": "^7.80.0",
-    "xmlbuilder2": "^4.0.3",
     "zundo": "^2.3.0",
     "zustand": "^5.0.14"
   },

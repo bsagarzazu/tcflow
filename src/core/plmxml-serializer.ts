@@ -16,11 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { create } from 'xmlbuilder2';
+import { XMLBuilder } from 'fast-xml-parser';
 import { type ReactFlowJsonObject } from '@xyflow/react';
 
-import { formatTCLocation } from './utils';
 import { APP_VERSION, APP_AUTHOR, OBJECT_TYPE_MAP } from '../constants';
+import { formatTCLocation } from './utils';
 
 export const serialize = (data: ReactFlowJsonObject): string => {
   const idMap = new Map<string, string>();
@@ -29,40 +29,50 @@ export const serialize = (data: ReactFlowJsonObject): string => {
   });
 
   const now = new Date();
-  const root = create({ version: '1.0', encoding: 'utf-8' }).ele('PLMXML', {
-    xmlns: 'http://www.plmxml.org/Schemas/PLMXMLSchema',
-    language: 'en-us',
-    time: now.toISOString().split('T')[1].slice(0, 8),
-    schemaVersion: '6',
-    author: `TCFlow v${APP_VERSION} - ${APP_AUTHOR}`,
-    date: now.toISOString().split('T')[0],
-  });
 
-  const idList = Array.from(idMap.values())
-    .map((id) => `#${id}`)
-    .join(' ');
-  root.ele('Header', {
-    id: 'id1',
-    traverseRootRefs: idList,
-    transferContext: 'workflow_template_mode',
-  });
-
-  data.nodes.forEach((node) => {
-    const xmlId = idMap.get(node.id);
-
-    const dependencies = data.edges
-      .filter((edge) => edge.target === node.id)
+  const getDependencies = (nodeId: string): string =>
+    data.edges
+      .filter((edge) => edge.target === nodeId)
       .map((edge) => `#${idMap.get(edge.source)}`)
       .join(' ');
 
-    root.ele('WorkflowTemplate', {
-      id: xmlId,
-      name: node.data.name,
-      objectType: OBJECT_TYPE_MAP[node.data.type as string] || 'EPMTaskTemplate',
-      location: formatTCLocation(node.position.x, node.position.y),
-      dependencyTaskTemplateRefs: dependencies || undefined,
-    });
+  const xmlObject = {
+    '?xml': {
+      '@_version': '1.0',
+      '@_encoding': 'utf-8',
+    },
+    PLMXML: {
+      '@_xmlns': 'http://www.plmxml.org/Schemas/PLMXMLSchema',
+      '@_language': 'en-us',
+      '@_time': now.toISOString().split('T')[1].slice(0, 8),
+      '@_schemaVersion': '6',
+      '@_author': `TCFlow v${APP_VERSION} - ${APP_AUTHOR}`,
+      '@_date': now.toISOString().split('T')[0],
+
+      Header: {
+        '@_id': 'id1',
+        '@_traverseRootRefs': Array.from(idMap.values())
+          .map((id) => `#${id}`)
+          .join(' '),
+        '@_transferContext': 'workflow_template_mode',
+      },
+
+      WorkflowTemplate: data.nodes.map((node) => ({
+        '@_id': idMap.get(node.id),
+        '@_name': node.data.name,
+        '@_objectType': OBJECT_TYPE_MAP[node.data.type as string] || 'EPMTaskTemplate',
+        '@_location': formatTCLocation(node.position.x, node.position.y),
+        '@_dependencyTaskTemplateRefs': getDependencies(node.id) || undefined,
+      })),
+    },
+  };
+
+  const builder = new XMLBuilder({
+    ignoreAttributes: false,
+    attributeNamePrefix: '@_',
+    format: true,
+    suppressEmptyNode: true,
   });
 
-  return root.end({ prettyPrint: true });
+  return builder.build(xmlObject);
 };
