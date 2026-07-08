@@ -34,28 +34,71 @@ export const APP_VERSION = '0.5.0';
 export const APP_AUTHOR = 'Beñat Sagarzazu';
 export const APP_SOURCE = 'https://bsagarzazu.github.io/tcflow';
 
-export const TASK_ICON_MAP: Record<string, string> = {
-  Start: iconPlayFilled,
-  End: iconStopFilled,
-  Acknowledge: iconArrowDownRight,
-  Condition: iconRhombFilled,
-  Do: iconFlare,
-  Or: iconConnections,
-  Review: iconEye,
-  Route: iconUserManagementFilled,
-  Task: iconTasksAll,
-  Validate: iconCheck,
-  AddStatus: iconFlagFilled,
-};
-
-export const OBJECT_TYPE_MAP: Record<string, string> = {
-  Acknowledge: 'EPMAcknowledgeTaskTemplate',
-  Condition: 'EPMConditionTaskTemplate',
-  Do: 'EPMDoTaskTemplate',
-  Or: 'EPMOrTaskTemplate',
-  Review: 'EPMReviewTaskTemplate',
-  Route: 'EPMRouteTaskTemplate',
-  Task: 'EPMTaskTemplate',
-  Validate: 'EPMValidateTaskTemplate',
-  AddStatus: 'EPMAddStatusTaskTemplate',
-};
+export const TC_TASK_REGISTRY = {
+  Start: {
+    ixIcon: iconPlayFilled,
+    tcIconKey: 'process',
+    objectType: 'EPMTaskTemplate',
+    label: 'Start',
+  },
+  End: {
+    ixIcon: iconStopFilled,
+    tcIconKey: 'process',
+    objectType: 'EPMTaskTemplate',
+    label: 'End',
+  },
+  Acknowledge: {
+    ixIcon: iconArrowDownRight,
+    tcIconKey: 'acknowledgeTask',
+    objectType: 'EPMAcknowledgeTaskTemplate',
+    label: 'Acknowledge',
+  },
+  Condition: {
+    ixIcon: iconRhombFilled,
+    tcIconKey: 'conditionTask',
+    objectType: 'EPMConditionTaskTemplate',
+    label: 'Condition',
+  },
+  Do: {
+    ixIcon: iconFlare,
+    tcIconKey: 'doTask',
+    objectType: 'EPMDoTaskTemplate',
+    label: 'Do',
+  },
+  Or: {
+    ixIcon: iconConnections,
+    tcIconKey: 'orTask',
+    objectType: 'EPMOrTaskTemplate',
+    label: 'Or',
+  },
+  Review: {
+    ixIcon: iconEye,
+    tcIconKey: 'reviewTask',
+    objectType: 'EPMReviewTaskTemplate',
+    label: 'Review',
+  },
+  Route: {
+    ixIcon: iconUserManagementFilled,
+    tcIconKey: 'routeTask',
+    objectType: 'EPMRouteTaskTemplate',
+    label: 'Route',
+  },
+  Task: {
+    ixIcon: iconTasksAll,
+    tcIconKey: 'task',
+    objectType: 'EPMTaskTemplate',
+    label: 'Task',
+  },
+  Validate: {
+    ixIcon: iconCheck,
+    tcIconKey: 'validateTask',
+    objectType: 'EPMValidateTaskTemplate',
+    label: 'Validate',
+  },
+  AddStatus: {
+    ixIcon: iconFlagFilled,
+    tcIconKey: 'addStatusTask',
+    objectType: 'EPMAddStatusTaskTemplate',
+    label: 'Add Status',
+  },
+} as const;

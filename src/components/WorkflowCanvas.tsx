@@ -103,7 +103,7 @@ export function WorkflowCanvas() {
         data: { type: taskType, name: taskName },
         deletable: true,
       };
-      setNodes(nodes.concat(newTask));
+      setNodes(nodes.concat(newTask as TaskNodeType));
     },
     [screenToFlowPosition, nodes, setNodes],
   );

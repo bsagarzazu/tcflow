@@ -20,7 +20,7 @@ import { type TreeModel } from '@siemens/ix';
 import { useMemo } from 'react';
 
 import { useWorkflowStore } from '../store/useWorkflowStore';
-import { TASK_ICON_MAP } from '../constants';
+import { TC_TASK_REGISTRY } from '../constants';
 import { type TreeData } from '../types';
 
 export function useBuildWorkflowHierarchy() {
@@ -47,7 +47,7 @@ export function useBuildWorkflowHierarchy() {
         data: {
           name: node.data.name as string,
           type: node.data.type as string,
-          icon: TASK_ICON_MAP[node.data.type as string],
+          icon: TC_TASK_REGISTRY[node.data.type as keyof typeof TC_TASK_REGISTRY].ixIcon,
         },
         hasChildren: false,
         children: [],

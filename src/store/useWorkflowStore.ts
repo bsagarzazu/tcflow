@@ -20,10 +20,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { temporal } from 'zundo';
 import {
-  type Node,
   type NodeChange,
   applyNodeChanges,
-  type Edge,
   type EdgeChange,
   applyEdgeChanges,
   addEdge,
@@ -32,11 +30,12 @@ import {
 } from '@xyflow/react';
 
 import { generateId } from '../core/utils';
+import { type TaskNodeType, type WorkflowEdgeType } from '../types';
 
 interface Workflow {
   name: string;
-  nodes: Node[];
-  edges: Edge[];
+  nodes: TaskNodeType[];
+  edges: WorkflowEdgeType[];
   viewport: Viewport;
 }
 
@@ -53,12 +52,12 @@ interface WorkflowState {
   onEdgesChange: (changes: EdgeChange[]) => void;
   onViewportChange: (viewport: Viewport) => void;
   onConnect: (connection: Connection) => void;
-  setNodes: (nodes: Node[]) => void;
-  setEdges: (edges: Edge[]) => void;
-  updateNodeData: (id: string, newData: Partial<Node['data']>) => void;
+  setNodes: (nodes: TaskNodeType[]) => void;
+  setEdges: (edges: WorkflowEdgeType[]) => void;
+  updateNodeData: (id: string, newData: Partial<TaskNodeType['data']>) => void;
 }
 
-const getInitialNodes = (): Node[] => [
+const getInitialNodes = (): TaskNodeType[] => [
   {
     id: 'start',
     type: 'task',
@@ -150,7 +149,7 @@ export const useWorkflowStore = create<WorkflowState>()(
                 ...state.workflows,
                 [activeId]: {
                   ...activeWorkflow,
-                  nodes: applyNodeChanges(changes, activeWorkflow.nodes),
+                  nodes: applyNodeChanges(changes, activeWorkflow.nodes) as TaskNodeType[],
                 },
               },
             };
@@ -167,7 +166,7 @@ export const useWorkflowStore = create<WorkflowState>()(
                 ...state.workflows,
                 [activeId]: {
                   ...activeWorkflow,
-                  edges: applyEdgeChanges(changes, activeWorkflow.edges),
+                  edges: applyEdgeChanges(changes, activeWorkflow.edges) as WorkflowEdgeType[],
                 },
               },
             };
@@ -196,19 +195,34 @@ export const useWorkflowStore = create<WorkflowState>()(
             const activeId = state.activeWorkflowId;
             const activeWorkflow = state.workflows[activeId];
 
+            const sourceNode = activeWorkflow.nodes.find((node) => node.id === connection.source);
+            const isCondition = sourceNode?.data.type === 'Condition';
+
+            const newEdge: WorkflowEdgeType = {
+              ...connection,
+              id: generateId(),
+              type: 'smoothstep',
+              data: {
+                type: isCondition ? 'conditional' : 'success',
+                condition: isCondition ? 'True' : undefined,
+              },
+              label: isCondition ? 'True' : undefined,
+              style: { strokeWidth: 2 },
+            };
+
             return {
               workflows: {
                 ...state.workflows,
                 [activeId]: {
                   ...activeWorkflow,
-                  edges: addEdge(connection, activeWorkflow.edges),
+                  edges: addEdge(newEdge, activeWorkflow.edges) as WorkflowEdgeType[],
                 },
               },
             };
           });
         },
 
-        setNodes: (nodes: Node[]) => {
+        setNodes: (nodes: TaskNodeType[]) => {
           set((state) => {
             const activeId = state.activeWorkflowId;
             const activeWorkflow = state.workflows[activeId];
@@ -225,7 +239,7 @@ export const useWorkflowStore = create<WorkflowState>()(
           });
         },
 
-        setEdges: (edges: Edge[]) => {
+        setEdges: (edges: WorkflowEdgeType[]) => {
           set((state) => {
             const activeId = state.activeWorkflowId;
             const activeWorkflow = state.workflows[activeId];
@@ -242,7 +256,7 @@ export const useWorkflowStore = create<WorkflowState>()(
           });
         },
 
-        updateNodeData: (id: string, newData: Partial<Node['data']>) => {
+        updateNodeData: (id: string, newData: Partial<TaskNodeType['data']>) => {
           set((state) => {
             const activeId = state.activeWorkflowId;
             const activeWorkflow = state.workflows[activeId];

@@ -19,7 +19,7 @@
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';
 import { type ReactFlowJsonObject } from '@xyflow/react';
 
-import { APP_VERSION, APP_AUTHOR, OBJECT_TYPE_MAP } from '../constants';
+import { APP_VERSION, APP_AUTHOR, TC_TASK_REGISTRY } from '../constants';
 import { formatTCLocation } from './utils';
 
 export const serialize = (data: ReactFlowJsonObject): string => {
@@ -60,7 +60,9 @@ export const serialize = (data: ReactFlowJsonObject): string => {
       WorkflowTemplate: data.nodes.map((node) => ({
         '@_id': idMap.get(node.id),
         '@_name': node.data.name,
-        '@_objectType': OBJECT_TYPE_MAP[node.data.type as string] || 'EPMTaskTemplate',
+        '@_objectType':
+          TC_TASK_REGISTRY[node.data.type as keyof typeof TC_TASK_REGISTRY].objectType ||
+          'EPMTaskTemplate',
         '@_location': formatTCLocation(node.position.x, node.position.y),
         '@_dependencyTaskTemplateRefs': getDependencies(node.id) || undefined,
       })),

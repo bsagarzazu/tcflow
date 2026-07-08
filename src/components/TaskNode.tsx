@@ -20,15 +20,17 @@ import { IxActionCard } from '@siemens/ix-react';
 import { Handle, Position, type NodeProps } from '@xyflow/react';
 
 import { type TaskNodeType } from '../types';
-import { TASK_ICON_MAP } from '../constants';
+import { TC_TASK_REGISTRY } from '../constants';
 
 export function TaskNode({ data }: NodeProps<TaskNodeType>) {
+  const config = TC_TASK_REGISTRY[data.type as keyof typeof TC_TASK_REGISTRY];
+
   const isStart = data.type === 'Start';
   const isFinish = data.type === 'End';
 
   return (
     <IxActionCard
-      icon={TASK_ICON_MAP[data.type]}
+      icon={config.ixIcon}
       heading={data.name}
       variant="filled"
       style={{ width: '200px' }}

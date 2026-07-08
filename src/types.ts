@@ -16,8 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { type Node } from '@xyflow/react';
+import { type Node, type Edge } from '@xyflow/react';
 
-export type TaskNodeType = Node<{ type: string; name: string }, 'task'>;
+type TaskNodeData = {
+  type: string;
+  name: string;
+};
+export type TaskNodeType = Node<TaskNodeData, 'task'>;
+
+type WorkflowEdgeData = {
+  type: 'success' | 'failure' | 'conditional';
+  condition?: boolean | string;
+};
+export type WorkflowEdgeType = Edge<WorkflowEdgeData>;
 
 export type TreeData = TaskNodeType['data'] & { icon: string };

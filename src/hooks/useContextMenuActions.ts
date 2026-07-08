@@ -22,6 +22,7 @@ import { useCallback } from 'react';
 import { useWorkflowStore } from '../store/useWorkflowStore';
 import { generateId } from '../core/utils';
 import { serializeNode } from '../core/json-serializer';
+import type { TaskNodeType } from '../types';
 
 export function useContextMenuActions(id: string) {
   const { getNode, screenToFlowPosition } = useReactFlow();
@@ -74,7 +75,7 @@ export function useContextMenuActions(id: string) {
       position,
     };
 
-    setNodes(nodes.concat(newNode));
+    setNodes(nodes.concat(newNode as TaskNodeType));
   }, [id, getNode, nodes, setNodes]);
 
   const deleteTaskNode = useCallback(() => {
