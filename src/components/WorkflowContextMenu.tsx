@@ -16,8 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxDropdown, IxDropdownItem } from '@siemens/ix-react';
-import { iconCopy, iconCut, iconPaste, iconDuplicate, iconTrashcan } from '@siemens/ix-icons/icons';
+import { IxDivider, IxDropdown, IxDropdownItem } from '@siemens/ix-react';
+import {
+  iconCopy,
+  iconCut,
+  iconPaste,
+  iconDuplicate,
+  iconTrashcan,
+  iconDataTypeBoolean,
+  iconSuccess,
+  iconNamurFailure,
+} from '@siemens/ix-icons/icons';
 import { useReactFlow } from '@xyflow/react';
 
 import { useContextMenuActions } from '../hooks/useContextMenuActions';
@@ -38,8 +47,13 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
     duplicateTaskNode,
     deleteTaskNode,
     deleteEdge,
+    updateEdgeType,
   } = useContextMenuActions(id);
-  const { getNode } = useReactFlow();
+
+  const { getNode, getEdge } = useReactFlow();
+
+  const node = type === 'node' ? getNode(id) : null;
+  const edge = type === 'edge' ? getEdge(id) : null;
 
   return (
     <div
@@ -51,9 +65,9 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
       }}
     >
       <IxDropdown show={true}>
-        {type === 'node' && (
+        {type === 'node' && node && (
           <>
-            {getNode(id)?.deletable !== false && (
+            {node.deletable !== false && (
               <>
                 <IxDropdownItem
                   icon={iconCut}
@@ -98,7 +112,7 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
               </>
             )}
 
-            {getNode(id)?.deletable === false && (
+            {node.deletable === false && (
               <>
                 <IxDropdownItem
                   icon={iconPaste}
@@ -113,8 +127,56 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
           </>
         )}
 
-        {type === 'edge' && (
+        {type === 'edge' && edge && (
           <>
+            {edge.data?.type === 'conditional' ? (
+              <>
+                {edge.data?.conditionValue === 'False' && (
+                  <IxDropdownItem
+                    icon={iconDataTypeBoolean}
+                    label="Set as True"
+                    onClick={() => {
+                      updateEdgeType('conditional', 'True');
+                      onClick?.();
+                    }}
+                  ></IxDropdownItem>
+                )}
+                {edge.data?.conditionValue === 'True' && (
+                  <IxDropdownItem
+                    icon={iconDataTypeBoolean}
+                    label="Set as False"
+                    onClick={() => {
+                      updateEdgeType('conditional', 'False');
+                      onClick?.();
+                    }}
+                  ></IxDropdownItem>
+                )}
+              </>
+            ) : (
+              <>
+                {edge.data?.type !== 'success' && (
+                  <IxDropdownItem
+                    icon={iconSuccess}
+                    label="Set as Success"
+                    onClick={() => {
+                      updateEdgeType('success', undefined);
+                      onClick?.();
+                    }}
+                  ></IxDropdownItem>
+                )}
+                {edge.data?.type !== 'failure' && (
+                  <IxDropdownItem
+                    icon={iconNamurFailure}
+                    label="Set as Failure"
+                    onClick={() => {
+                      updateEdgeType('failure', undefined);
+                      onClick?.();
+                    }}
+                  ></IxDropdownItem>
+                )}
+              </>
+            )}
+            <IxDivider></IxDivider>
             <IxDropdownItem
               icon={iconTrashcan}
               label="Delete Edge"

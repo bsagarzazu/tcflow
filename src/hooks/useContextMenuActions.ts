@@ -31,6 +31,7 @@ export function useContextMenuActions(id: string) {
   const edges = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].edges);
   const setNodes = useWorkflowStore((state) => state.setNodes);
   const setEdges = useWorkflowStore((state) => state.setEdges);
+  const updateEdge = useWorkflowStore((state) => state.updateEdge);
 
   const copyTaskNode = useCallback(() => {
     const node = getNode(id);
@@ -88,6 +89,13 @@ export function useContextMenuActions(id: string) {
     deleteTaskNode();
   }, [id, copyTaskNode, deleteTaskNode]);
 
+  const updateEdgeType = useCallback(
+    (status: 'success' | 'failure' | 'conditional', conditionValue?: 'True' | 'False') => {
+      updateEdge(id, status, conditionValue);
+    },
+    [id, updateEdge],
+  );
+
   const deleteEdge = useCallback(() => {
     setEdges(edges.filter((edge) => edge.id !== id));
   }, [id, setEdges]);
@@ -98,6 +106,7 @@ export function useContextMenuActions(id: string) {
     pasteTaskNode,
     duplicateTaskNode,
     deleteTaskNode,
+    updateEdgeType,
     deleteEdge,
   };
 }

@@ -26,7 +26,7 @@ export type TaskNodeType = Node<TaskNodeData, 'task'>;
 
 type WorkflowEdgeData = {
   type: 'success' | 'failure' | 'conditional';
-  condition?: boolean | string;
+  conditionValue?: 'True' | 'False';
 };
 export type WorkflowEdgeType = Edge<WorkflowEdgeData>;
 

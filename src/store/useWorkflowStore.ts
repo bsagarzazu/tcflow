@@ -55,6 +55,11 @@ interface WorkflowState {
   setNodes: (nodes: TaskNodeType[]) => void;
   setEdges: (edges: WorkflowEdgeType[]) => void;
   updateNodeData: (id: string, newData: Partial<TaskNodeType['data']>) => void;
+  updateEdge: (
+    id: string,
+    type: 'success' | 'failure' | 'conditional',
+    conditionValue?: 'True' | 'False',
+  ) => void;
 }
 
 const getInitialNodes = (): TaskNodeType[] => [
@@ -200,7 +205,7 @@ export const useWorkflowStore = create<WorkflowState>()(
             const existingEdgesFromSource = activeWorkflow.edges.filter(
               (edge) => edge.source === connection.source,
             );
-            const conditionValue = isCondition
+            const conditionValue: 'True' | 'False' | undefined = isCondition
               ? existingEdgesFromSource.length === 0
                 ? 'True'
                 : 'False'
@@ -211,7 +216,7 @@ export const useWorkflowStore = create<WorkflowState>()(
               id: generateId(),
               data: {
                 type: isCondition ? 'conditional' : 'success',
-                condition: conditionValue,
+                conditionValue: conditionValue,
               },
               label: conditionValue,
             };
@@ -274,6 +279,39 @@ export const useWorkflowStore = create<WorkflowState>()(
                   ...activeWorkflow,
                   nodes: activeWorkflow.nodes.map((node) =>
                     node.id === id ? { ...node, data: { ...node.data, ...newData } } : node,
+                  ),
+                },
+              },
+            };
+          });
+        },
+
+        updateEdge: (
+          id: string,
+          type: 'success' | 'failure' | 'conditional',
+          conditionValue?: 'True' | 'False',
+        ) => {
+          set((state) => {
+            const activeId = state.activeWorkflowId;
+            const activeWorkflow = state.workflows[activeId];
+
+            return {
+              workflows: {
+                ...state.workflows,
+                [activeId]: {
+                  ...activeWorkflow,
+                  edges: activeWorkflow.edges.map((edge) =>
+                    edge.id === id
+                      ? {
+                          ...edge,
+                          label: conditionValue,
+                          style: {
+                            ...edge.style,
+                            strokeDasharray: type === 'failure' ? '5,5' : '0',
+                          },
+                          data: { ...edge.data, type: type, conditionValue: conditionValue },
+                        }
+                      : edge,
                   ),
                 },
               },
