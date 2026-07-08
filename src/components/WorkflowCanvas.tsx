@@ -176,7 +176,11 @@ export function WorkflowCanvas() {
         onPaneContextMenu={onPaneContextMenu}
         onPaneClick={onPaneClick}
         onNodeDoubleClick={onNodeDoubleClick}
-        defaultEdgeOptions={{ markerEnd: { type: MarkerType.ArrowClosed } }}
+        defaultEdgeOptions={{
+          type: 'smoothstep',
+          style: { strokeWidth: 2 },
+          markerEnd: { type: MarkerType.ArrowClosed, width: 20, height: 20 },
+        }}
         minZoom={0.8}
         maxZoom={1.2}
         colorMode={theme}
