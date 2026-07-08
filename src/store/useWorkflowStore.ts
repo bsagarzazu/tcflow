@@ -197,17 +197,23 @@ export const useWorkflowStore = create<WorkflowState>()(
 
             const sourceNode = activeWorkflow.nodes.find((node) => node.id === connection.source);
             const isCondition = sourceNode?.data.type === 'Condition';
+            const existingEdgesFromSource = activeWorkflow.edges.filter(
+              (edge) => edge.source === connection.source,
+            );
+            const conditionValue = isCondition
+              ? existingEdgesFromSource.length === 0
+                ? 'True'
+                : 'False'
+              : undefined;
 
             const newEdge: WorkflowEdgeType = {
               ...connection,
               id: generateId(),
-              type: 'smoothstep',
               data: {
                 type: isCondition ? 'conditional' : 'success',
-                condition: isCondition ? 'True' : undefined,
+                condition: conditionValue,
               },
-              label: isCondition ? 'True' : undefined,
-              style: { strokeWidth: 2 },
+              label: conditionValue,
             };
 
             return {
