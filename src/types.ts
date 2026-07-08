@@ -18,9 +18,33 @@
 
 import { type Node, type Edge } from '@xyflow/react';
 
-type TaskNodeData = {
-  type: string;
+type TCHandler = {
+  id: string;
   name: string;
+  arguments: string[];
+};
+
+type TCAction = {
+  actionType: number;
+  name: string;
+  handlers: TCHandler[];
+};
+
+type TaskNodeData = {
+  type:
+    | 'Start'
+    | 'End'
+    | 'Acknowledge'
+    | 'Condition'
+    | 'Do'
+    | 'Or'
+    | 'Review'
+    | 'Route'
+    | 'Task'
+    | 'Validate'
+    | 'AddStatus';
+  name: string;
+  actions: TCAction[];
 };
 export type TaskNodeType = Node<TaskNodeData, 'task'>;
 
