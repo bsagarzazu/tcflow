@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { type TreeContext } from '@siemens/ix';
 import { IxPane, IxTree, IxIcon, showModal } from '@siemens/ix-react';
 import { useReactFlow } from '@xyflow/react';
@@ -33,16 +33,26 @@ export function WorkflowHierarchy() {
   const treeModel = useBuildWorkflowHierarchy();
 
   const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
-  const workflow = useWorkflowStore((state) => state.workflows[activeWorkflowId]);
+  const workflowName = useWorkflowStore((state) => state.workflows[activeWorkflowId].name);
   const renameWorkflow = useWorkflowStore((state) => state.renameWorkflow);
   const nodes = useWorkflowStore((state) => state.workflows[activeWorkflowId].nodes);
   const setNodes = useWorkflowStore((state) => state.setNodes);
+
+  const selectedNodeId = nodes.find((node) => node.selected)?.id;
+
+  useEffect(() => {
+    if (!selectedNodeId) {
+      setContext({});
+      return;
+    }
+    setContext({ [selectedNodeId]: { isExpanded: false, isSelected: true } });
+  }, [selectedNodeId, setContext]);
 
   const selectNode = useCallback(
     (event: any) => {
       const nodeId = event.detail;
       setNodes(nodes.map((node) => ({ ...node, selected: node.id === nodeId })));
-      fitView({ nodes: [{ id: nodeId }], padding: 0.8, duration: 500 });
+      fitView({ nodes: [{ id: nodeId }], padding: 0.2, duration: 500, maxZoom: 1 });
     },
     [nodes, setNodes, fitView],
   );
@@ -63,7 +73,7 @@ export function WorkflowHierarchy() {
     <IxPane composition="right" variant="floating">
       <div slot="header" style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
         <AppEditableText
-          value={workflow.name}
+          value={workflowName}
           onSave={(newName) => renameWorkflow(activeWorkflowId, newName)}
         />
       </div>
