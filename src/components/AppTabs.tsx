@@ -16,11 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxTabs, IxTabItem, IxInput, IxIcon } from '@siemens/ix-react';
+import { IxTabs, IxTabItem, IxIcon } from '@siemens/ix-react';
 import { iconAddCircleFilled } from '@siemens/ix-icons/icons';
-import { useState } from 'react';
 
 import { useWorkflowStore } from '../store/useWorkflowStore';
+import { AppEditableText } from './AppEditableText';
 
 export function AppTabs() {
   const workflows = useWorkflowStore((state) => state.workflows);
@@ -29,8 +29,6 @@ export function AppTabs() {
   const renameWorkflow = useWorkflowStore((state) => state.renameWorkflow);
   const setActiveWorkflow = useWorkflowStore((state) => state.setActiveWorkflow);
   const closeWorkflow = useWorkflowStore((state) => state.closeWorkflow);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editingName, setEditingName] = useState<string>('');
 
   const workflowList = Object.entries(workflows);
   return (
@@ -44,31 +42,11 @@ export function AppTabs() {
           tabKey={id}
           closable={workflowList.length > 1}
           onTabClose={(e) => e.detail.tabKey && closeWorkflow(e.detail.tabKey)}
-          onDoubleClick={() => {
-            setEditingId(id);
-            setEditingName(workflow.name);
-          }}
         >
-          {editingId === id ? (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (editingName.trim()) renameWorkflow(id, editingName);
-                setEditingId(null);
-              }}
-            >
-              <IxInput
-                value={editingName}
-                onValueChange={(e) => setEditingName(e.detail)}
-                onIxBlur={() => {
-                  if (editingName.trim()) renameWorkflow(id, editingName);
-                  setEditingId(null);
-                }}
-              ></IxInput>
-            </form>
-          ) : (
-            workflow.name
-          )}
+          <AppEditableText
+            value={workflow.name}
+            onSave={(newName) => renameWorkflow(id, newName)}
+          />
         </IxTabItem>
       ))}
       <IxTabItem
