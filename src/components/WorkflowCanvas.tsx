@@ -191,7 +191,10 @@ export function WorkflowCanvas() {
         <Controls position="top-left" />
         <WorkflowUndoRedo position="bottom-left" />
         {menu && <WorkflowContextMenu onClick={onPaneClick} {...menu} />}
-        <Panel position="bottom-center" style={{ color: 'gray' }}>
+        <Panel
+          position="bottom-center"
+          style={{ color: 'gray', opacity: 0.8, fontSize: '0.8rem', userSelect: 'none' }}
+        >
           {`TCFlow v${APP_VERSION} | © 2026 ${APP_AUTHOR}`}
         </Panel>
       </ReactFlow>
