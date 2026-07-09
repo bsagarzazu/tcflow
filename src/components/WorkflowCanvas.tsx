@@ -25,10 +25,12 @@ import {
   type Node,
   type Edge,
   MarkerType,
+  Panel,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { showModal } from '@siemens/ix-react';
 
+import { APP_VERSION, APP_AUTHOR } from '../constants';
 import { type TaskNodeType } from '../types';
 import { useAppStore } from '../store/useAppStore';
 import { useWorkflowStore } from '../store/useWorkflowStore';
@@ -189,6 +191,9 @@ export function WorkflowCanvas() {
         <Controls position="top-left" />
         <WorkflowUndoRedo position="bottom-left" />
         {menu && <WorkflowContextMenu onClick={onPaneClick} {...menu} />}
+        <Panel position="bottom-center" style={{ color: 'gray' }}>
+          {`TCFlow v${APP_VERSION} | © 2026 ${APP_AUTHOR}`}
+        </Panel>
       </ReactFlow>
     </div>
   );
