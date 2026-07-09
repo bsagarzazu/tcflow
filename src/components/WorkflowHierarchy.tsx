@@ -28,7 +28,7 @@ import { TaskProperties } from './TaskProperties';
 import { AppEditableText } from './AppEditableText';
 
 export function WorkflowHierarchy() {
-  const { getNode } = useReactFlow();
+  const { getNode, fitView } = useReactFlow();
   const [context, setContext] = useState<TreeContext>({});
   const treeModel = useBuildWorkflowHierarchy();
 
@@ -42,8 +42,9 @@ export function WorkflowHierarchy() {
     (event: any) => {
       const nodeId = event.detail;
       setNodes(nodes.map((node) => ({ ...node, selected: node.id === nodeId })));
+      fitView({ nodes: [{ id: nodeId }], padding: 0.8, duration: 500 });
     },
-    [nodes, setNodes],
+    [nodes, setNodes, fitView],
   );
 
   const openProperties = useCallback(
@@ -55,7 +56,7 @@ export function WorkflowHierarchy() {
         });
       }
     },
-    [getNode],
+    [getNode, showModal],
   );
 
   return (

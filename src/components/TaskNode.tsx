@@ -22,7 +22,7 @@ import { Handle, Position, type NodeProps } from '@xyflow/react';
 import { type TaskNodeType } from '../types';
 import { TC_TASK_REGISTRY } from '../constants';
 
-export function TaskNode({ data }: NodeProps<TaskNodeType>) {
+export function TaskNode({ data, selected }: NodeProps<TaskNodeType>) {
   const config = TC_TASK_REGISTRY[data.type];
 
   const isStart = data.type === 'Start';
@@ -34,6 +34,7 @@ export function TaskNode({ data }: NodeProps<TaskNodeType>) {
       heading={data.name}
       variant="filled"
       style={{ width: '200px' }}
+      selected={selected}
     >
       {!isStart && <Handle type="target" position={Position.Left} />}
       {!isFinish && <Handle type="source" position={Position.Right} />}

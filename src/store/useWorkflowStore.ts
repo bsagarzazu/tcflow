@@ -67,19 +67,25 @@ const getInitialNodes = (): TaskNodeType[] => [
     id: 'start',
     type: 'task',
     position: { x: 0, y: 0 },
-    data: { type: 'Start', name: 'Start' },
+    data: { type: 'Start', name: 'Start', actions: [] },
     deletable: false,
   },
   {
     id: 'end',
     type: 'task',
     position: { x: 800, y: 0 },
-    data: { type: 'End', name: 'End' },
+    data: { type: 'End', name: 'End', actions: [] },
     deletable: false,
   },
 ];
 
 const initialId = generateId();
+
+const cleanWorkflowForStorage = (workflow: Workflow) => ({
+  ...workflow,
+  nodes: workflow.nodes.map(({ selected, dragging, measured, ...rest }) => rest),
+  edges: workflow.edges.map(({ selected, ...rest }) => rest),
+});
 
 export const useWorkflowStore = create<WorkflowState>()(
   persist(
@@ -325,11 +331,7 @@ export const useWorkflowStore = create<WorkflowState>()(
           workflows: Object.fromEntries(
             Object.entries(state.workflows).map(([id, workflow]) => [
               id,
-              {
-                name: workflow.name,
-                nodes: workflow.nodes.map(({ selected, dragging, measured, ...rest }) => rest),
-                edges: workflow.edges.map(({ selected, ...rest }) => rest),
-              },
+              cleanWorkflowForStorage(workflow),
             ]),
           ),
         }),
@@ -346,8 +348,13 @@ export const useWorkflowStore = create<WorkflowState>()(
     {
       name: 'tcflow-workflow-data',
       partialize: (state) => ({
-        workflows: state.workflows,
         activeWorkflowId: state.activeWorkflowId,
+        workflows: Object.fromEntries(
+          Object.entries(state.workflows).map(([id, workflow]) => [
+            id,
+            cleanWorkflowForStorage(workflow),
+          ]),
+        ),
       }),
     },
   ),
