@@ -23,7 +23,7 @@ import { type TaskNodeType } from '../types';
 import { TC_TASK_REGISTRY } from '../constants';
 
 export function TaskNode({ data }: NodeProps<TaskNodeType>) {
-  const config = TC_TASK_REGISTRY[data.type as keyof typeof TC_TASK_REGISTRY];
+  const config = TC_TASK_REGISTRY[data.type];
 
   const isStart = data.type === 'Start';
   const isFinish = data.type === 'End';

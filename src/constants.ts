@@ -102,3 +102,10 @@ export const TC_TASK_REGISTRY = {
     label: 'Add Status',
   },
 } as const;
+
+export const TC_ACTION_REGISTRY = {
+  2: 'Start',
+  4: 'Complete',
+  8: 'Skip',
+  100: 'Perform',
+} as const;

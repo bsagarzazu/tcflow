@@ -20,6 +20,7 @@ import { IxIconButton } from '@siemens/ix-react';
 import { type DragEvent } from 'react';
 
 import { TC_TASK_REGISTRY } from '../constants';
+import { type TCTaskType } from '../types';
 
 export function WorkflowToolbar() {
   const onDragStart = (event: DragEvent, taskType: string) => {
@@ -29,9 +30,9 @@ export function WorkflowToolbar() {
     }
   };
 
-  const toolbarButtons = (
-    Object.keys(TC_TASK_REGISTRY) as (keyof typeof TC_TASK_REGISTRY)[]
-  ).filter((type) => type !== 'Start' && type !== 'End');
+  const toolbarButtons = (Object.keys(TC_TASK_REGISTRY) as TCTaskType[]).filter(
+    (type) => type !== 'Start' && type !== 'End',
+  );
 
   return (
     <div slot="secondary">

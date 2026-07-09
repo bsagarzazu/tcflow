@@ -18,34 +18,29 @@
 
 import { type Node, type Edge } from '@xyflow/react';
 
-type TCHandler = {
+import { TC_ACTION_REGISTRY, TC_TASK_REGISTRY } from './constants';
+
+export type TCActionType = keyof typeof TC_ACTION_REGISTRY;
+export type TCTaskType = keyof typeof TC_TASK_REGISTRY;
+
+interface TCHandler {
   id: string;
   name: string;
   arguments: string[];
-};
+}
 
-type TCAction = {
-  actionType: number;
-  name: string;
+interface TCAction {
+  id: string;
+  actionType: TCActionType;
   handlers: TCHandler[];
-};
+}
 
 type TaskNodeData = {
-  type:
-    | 'Start'
-    | 'End'
-    | 'Acknowledge'
-    | 'Condition'
-    | 'Do'
-    | 'Or'
-    | 'Review'
-    | 'Route'
-    | 'Task'
-    | 'Validate'
-    | 'AddStatus';
+  type: TCTaskType;
   name: string;
   actions: TCAction[];
 };
+
 export type TaskNodeType = Node<TaskNodeData, 'task'>;
 
 type WorkflowEdgeData = {
@@ -54,4 +49,4 @@ type WorkflowEdgeData = {
 };
 export type WorkflowEdgeType = Edge<WorkflowEdgeData>;
 
-export type TreeData = TaskNodeType['data'] & { icon: string };
+export type TreeData = Partial<TaskNodeData> & { icon?: string };

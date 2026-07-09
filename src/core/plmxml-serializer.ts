@@ -21,6 +21,7 @@ import { type ReactFlowJsonObject } from '@xyflow/react';
 
 import { APP_VERSION, APP_AUTHOR, TC_TASK_REGISTRY } from '../constants';
 import { formatTCLocation } from './utils';
+import { type TCTaskType } from '../types';
 
 export const serialize = (data: ReactFlowJsonObject): string => {
   const idMap = new Map<string, string>();
@@ -61,8 +62,7 @@ export const serialize = (data: ReactFlowJsonObject): string => {
         '@_id': idMap.get(node.id),
         '@_name': node.data.name,
         '@_objectType':
-          TC_TASK_REGISTRY[node.data.type as keyof typeof TC_TASK_REGISTRY].objectType ||
-          'EPMTaskTemplate',
+          TC_TASK_REGISTRY[node.data.type as TCTaskType].objectType || 'EPMTaskTemplate',
         '@_location': formatTCLocation(node.position.x, node.position.y),
         '@_dependencyTaskTemplateRefs': getDependencies(node.id) || undefined,
       })),

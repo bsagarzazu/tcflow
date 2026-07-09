@@ -24,14 +24,16 @@ import { TC_TASK_REGISTRY } from '../constants';
 import { type TreeData } from '../types';
 
 export function useBuildWorkflowHierarchy() {
-  const nodes = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].nodes);
-  const edges = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].edges);
+  const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
+  const workflow = useWorkflowStore((state) => state.workflows[activeWorkflowId]);
 
   const workflowHierarchy = useMemo(() => {
+    const { nodes, edges, name } = workflow;
+
     const model: TreeModel<TreeData> = {
       root: {
         id: 'root',
-        data: { name: '', type: '', icon: '' },
+        data: { name: name },
         hasChildren: false,
         children: [],
       },
@@ -45,24 +47,24 @@ export function useBuildWorkflowHierarchy() {
       model[node.id] = {
         id: node.id,
         data: {
-          name: node.data.name as string,
-          type: node.data.type as string,
-          icon: TC_TASK_REGISTRY[node.data.type as keyof typeof TC_TASK_REGISTRY].ixIcon,
+          name: node.data.name,
+          type: node.data.type,
+          icon: TC_TASK_REGISTRY[node.data.type].ixIcon,
         },
         hasChildren: false,
         children: [],
       };
     });
 
-    const childrenNodes = new Set(edges.map((edge) => edge.target));
+    const targetNodes = new Set(edges.map((edge) => edge.target));
 
     edges.forEach((edge) => {
-      const parentNode = model[edge.source];
-      const childNode = model[edge.target];
+      const parent = model[edge.source];
+      const child = model[edge.target];
 
-      if (parentNode && childNode) {
-        parentNode.children.push(edge.target);
-        parentNode.hasChildren = true;
+      if (parent && child) {
+        parent.children.push(edge.target);
+        parent.hasChildren = true;
       }
     });
 
@@ -71,14 +73,14 @@ export function useBuildWorkflowHierarchy() {
         return;
       }
 
-      if (!childrenNodes.has(node.id)) {
+      if (!targetNodes.has(node.id)) {
         model.root.children.push(node.id);
         model.root.hasChildren = true;
       }
     });
 
     return model;
-  }, [nodes, edges]);
+  }, [workflow]);
 
   return workflowHierarchy;
 }
