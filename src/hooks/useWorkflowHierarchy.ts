@@ -28,12 +28,12 @@ export function useBuildWorkflowHierarchy() {
   const workflow = useWorkflowStore((state) => state.workflows[activeWorkflowId]);
 
   const workflowHierarchy = useMemo(() => {
-    const { nodes, edges, name } = workflow;
+    const { nodes } = workflow;
 
     const model: TreeModel<TreeData> = {
       root: {
         id: 'root',
-        data: { name: name },
+        data: {},
         hasChildren: false,
         children: [],
       },
@@ -54,29 +54,9 @@ export function useBuildWorkflowHierarchy() {
         hasChildren: false,
         children: [],
       };
-    });
 
-    const targetNodes = new Set(edges.map((edge) => edge.target));
-
-    edges.forEach((edge) => {
-      const parent = model[edge.source];
-      const child = model[edge.target];
-
-      if (parent && child) {
-        parent.children.push(edge.target);
-        parent.hasChildren = true;
-      }
-    });
-
-    nodes.forEach((node) => {
-      if (node.data.type === 'Start' || node.data.type === 'End') {
-        return;
-      }
-
-      if (!targetNodes.has(node.id)) {
-        model.root.children.push(node.id);
-        model.root.hasChildren = true;
-      }
+      model.root.children.push(node.id);
+      model.root.hasChildren = true;
     });
 
     return model;

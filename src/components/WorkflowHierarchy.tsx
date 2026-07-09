@@ -21,14 +21,20 @@ import { type TreeContext } from '@siemens/ix';
 import { IxPane, IxTree, IxIcon, showModal } from '@siemens/ix-react';
 import { useReactFlow } from '@xyflow/react';
 
+import { useWorkflowStore } from '../store/useWorkflowStore';
 import { useBuildWorkflowHierarchy } from '../hooks/useWorkflowHierarchy';
 import { type TreeData, type TaskNodeType } from '../types';
 import { TaskProperties } from './TaskProperties';
+import { AppEditableText } from './AppEditableText';
 
 export function WorkflowHierarchy() {
   const { getNode } = useReactFlow();
   const [context, setContext] = useState<TreeContext>({});
   const treeModel = useBuildWorkflowHierarchy();
+
+  const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
+  const workflow = useWorkflowStore((state) => state.workflows[activeWorkflowId]);
+  const renameWorkflow = useWorkflowStore((state) => state.renameWorkflow);
 
   const onNodeClick = useCallback(
     async (event: any) => {
@@ -44,8 +50,14 @@ export function WorkflowHierarchy() {
 
   return (
     <IxPane composition="right" variant="floating">
+      <div slot="header" style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
+        <AppEditableText
+          value={workflow.name}
+          onSave={(newName) => renameWorkflow(activeWorkflowId, newName)}
+        />
+      </div>
       <IxTree
-        root="root"
+        root={'root'}
         model={treeModel}
         context={context}
         onContextChange={({ detail }) => {
