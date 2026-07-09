@@ -22,12 +22,9 @@ import {
   iconArrowDownRight,
   iconRhombFilled,
   iconFlare,
-  iconConnections,
-  iconEye,
   iconUserManagementFilled,
   iconCheck,
   iconTasksAll,
-  iconFlagFilled,
 } from '@siemens/ix-icons/icons';
 
 export const APP_VERSION = '0.5.0';
@@ -67,13 +64,13 @@ export const TC_TASK_REGISTRY = {
     label: 'Do',
   },
   Or: {
-    ixIcon: iconConnections,
+    ixIcon: 'custom-icon-or-task',
     tcIconKey: 'orTask',
     objectType: 'EPMOrTaskTemplate',
     label: 'Or',
   },
   Review: {
-    ixIcon: iconEye,
+    ixIcon: 'custom-icon-review-task',
     tcIconKey: 'reviewTask',
     objectType: 'EPMReviewTaskTemplate',
     label: 'Review',
@@ -97,7 +94,7 @@ export const TC_TASK_REGISTRY = {
     label: 'Validate',
   },
   AddStatus: {
-    ixIcon: iconFlagFilled,
+    ixIcon: 'custom-icon-add-status-task',
     tcIconKey: 'addStatusTask',
     objectType: 'EPMAddStatusTaskTemplate',
     label: 'Add Status',
