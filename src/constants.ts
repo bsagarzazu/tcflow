@@ -32,7 +32,8 @@ import {
 
 export const APP_VERSION = '0.5.0';
 export const APP_AUTHOR = 'Beñat Sagarzazu';
-export const APP_SOURCE = 'https://bsagarzazu.github.io/tcflow';
+export const APP_URL = 'https://bsagarzazu.github.io/tcflow';
+export const APP_REPO = 'https://github.com/bsagarzazu/tcflow';
 
 export const TC_TASK_REGISTRY = {
   Start: {

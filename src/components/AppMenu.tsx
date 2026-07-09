@@ -29,6 +29,7 @@ import {
 import { useAppStore } from '../store/useAppStore';
 import { useWorkflowExport } from '../hooks/useWorkflowExport';
 import { useWorkflowImport } from '../hooks/useWorkflowImport';
+import { APP_REPO } from '../constants';
 
 export function AppMenu() {
   const toggleTheme = useAppStore((state) => state.toggleTheme);
@@ -55,7 +56,7 @@ export function AppMenu() {
       <IxMenuItem
         icon={iconGithubLogo}
         slot="bottom"
-        onClick={() => window.open('https://github.com/bsagarzazu/tcflow', '_blank')}
+        onClick={() => window.open(APP_REPO, '_blank')}
       >
         GitHub
       </IxMenuItem>

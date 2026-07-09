@@ -18,7 +18,7 @@
 
 import { type ReactFlowJsonObject, type Node } from '@xyflow/react';
 
-import { APP_VERSION, APP_AUTHOR, APP_SOURCE } from '../constants';
+import { APP_VERSION, APP_AUTHOR, APP_URL } from '../constants';
 
 export const serialize = (data: ReactFlowJsonObject): string => {
   const cleanNodes = data.nodes.map((node) => ({
@@ -33,7 +33,7 @@ export const serialize = (data: ReactFlowJsonObject): string => {
     type: 'tcflow',
     version: APP_VERSION,
     author: APP_AUTHOR,
-    source: APP_SOURCE,
+    source: APP_URL,
     elements: { nodes: cleanNodes, edges: data.edges, viewport: data.viewport },
   };
 
