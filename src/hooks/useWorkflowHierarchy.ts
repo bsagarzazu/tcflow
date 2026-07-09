@@ -33,7 +33,7 @@ export function useBuildWorkflowHierarchy() {
     const model: TreeModel<TreeData> = {
       root: {
         id: 'root',
-        data: {},
+        data: { id: '' },
         hasChildren: false,
         children: [],
       },
@@ -47,6 +47,7 @@ export function useBuildWorkflowHierarchy() {
       model[node.id] = {
         id: node.id,
         data: {
+          id: node.id,
           name: node.data.name,
           type: node.data.type,
           icon: TC_TASK_REGISTRY[node.data.type].ixIcon,

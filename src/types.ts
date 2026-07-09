@@ -49,4 +49,4 @@ type WorkflowEdgeData = {
 };
 export type WorkflowEdgeType = Edge<WorkflowEdgeData>;
 
-export type TreeData = Partial<TaskNodeData> & { icon?: string };
+export type TreeData = Partial<TaskNodeData> & { id: string; icon?: string };

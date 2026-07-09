@@ -35,17 +35,27 @@ export function WorkflowHierarchy() {
   const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
   const workflow = useWorkflowStore((state) => state.workflows[activeWorkflowId]);
   const renameWorkflow = useWorkflowStore((state) => state.renameWorkflow);
+  const nodes = useWorkflowStore((state) => state.workflows[activeWorkflowId].nodes);
+  const setNodes = useWorkflowStore((state) => state.setNodes);
 
-  const onNodeClick = useCallback(
-    async (event: any) => {
-      const node = getNode(event.detail);
+  const selectNode = useCallback(
+    (event: any) => {
+      const nodeId = event.detail;
+      setNodes(nodes.map((node) => ({ ...node, selected: node.id === nodeId })));
+    },
+    [nodes, setNodes],
+  );
+
+  const openProperties = useCallback(
+    async (nodeId: string) => {
+      const node = getNode(nodeId);
       if (node) {
         await showModal({
           content: <TaskProperties node={node as TaskNodeType} />,
         });
       }
     },
-    [getNode, showModal],
+    [getNode],
   );
 
   return (
@@ -63,11 +73,16 @@ export function WorkflowHierarchy() {
         onContextChange={({ detail }) => {
           setContext(detail);
         }}
+        onNodeClicked={selectNode}
         renderItem={(data: TreeData) => (
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
+            }}
+            onDoubleClick={(event) => {
+              event.stopPropagation();
+              openProperties(data.id);
             }}
           >
             <IxIcon
@@ -80,7 +95,6 @@ export function WorkflowHierarchy() {
             {data.name}
           </div>
         )}
-        onNodeClicked={onNodeClick}
       ></IxTree>
     </IxPane>
   );
