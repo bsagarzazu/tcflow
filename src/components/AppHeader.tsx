@@ -18,11 +18,14 @@
 
 import { IxApplicationHeader } from '@siemens/ix-react';
 import { WorkflowToolbar } from './WorkflowToolbar';
+import { AppLogo } from './AppLogo';
 
 export function AppHeader() {
   return (
-    <IxApplicationHeader name="TCFlow">
-      <img src="/favicon.svg" slot="logo" />
+    <IxApplicationHeader name="">
+      <div slot="logo">
+        <AppLogo />
+      </div>
       <WorkflowToolbar />
     </IxApplicationHeader>
   );
