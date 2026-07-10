@@ -23,6 +23,7 @@ import {
   Background,
   Controls,
   type Node,
+  useNodesInitialized,
   type Edge,
   MarkerType,
 } from '@xyflow/react';
@@ -57,27 +58,31 @@ export function WorkflowCanvas() {
   const { pause, resume } = useWorkflowStore.temporal.getState();
 
   const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
-  const nodes = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].nodes);
-  const edges = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].edges);
-  const viewport = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].viewport);
+  const nodes = useWorkflowStore((state) => state.workflows[activeWorkflowId].nodes);
+  const edges = useWorkflowStore((state) => state.workflows[activeWorkflowId].edges);
   const onNodesChange = useWorkflowStore((state) => state.onNodesChange);
   const onEdgesChange = useWorkflowStore((state) => state.onEdgesChange);
   const onViewportChange = useWorkflowStore((state) => state.onViewportChange);
   const onConnect = useWorkflowStore((state) => state.onConnect);
   const setNodes = useWorkflowStore((state) => state.setNodes);
 
+  const nodesInitialized = useNodesInitialized();
   const { screenToFlowPosition, fitView, setViewport } = useReactFlow();
   const [menu, setMenu] = useState<MenuState | null>(null);
 
   useKeyboardShortcuts();
 
   useEffect(() => {
+    if (!nodesInitialized) return;
+
+    const viewport = useWorkflowStore.getState().workflows[activeWorkflowId].viewport;
+
     if (viewport && (viewport.x !== 0 || viewport.y !== 0)) {
       setViewport(viewport, { duration: 500 });
     } else {
       fitView({ padding: 0.2, duration: 500 });
     }
-  }, [activeWorkflowId, fitView, setViewport]);
+  }, [activeWorkflowId, nodesInitialized, fitView, setViewport]);
 
   const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();
