@@ -70,8 +70,14 @@ export function WorkflowHierarchy() {
   );
 
   return (
-    <IxPane composition="right" variant="floating">
-      <div slot="header" style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
+    <IxPane composition="right" variant="floating" size="320px">
+      <div
+        slot="header"
+        style={{
+          fontWeight: 'bold',
+          fontSize: '1.1rem',
+        }}
+      >
         <AppEditableText
           value={workflowName}
           onSave={(newName) => renameWorkflow(activeWorkflowId, newName)}
