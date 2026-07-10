@@ -25,12 +25,10 @@ import {
   type Node,
   type Edge,
   MarkerType,
-  Panel,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { showModal } from '@siemens/ix-react';
 
-import { APP_NAME, APP_VERSION, APP_AUTHOR } from '../constants';
 import { type TaskNodeType } from '../types';
 import { useAppStore } from '../store/useAppStore';
 import { useWorkflowStore } from '../store/useWorkflowStore';
@@ -41,6 +39,7 @@ import { TaskProperties } from './TaskProperties';
 import { WorkflowUndoRedo } from './WorkflowUndoRedo';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { AppWatermark } from './AppWatermark';
+import { AppFooterNotice } from './AppFooterNotice';
 
 const nodeTypes = {
   task: TaskNode,
@@ -192,13 +191,8 @@ export function WorkflowCanvas() {
         <Controls position="top-left" />
         <WorkflowUndoRedo position="bottom-left" />
         {menu && <WorkflowContextMenu onClick={onPaneClick} {...menu} />}
-        <Panel
-          position="bottom-center"
-          style={{ color: 'gray', opacity: 0.5, fontSize: '0.8rem', userSelect: 'none' }}
-        >
-          {`${APP_NAME} v${APP_VERSION} | © 2026 ${APP_AUTHOR}`}
-        </Panel>
         <AppWatermark />
+        <AppFooterNotice />
       </ReactFlow>
     </div>
   );
