@@ -81,7 +81,13 @@ const getInitialNodes = (): TaskNodeType[] => [
 
 const initialId = generateId();
 
-const cleanWorkflowForStorage = (workflow: Workflow) => ({
+const cleanForHistory = (workflow: Workflow) => ({
+  name: workflow.name,
+  nodes: workflow.nodes.map(({ selected, dragging, measured, ...rest }) => rest),
+  edges: workflow.edges.map(({ selected, ...rest }) => rest),
+});
+
+const cleanForPersist = (workflow: Workflow) => ({
   ...workflow,
   nodes: workflow.nodes.map(({ selected, dragging, measured, ...rest }) => rest),
   edges: workflow.edges.map(({ selected, ...rest }) => rest),
@@ -331,7 +337,7 @@ export const useWorkflowStore = create<WorkflowState>()(
           workflows: Object.fromEntries(
             Object.entries(state.workflows).map(([id, workflow]) => [
               id,
-              cleanWorkflowForStorage(workflow),
+              cleanForHistory(workflow),
             ]),
           ),
         }),
@@ -350,10 +356,7 @@ export const useWorkflowStore = create<WorkflowState>()(
       partialize: (state) => ({
         activeWorkflowId: state.activeWorkflowId,
         workflows: Object.fromEntries(
-          Object.entries(state.workflows).map(([id, workflow]) => [
-            id,
-            cleanWorkflowForStorage(workflow),
-          ]),
+          Object.entries(state.workflows).map(([id, workflow]) => [id, cleanForPersist(workflow)]),
         ),
       }),
     },
