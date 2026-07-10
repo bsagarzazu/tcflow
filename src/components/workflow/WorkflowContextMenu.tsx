@@ -29,7 +29,7 @@ import {
 } from '@siemens/ix-icons/icons';
 import { useReactFlow } from '@xyflow/react';
 
-import { useContextMenuActions } from '../hooks/useContextMenuActions';
+import { useContextMenuActions } from '../../hooks/useContextMenuActions';
 
 interface ContextMenuProps {
   id: string;

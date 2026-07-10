@@ -19,8 +19,9 @@
 import { IxTabs, IxTabItem, IxIcon } from '@siemens/ix-react';
 import { iconAddCircleFilled } from '@siemens/ix-icons/icons';
 
-import { useWorkflowStore } from '../store/useWorkflowStore';
 import { AppEditableText } from './AppEditableText';
+
+import { useWorkflowStore } from '../../store/useWorkflowStore';
 
 export function AppTabs() {
   const workflows = useWorkflowStore((state) => state.workflows);

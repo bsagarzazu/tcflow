@@ -19,8 +19,8 @@
 import { IxIconButton } from '@siemens/ix-react';
 import { type DragEvent } from 'react';
 
-import { TC_TASK_REGISTRY } from '../constants';
-import { type TCTaskType } from '../types';
+import { TC_TASK_REGISTRY } from '../../constants';
+import { type TCTaskType } from '../../types';
 
 export function WorkflowToolbar() {
   const onDragStart = (event: DragEvent, taskType: string) => {

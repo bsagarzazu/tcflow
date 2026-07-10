@@ -21,11 +21,8 @@ import { ReactFlowProvider } from '@xyflow/react';
 
 import { useAppStore } from './store/useAppStore';
 import { useWorkflowStore } from './store/useWorkflowStore';
-import { AppHeader } from './components/AppHeader';
-import { AppMenu } from './components/AppMenu';
-import { AppTabs } from './components/AppTabs';
-import { WorkflowCanvas } from './components/WorkflowCanvas';
-import { WorkflowHierarchy } from './components/WorkflowHierarchy';
+import { AppHeader, AppMenu, AppTabs } from './components/app';
+import { WorkflowCanvas, WorkflowHierarchy } from './components/workflow';
 
 export default function App() {
   const hasHydrated = useWorkflowStore.persist.hasHydrated() && useAppStore.persist.hasHydrated();

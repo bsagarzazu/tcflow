@@ -26,10 +26,10 @@ import {
   iconLightDark,
 } from '@siemens/ix-icons/icons';
 
-import { useAppStore } from '../store/useAppStore';
-import { useWorkflowExport } from '../hooks/useWorkflowExport';
-import { useWorkflowImport } from '../hooks/useWorkflowImport';
-import { APP_REPO } from '../constants';
+import { useAppStore } from '../../store/useAppStore';
+import { useWorkflowExport } from '../../hooks/useWorkflowExport';
+import { useWorkflowImport } from '../../hooks/useWorkflowImport';
+import { APP_REPO } from '../../constants';
 
 export function AppMenu() {
   const toggleTheme = useAppStore((state) => state.toggleTheme);

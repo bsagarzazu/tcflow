@@ -29,8 +29,8 @@ import {
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { type TaskNodeType } from '../types';
-import { useWorkflowStore } from '../store/useWorkflowStore';
+import { type TaskNodeType } from '../../types';
+import { useWorkflowStore } from '../../store/useWorkflowStore';
 
 type TaskPropertiesProps = {
   node: TaskNodeType;

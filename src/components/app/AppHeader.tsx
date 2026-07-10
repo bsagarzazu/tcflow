@@ -16,17 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Panel } from '@xyflow/react';
+import { IxApplicationHeader } from '@siemens/ix-react';
 
-import { APP_NAME, APP_VERSION, APP_AUTHOR } from '../constants';
+import { AppLogo } from './AppLogo';
+import { WorkflowToolbar } from '../workflow';
 
-export function AppFooterNotice() {
+export function AppHeader() {
   return (
-    <Panel
-      position="bottom-center"
-      style={{ color: 'gray', opacity: 0.5, fontSize: '0.8rem', userSelect: 'none' }}
-    >
-      {`${APP_NAME} v${APP_VERSION} | © 2026 ${APP_AUTHOR}`}
-    </Panel>
+    <IxApplicationHeader name="">
+      <div slot="logo">
+        <AppLogo />
+      </div>
+      <WorkflowToolbar />
+    </IxApplicationHeader>
   );
 }

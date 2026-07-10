@@ -21,7 +21,7 @@ import { IxIcon } from '@siemens/ix-react';
 import { iconUndo, iconRedo } from '@siemens/ix-icons/icons';
 import { useStore } from 'zustand';
 
-import { useWorkflowStore } from '../store/useWorkflowStore';
+import { useWorkflowStore } from '../../store/useWorkflowStore';
 
 interface WorkflowUndoRedoProps {
   position: PanelPosition;

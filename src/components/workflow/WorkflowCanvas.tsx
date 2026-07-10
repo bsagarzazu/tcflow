@@ -30,17 +30,16 @@ import {
 import '@xyflow/react/dist/style.css';
 import { showModal } from '@siemens/ix-react';
 
-import { type TaskNodeType } from '../types';
-import { useAppStore } from '../store/useAppStore';
-import { useWorkflowStore } from '../store/useWorkflowStore';
-import { generateId } from '../core/utils';
-import { TaskNode } from './TaskNode';
-import { WorkflowContextMenu } from './WorkflowContextMenu';
-import { TaskProperties } from './TaskProperties';
 import { WorkflowUndoRedo } from './WorkflowUndoRedo';
-import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
-import { AppWatermark } from './AppWatermark';
-import { AppFooterNotice } from './AppFooterNotice';
+import { WorkflowContextMenu } from './WorkflowContextMenu';
+
+import { useAppStore } from '../../store/useAppStore';
+import { useWorkflowStore } from '../../store/useWorkflowStore';
+import { type TaskNodeType } from '../../types';
+import { generateId } from '../../core/utils';
+import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts';
+import { AppWatermark, AppFooterNotice } from '../app';
+import { TaskNode, TaskProperties } from '../task';
 
 const nodeTypes = {
   task: TaskNode,

@@ -19,8 +19,8 @@
 import { IxActionCard } from '@siemens/ix-react';
 import { Handle, Position, type NodeProps } from '@xyflow/react';
 
-import { type TaskNodeType } from '../types';
-import { TC_TASK_REGISTRY } from '../constants';
+import { type TaskNodeType } from '../../types';
+import { TC_TASK_REGISTRY } from '../../constants';
 
 export function TaskNode({ data, selected }: NodeProps<TaskNodeType>) {
   const config = TC_TASK_REGISTRY[data.type];

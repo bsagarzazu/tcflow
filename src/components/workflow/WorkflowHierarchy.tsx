@@ -21,11 +21,11 @@ import { type TreeContext } from '@siemens/ix';
 import { IxPane, IxTree, IxIcon, showModal } from '@siemens/ix-react';
 import { useReactFlow } from '@xyflow/react';
 
-import { useWorkflowStore } from '../store/useWorkflowStore';
-import { useBuildWorkflowHierarchy } from '../hooks/useWorkflowHierarchy';
-import { type TreeData, type TaskNodeType } from '../types';
-import { TaskProperties } from './TaskProperties';
-import { AppEditableText } from './AppEditableText';
+import { useWorkflowStore } from '../../store/useWorkflowStore';
+import { useBuildWorkflowHierarchy } from '../../hooks/useWorkflowHierarchy';
+import { type TreeData, type TaskNodeType } from '../../types';
+import { AppEditableText } from '../app';
+import { TaskProperties } from '../task';
 
 export function WorkflowHierarchy() {
   const { getNode, fitView } = useReactFlow();
