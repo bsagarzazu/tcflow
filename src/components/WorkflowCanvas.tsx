@@ -40,6 +40,8 @@ import { WorkflowContextMenu } from './WorkflowContextMenu';
 import { TaskProperties } from './TaskProperties';
 import { WorkflowUndoRedo } from './WorkflowUndoRedo';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
+import { AppLogo } from './AppLogo';
+import { AppWatermark } from './AppWatermark';
 
 const nodeTypes = {
   task: TaskNode,
@@ -193,10 +195,11 @@ export function WorkflowCanvas() {
         {menu && <WorkflowContextMenu onClick={onPaneClick} {...menu} />}
         <Panel
           position="bottom-center"
-          style={{ color: 'gray', opacity: 0.8, fontSize: '0.8rem', userSelect: 'none' }}
+          style={{ color: 'gray', opacity: 0.5, fontSize: '0.8rem', userSelect: 'none' }}
         >
           {`TCFlow v${APP_VERSION} | © 2026 ${APP_AUTHOR}`}
         </Panel>
+        <AppWatermark />
       </ReactFlow>
     </div>
   );
