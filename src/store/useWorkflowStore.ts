@@ -341,12 +341,11 @@ export const useWorkflowStore = create<WorkflowState>()(
             ]),
           ),
         }),
-        handleSet: (handleSet) => {
-          let timeout: ReturnType<typeof setTimeout>;
-          return (state) => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => handleSet(state), 500);
-          };
+        equality: (pastState, currentState) => {
+          if (pastState.activeWorkflowId !== currentState.activeWorkflowId) {
+            return true;
+          }
+          return JSON.stringify(pastState.workflows) === JSON.stringify(currentState.workflows);
         },
         limit: 100,
       },
