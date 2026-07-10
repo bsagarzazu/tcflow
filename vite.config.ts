@@ -20,6 +20,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+import { APP_NAME } from './src/constants';
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -31,23 +33,23 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
       },
       manifest: {
-        name: 'TCFlow - Teamcenter Workflow Editor',
-        short_name: 'TCFlow',
-        description: 'Web-based Teamcenter workflow editor.',
-        theme_color: '#000028',
-        background_color: '#000028',
+        name: `${APP_NAME} | Web-based Teamcenter workflow editor`,
+        short_name: APP_NAME,
+        description: 'Web-based Teamcenter workflow editor',
+        theme_color: '#00997F',
+        background_color: '#00997F',
         display: 'standalone',
         icons: [
           {
-            src: 'favicon.svg',
+            src: 'android-chrome-192x192.png',
             sizes: '192x192',
-            type: 'image/svg+xml',
+            type: 'image/png',
             purpose: 'any maskable',
           },
           {
-            src: 'favicon.svg',
+            src: 'android-chrome-512x512.png',
             sizes: '512x512',
-            type: 'image/svg+xml',
+            type: 'image/png',
             purpose: 'any maskable',
           },
         ],
