@@ -19,7 +19,7 @@
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';
 import { type ReactFlowJsonObject } from '@xyflow/react';
 
-import { APP_VERSION, APP_AUTHOR, TC_TASK_REGISTRY } from '../constants';
+import { APP_NAME, APP_VERSION, APP_AUTHOR, TC_TASK_REGISTRY } from '../constants';
 import { formatTCLocation } from './utils';
 import { type TCTaskType } from '../types';
 
@@ -47,7 +47,7 @@ export const serialize = (data: ReactFlowJsonObject): string => {
       '@_language': 'en-us',
       '@_time': now.toISOString().split('T')[1].slice(0, 8),
       '@_schemaVersion': '6',
-      '@_author': `TCFlow v${APP_VERSION} - ${APP_AUTHOR}`,
+      '@_author': `${APP_NAME} v${APP_VERSION} - ${APP_AUTHOR}`,
       '@_date': now.toISOString().split('T')[0],
 
       Header: {

@@ -30,7 +30,7 @@ import {
 import '@xyflow/react/dist/style.css';
 import { showModal } from '@siemens/ix-react';
 
-import { APP_VERSION, APP_AUTHOR } from '../constants';
+import { APP_NAME, APP_VERSION, APP_AUTHOR } from '../constants';
 import { type TaskNodeType } from '../types';
 import { useAppStore } from '../store/useAppStore';
 import { useWorkflowStore } from '../store/useWorkflowStore';
@@ -40,7 +40,6 @@ import { WorkflowContextMenu } from './WorkflowContextMenu';
 import { TaskProperties } from './TaskProperties';
 import { WorkflowUndoRedo } from './WorkflowUndoRedo';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
-import { AppLogo } from './AppLogo';
 import { AppWatermark } from './AppWatermark';
 
 const nodeTypes = {
@@ -197,7 +196,7 @@ export function WorkflowCanvas() {
           position="bottom-center"
           style={{ color: 'gray', opacity: 0.5, fontSize: '0.8rem', userSelect: 'none' }}
         >
-          {`TCFlow v${APP_VERSION} | © 2026 ${APP_AUTHOR}`}
+          {`${APP_NAME} v${APP_VERSION} | © 2026 ${APP_AUTHOR}`}
         </Panel>
         <AppWatermark />
       </ReactFlow>
