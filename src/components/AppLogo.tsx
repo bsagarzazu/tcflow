@@ -16,31 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { AppIcon } from './AppIcon';
+
 export function AppLogo() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-      <svg viewBox="0 0 512 512" width="3rem" xmlns="http://www.w3.org/2000/svg">
-        <g
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="36"
-          strokeLinecap="square"
-          strokeLinejoin="miter"
-        >
-          <path d="M125 179 H238 M187 179 V384" />
-          <path d="M238 179 H342" />
-          <path d="M318 287 H264 V384 H318" />
-        </g>
-        <path d="M336 138 L398 179 L336 220 Z" fill="currentColor" />
-      </svg>
+    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'baseline' }}>
+      <AppIcon />
       <span
         style={{
           fontWeight: 'bold',
-          fontSize: '1.2rem',
+          fontSize: '1.5rem',
           letterSpacing: '0.5px',
           userSelect: 'none',
-          transform: 'translateY(8px)',
-          marginLeft: '-0.8rem',
         }}
       >
         Flow

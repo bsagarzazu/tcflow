@@ -16,30 +16,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Panel } from '@xyflow/react';
-
-import { AppIcon } from './AppIcon';
-
-export function AppWatermark() {
+export function AppIcon({ size = '1.8rem' }) {
   return (
-    <Panel
-      position="top-left"
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        margin: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        pointerEvents: 'none',
-        zIndex: 0,
-        opacity: 0.05,
-      }}
+    <svg
+      viewBox="103 116 299 290"
+      width={size}
+      height={size}
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ display: 'block' }}
     >
-      <AppIcon size="27rem" />
-    </Panel>
+      <g
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="36"
+        strokeLinecap="square"
+        strokeLinejoin="miter"
+      >
+        <path d="M125 179 H342" />
+        <path d="M187 197 V384" />
+        <path d="M318 287 H264 V384 H318" />
+      </g>
+      <path d="M336 138 L398 179 L336 220 Z" fill="currentColor" />
+    </svg>
   );
 }
