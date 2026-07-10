@@ -18,8 +18,11 @@
 
 import {
   IxButton,
-  IxLayoutAuto,
+  IxLayoutGrid,
+  IxRow,
+  IxCol,
   IxInput,
+  IxIcon,
   IxModalContent,
   IxModalFooter,
   IxModalHeader,
@@ -29,8 +32,10 @@ import {
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { type TaskNodeType } from '../../types';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
+import { TC_TASK_REGISTRY } from '../../constants';
+import { type TaskNodeType } from '../../types';
+import { AppEditableText } from '../app';
 
 type TaskPropertiesProps = {
   node: TaskNodeType;
@@ -59,13 +64,34 @@ export function TaskProperties({ node }: TaskPropertiesProps) {
 
   return (
     <Modal ref={modalRef}>
-      <IxModalHeader onCloseClick={() => dismiss()}>Task Properties</IxModalHeader>
+      <IxModalHeader onCloseClick={() => dismiss()}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: '1rem',
+            fontWeight: 'bold',
+            fontSize: '1.1rem',
+          }}
+        >
+          <IxIcon size="32" name={TC_TASK_REGISTRY[node.data.type].ixIcon}></IxIcon>
+          <AppEditableText
+            value={node.data.name}
+            onSave={(value) => updateNodeData(node.id, { ...node.data, name: value })}
+          />
+        </div>
+      </IxModalHeader>
       <IxModalContent>
         <form id="task-properties-form" onSubmit={handleSubmit(onSubmit)}>
-          <IxLayoutAuto>
-            <IxInput label="Task Name" {...register('name', { required: true })}></IxInput>
-            <IxInput label="Task Type" {...register('type', { required: true })}></IxInput>
-          </IxLayoutAuto>
+          <IxLayoutGrid>
+            <IxRow>
+              <IxCol size="4"></IxCol>
+              <IxCol size="8">
+                <IxInput label="Task Name" {...register('name', { required: true })}></IxInput>
+              </IxCol>
+            </IxRow>
+          </IxLayoutGrid>
         </form>
       </IxModalContent>
       <IxModalFooter>
