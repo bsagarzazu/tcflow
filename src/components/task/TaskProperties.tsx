@@ -18,10 +18,13 @@
 
 import {
   IxButton,
+  IxIconButton,
   IxLayoutGrid,
   IxRow,
   IxCol,
   IxInput,
+  IxSelect,
+  IxToggle,
   IxIcon,
   IxModalContent,
   IxModalFooter,
@@ -29,7 +32,8 @@ import {
   Modal,
   type ModalRef,
 } from '@siemens/ix-react';
-import { useRef } from 'react';
+import { iconAddCircleFilled } from '@siemens/ix-icons/icons';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useWorkflowStore } from '../../store/useWorkflowStore';
@@ -43,7 +47,13 @@ type TaskPropertiesProps = {
 
 export function TaskProperties({ node }: TaskPropertiesProps) {
   const modalRef = useRef<ModalRef>(null);
+  const [isRuleHandler, setIsRuleHandler] = useState(false);
+
   const updateNodeData = useWorkflowStore((state) => state.updateNodeData);
+
+  const handleToggleChange = (event: any) => {
+    setIsRuleHandler(event.detail);
+  };
 
   const { register, handleSubmit } = useForm<TaskNodeType['data']>({
     mode: 'onTouched',
@@ -63,7 +73,7 @@ export function TaskProperties({ node }: TaskPropertiesProps) {
   };
 
   return (
-    <Modal ref={modalRef}>
+    <Modal ref={modalRef} size="840">
       <IxModalHeader onCloseClick={() => dismiss()}>
         <div
           style={{
@@ -88,7 +98,57 @@ export function TaskProperties({ node }: TaskPropertiesProps) {
             <IxRow>
               <IxCol size="4"></IxCol>
               <IxCol size="8">
-                <IxInput label="Task Name" {...register('name', { required: true })}></IxInput>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      gap: '2rem',
+                    }}
+                  >
+                    <IxToggle
+                      text-off="Action Handler"
+                      text-on="Rule Handler"
+                      style={{ minWidth: '20ch', flexShrink: 0 }}
+                      onCheckedChange={handleToggleChange}
+                    ></IxToggle>
+                    <IxSelect
+                      editable
+                      i18nPlaceholderEditable={
+                        isRuleHandler ? 'Select a Rule Handler' : 'Select an Action Handler'
+                      }
+                      style={{ flexGrow: 1 }}
+                    ></IxSelect>
+                  </div>
+                  <table className="ix-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Argument</th>
+                        <th scope="col">Parameters</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <IxInput {...register('name', { required: true })}></IxInput>
+                        </td>
+                        <td>
+                          <IxInput {...register('name', { required: true })}></IxInput>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={2} style={{ border: 'none', textAlign: 'right' }}>
+                          <IxIconButton
+                            variant="subtle-tertiary"
+                            icon={iconAddCircleFilled}
+                          ></IxIconButton>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </IxCol>
             </IxRow>
           </IxLayoutGrid>
