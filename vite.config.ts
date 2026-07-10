@@ -24,6 +24,7 @@ import { APP_NAME } from './src/constants';
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/tcflow/',
   plugins: [
     react(),
     VitePWA({
