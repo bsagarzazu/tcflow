@@ -54,6 +54,7 @@ interface MenuState {
 
 export function WorkflowCanvas() {
   const theme = useAppStore((state) => state.theme);
+  const { pause, resume } = useWorkflowStore.temporal.getState();
 
   const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
   const nodes = useWorkflowStore((state) => state.workflows[state.activeWorkflowId].nodes);
@@ -170,6 +171,8 @@ export function WorkflowCanvas() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onViewportChange={onViewportChange}
+        onNodeDragStart={() => pause()}
+        onNodeDragStop={() => resume()}
         onConnect={onConnect}
         onDrop={onDrop}
         onDragOver={onDragOver}
