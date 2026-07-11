@@ -55,9 +55,6 @@ export function TaskHandlerEditor({ handlerId }: { handlerId: string | null }) {
     name: `${handlerPath}.arguments` as any,
   });
 
-  const scrollUp = () => setStartIndex((prev) => Math.max(0, prev - 1));
-  const scrollDown = () => setStartIndex((prev) => Math.min(fields.length - 1, prev + 1));
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div
@@ -151,22 +148,35 @@ export function TaskHandlerEditor({ handlerId }: { handlerId: string | null }) {
             variant="subtle-tertiary"
             icon={iconChevronUp}
             disabled={startIndex === 0}
-            onClick={scrollUp}
+            onClick={() => {
+              const nextIndex = Math.max(0, selectedArgIndex - 1);
+              setStartIndex(nextIndex);
+              if (nextIndex < startIndex) {
+                setSelectedArgIndex(nextIndex);
+              }
+            }}
           ></IxIconButton>
           <IxIconButton
             variant="subtle-tertiary"
             icon={iconChevronDown}
             disabled={startIndex + ROWS_VISIBLE >= fields.length}
-            onClick={scrollDown}
+            onClick={() => {
+              const nextIndex = Math.min(fields.length - 1, selectedArgIndex + 1);
+              setSelectedArgIndex(nextIndex);
+              if (nextIndex >= startIndex + ROWS_VISIBLE) {
+                setStartIndex(nextIndex - ROWS_VISIBLE + 1);
+              }
+            }}
           ></IxIconButton>
           <IxIconButton
             variant="subtle-tertiary"
             icon={iconAddCircleFilled}
             onClick={() => {
               append({ argument: '', value: '' });
-              if (fields.length >= ROWS_VISIBLE) {
-                setStartIndex(fields.length - ROWS_VISIBLE + 1);
-                setSelectedArgIndex(fields.length);
+              const nextIndex = fields.length;
+              setSelectedArgIndex(nextIndex);
+              if (nextIndex >= ROWS_VISIBLE) {
+                setStartIndex(nextIndex - ROWS_VISIBLE + 1);
               }
             }}
           ></IxIconButton>
@@ -176,8 +186,10 @@ export function TaskHandlerEditor({ handlerId }: { handlerId: string | null }) {
             disabled={!fields[selectedArgIndex]}
             onClick={() => {
               remove(selectedArgIndex);
-              if (selectedArgIndex >= fields.length - 1 && selectedArgIndex > 0) {
-                setSelectedArgIndex(fields.length - 1);
+              const nextIndex = Math.max(0, selectedArgIndex - 1);
+              setSelectedArgIndex(nextIndex);
+              if (startIndex > 0 && fields.length - 1 < startIndex + ROWS_VISIBLE) {
+                setStartIndex((prev) => prev - 1);
               }
             }}
           ></IxIconButton>
