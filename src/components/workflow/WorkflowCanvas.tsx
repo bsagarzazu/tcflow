@@ -160,7 +160,7 @@ export function WorkflowCanvas() {
     async (event: React.MouseEvent, node: Node) => {
       event.preventDefault();
       await showModal({
-        content: <TaskProperties node={node as TaskNodeType} />,
+        content: <TaskProperties nodeId={node.id} />,
       });
     },
     [showModal],
