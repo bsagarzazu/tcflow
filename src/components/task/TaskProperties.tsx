@@ -18,13 +18,9 @@
 
 import {
   IxButton,
-  IxIconButton,
   IxLayoutGrid,
   IxRow,
   IxCol,
-  IxInput,
-  IxSelect,
-  IxToggle,
   IxIcon,
   IxModalContent,
   IxModalFooter,
@@ -32,44 +28,30 @@ import {
   Modal,
   type ModalRef,
 } from '@siemens/ix-react';
-import { iconAddCircleFilled } from '@siemens/ix-icons/icons';
 import { useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
 
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { TC_TASK_REGISTRY } from '../../constants';
 import { type TaskNodeType } from '../../types';
 import { AppEditableText } from '../app';
+import { TaskHandlerHierarchy } from './TaskHandlerHierarchy';
 
 type TaskPropertiesProps = {
-  node: TaskNodeType;
+  nodeId: string;
 };
 
-export function TaskProperties({ node }: TaskPropertiesProps) {
+export function TaskProperties({ nodeId }: TaskPropertiesProps) {
+  const [selectedHandlerId, setSelectedHandlerId] = useState<string | null>(null);
   const modalRef = useRef<ModalRef>(null);
-  const [isRuleHandler, setIsRuleHandler] = useState(false);
+
+  const taskNode = useWorkflowStore((state) =>
+    state.workflows[state.activeWorkflowId]?.nodes.find((node) => node.id === nodeId),
+  ) as TaskNodeType;
 
   const updateNodeData = useWorkflowStore((state) => state.updateNodeData);
 
-  const handleToggleChange = (event: any) => {
-    setIsRuleHandler(event.detail);
-  };
-
-  const { register, handleSubmit } = useForm<TaskNodeType['data']>({
-    mode: 'onTouched',
-    defaultValues: {
-      name: node.data.name,
-      type: node.data.type,
-    },
-  });
-
   const dismiss = () => {
     modalRef.current?.dismiss('dismiss');
-  };
-
-  const onSubmit = (data: TaskNodeType['data']) => {
-    updateNodeData(node.id, data);
-    modalRef.current?.close(data);
   };
 
   return (
@@ -85,74 +67,28 @@ export function TaskProperties({ node }: TaskPropertiesProps) {
             fontSize: '1.1rem',
           }}
         >
-          <IxIcon size="32" name={TC_TASK_REGISTRY[node.data.type].ixIcon}></IxIcon>
+          <IxIcon size="32" name={TC_TASK_REGISTRY[taskNode.data.type].ixIcon}></IxIcon>
           <AppEditableText
-            value={node.data.name}
-            onSave={(value) => updateNodeData(node.id, { ...node.data, name: value })}
+            value={taskNode.data.name}
+            onSave={(newName) => updateNodeData(taskNode.id, { ...taskNode.data, name: newName })}
           />
         </div>
       </IxModalHeader>
       <IxModalContent>
-        <form id="task-properties-form" onSubmit={handleSubmit(onSubmit)}>
-          <IxLayoutGrid>
-            <IxRow>
-              <IxCol size="4"></IxCol>
-              <IxCol size="8">
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      gap: '2rem',
-                    }}
-                  >
-                    <IxToggle
-                      text-off="Action Handler"
-                      text-on="Rule Handler"
-                      style={{ minWidth: '20ch', flexShrink: 0 }}
-                      onCheckedChange={handleToggleChange}
-                    ></IxToggle>
-                    <IxSelect
-                      editable
-                      i18nPlaceholderEditable={
-                        isRuleHandler ? 'Select a Rule Handler' : 'Select an Action Handler'
-                      }
-                      style={{ flexGrow: 1 }}
-                    ></IxSelect>
-                  </div>
-                  <table className="ix-table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Argument</th>
-                        <th scope="col">Parameters</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <IxInput {...register('name', { required: true })}></IxInput>
-                        </td>
-                        <td>
-                          <IxInput {...register('name', { required: true })}></IxInput>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td colSpan={2} style={{ border: 'none', textAlign: 'right' }}>
-                          <IxIconButton
-                            variant="subtle-tertiary"
-                            icon={iconAddCircleFilled}
-                          ></IxIconButton>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </IxCol>
-            </IxRow>
-          </IxLayoutGrid>
-        </form>
+        <IxLayoutGrid>
+          <IxRow>
+            <IxCol size="4">
+              <TaskHandlerHierarchy
+                taskNodeId={taskNode.id}
+                handlerId={selectedHandlerId}
+                setHandlerId={setSelectedHandlerId}
+              />
+            </IxCol>
+            <IxCol size="8">
+              <form id="task-properties-form"></form>
+            </IxCol>
+          </IxRow>
+        </IxLayoutGrid>
       </IxModalContent>
       <IxModalFooter>
         <IxButton variant="secondary" onClick={() => dismiss()}>

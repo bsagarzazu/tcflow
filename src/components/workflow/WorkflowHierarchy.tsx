@@ -62,7 +62,7 @@ export function WorkflowHierarchy() {
       const node = getNode(nodeId);
       if (node) {
         await showModal({
-          content: <TaskProperties node={node as TaskNodeType} />,
+          content: <TaskProperties nodeId={node.id} />,
         });
       }
     },
