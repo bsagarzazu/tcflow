@@ -26,7 +26,7 @@ export type TCTaskType = keyof typeof TC_TASK_REGISTRY;
 export interface TCHandler {
   id: string;
   name: string;
-  arguments: string[];
+  arguments: { argument: string; value: string }[];
 }
 
 export interface TCAction {

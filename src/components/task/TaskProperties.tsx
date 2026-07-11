@@ -29,12 +29,14 @@ import {
   type ModalRef,
 } from '@siemens/ix-react';
 import { useRef, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { TC_TASK_REGISTRY } from '../../constants';
 import { type TaskNodeType } from '../../types';
 import { AppEditableText } from '../app';
 import { TaskHandlerHierarchy } from './TaskHandlerHierarchy';
+import { TaskHandlerEditor } from './TaskHandlerEditor';
 
 type TaskPropertiesProps = {
   nodeId: string;
@@ -50,13 +52,22 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
 
   const updateNodeData = useWorkflowStore((state) => state.updateNodeData);
 
-  const dismiss = () => {
-    modalRef.current?.dismiss('dismiss');
+  const methods = useForm<TaskNodeType['data']>({
+    defaultValues: taskNode.data,
+  });
+
+  const onClose = () => {
+    modalRef.current?.close('close');
+  };
+
+  const onSubmit = (data: TaskNodeType['data']) => {
+    updateNodeData(taskNode.id, data);
+    modalRef.current?.close('submit');
   };
 
   return (
     <Modal ref={modalRef} size="840">
-      <IxModalHeader onCloseClick={() => dismiss()}>
+      <IxModalHeader onCloseClick={() => onClose()}>
         <div
           style={{
             display: 'flex',
@@ -75,25 +86,28 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
         </div>
       </IxModalHeader>
       <IxModalContent>
-        <IxLayoutGrid>
-          <IxRow>
-            <IxCol size="4">
-              <TaskHandlerHierarchy
-                taskNodeId={taskNode.id}
-                handlerId={selectedHandlerId}
-                setHandlerId={setSelectedHandlerId}
-              />
-            </IxCol>
-            <IxCol size="8">
-              <form id="task-properties-form"></form>
-            </IxCol>
-          </IxRow>
-        </IxLayoutGrid>
+        <FormProvider {...methods}>
+          <form id="task-properties-form" onSubmit={methods.handleSubmit(onSubmit)}>
+            <IxLayoutGrid>
+              <IxRow>
+                <IxCol size="4">
+                  <TaskHandlerHierarchy
+                    taskNodeId={taskNode.id}
+                    handlerId={selectedHandlerId}
+                    setHandlerId={setSelectedHandlerId}
+                  />
+                </IxCol>
+                <IxCol size="8">
+                  <TaskHandlerEditor handlerId={selectedHandlerId as string} />
+                </IxCol>
+              </IxRow>
+            </IxLayoutGrid>
+          </form>
+        </FormProvider>
       </IxModalContent>
       <IxModalFooter>
-        <IxButton variant="secondary" onClick={() => dismiss()}>
-          Cancel
-        </IxButton>
+        <IxButton variant="secondary">Create</IxButton>
+        <IxButton variant="secondary">Delete</IxButton>
         <IxButton variant="primary" type="submit" form="task-properties-form">
           Save
         </IxButton>
