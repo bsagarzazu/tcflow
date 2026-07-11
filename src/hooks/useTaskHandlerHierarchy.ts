@@ -33,7 +33,7 @@ export function useTaskHandlerHierarchy(taskNodeId: string) {
       root: {
         id: 'root',
         data: { type: undefined, name: '' },
-        hasChildren: false,
+        hasChildren: true,
         children: [],
       },
     };
