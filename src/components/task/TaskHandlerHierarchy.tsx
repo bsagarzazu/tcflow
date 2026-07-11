@@ -18,23 +18,42 @@
 
 import { type TreeContext } from '@siemens/ix';
 import { IxTree, IxIcon } from '@siemens/ix-react';
-import { iconFolderFilled } from '@siemens/ix-icons/icons';
-import { useState } from 'react';
+import { iconFolderFilled, iconDocumentSettings } from '@siemens/ix-icons/icons';
+import { useEffect, useState } from 'react';
 
-import { useBuildTaskHandlerHierarchy } from '../../hooks';
+import { useTaskHandlerHierarchy } from '../../hooks';
 import { type TreeHandlerData } from '../../types';
 
-export function TaskHandlerHierarchy({ taskNodeId }: { taskNodeId: string }) {
+export function TaskHandlerHierarchy({
+  taskNodeId,
+  handlerId,
+  setHandlerId,
+}: {
+  taskNodeId: string;
+  handlerId: string | null;
+  setHandlerId: (handlerId: string | null) => void;
+}) {
   const [context, setContext] = useState<TreeContext>({});
-  const treeModel = useBuildTaskHandlerHierarchy(taskNodeId);
+  const treeModel = useTaskHandlerHierarchy(taskNodeId);
+
+  useEffect(() => {
+    if (!handlerId) {
+      setContext({});
+      return;
+    }
+    setContext({ [handlerId]: { isExpanded: false, isSelected: true } });
+  }, [handlerId, setContext]);
 
   return (
     <IxTree
       root={'root'}
       model={treeModel}
       context={context}
-      onContextChange={({ detail }) => {
-        setContext(detail);
+      onNodeClicked={(event) => {
+        setHandlerId(event.detail);
+      }}
+      onContextChange={(event) => {
+        setContext(event.detail);
       }}
       renderItem={(data: TreeHandlerData) => (
         <div
@@ -43,15 +62,13 @@ export function TaskHandlerHierarchy({ taskNodeId }: { taskNodeId: string }) {
             alignItems: 'center',
           }}
         >
-          {data.type === 'action' && (
-            <IxIcon
-              name={iconFolderFilled}
-              size="16"
-              style={{
-                marginInlineEnd: '0.5rem',
-              }}
-            />
-          )}
+          <IxIcon
+            name={data.type === 'action' ? iconFolderFilled : iconDocumentSettings}
+            size="16"
+            style={{
+              marginInlineEnd: '0.5rem',
+            }}
+          />
           {data.name}
         </div>
       )}
