@@ -23,7 +23,7 @@ import { useReactFlow } from '@xyflow/react';
 
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { useBuildWorkflowHierarchy } from '../../hooks/useWorkflowHierarchy';
-import { type TreeData, type TaskNodeType } from '../../types';
+import { type TreeTaskData, type TaskNodeType } from '../../types';
 import { AppEditableText } from '../app';
 import { TaskProperties } from '../task';
 
@@ -91,7 +91,7 @@ export function WorkflowHierarchy() {
           setContext(detail);
         }}
         onNodeClicked={selectNode}
-        renderItem={(data: TreeData) => (
+        renderItem={(data: TreeTaskData) => (
           <div
             style={{
               display: 'flex',

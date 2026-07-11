@@ -21,7 +21,7 @@ import { useMemo } from 'react';
 
 import { useWorkflowStore } from '../store/useWorkflowStore';
 import { TC_TASK_REGISTRY } from '../constants';
-import { type TreeData } from '../types';
+import { type TreeTaskData } from '../types';
 
 export function useBuildWorkflowHierarchy() {
   const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
@@ -30,7 +30,7 @@ export function useBuildWorkflowHierarchy() {
   const workflowHierarchy = useMemo(() => {
     const { nodes } = workflow;
 
-    const model: TreeModel<TreeData> = {
+    const model: TreeModel<TreeTaskData> = {
       root: {
         id: 'root',
         data: { id: '' },
