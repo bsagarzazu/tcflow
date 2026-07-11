@@ -23,7 +23,7 @@ import { useWorkflowStore } from '../store/useWorkflowStore';
 import { type TreeHandlerData } from '../types';
 import { TC_ACTION_REGISTRY } from '../constants';
 
-export function useBuildTaskHandlerHierarchy(taskNodeId: string) {
+export function useTaskHandlerHierarchy(taskNodeId: string) {
   const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
   const workflow = useWorkflowStore((state) => state.workflows[activeWorkflowId]);
   const taskNode = workflow.nodes.find((n) => n.id === taskNodeId);

@@ -23,7 +23,7 @@ import { useWorkflowStore } from '../store/useWorkflowStore';
 import { TC_TASK_REGISTRY } from '../constants';
 import { type TreeTaskData } from '../types';
 
-export function useBuildWorkflowHierarchy() {
+export function useWorkflowHierarchy() {
   const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
   const workflow = useWorkflowStore((state) => state.workflows[activeWorkflowId]);
 

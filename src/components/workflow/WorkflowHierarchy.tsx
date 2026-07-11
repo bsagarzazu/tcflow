@@ -22,7 +22,7 @@ import { IxPane, IxTree, IxIcon, showModal } from '@siemens/ix-react';
 import { useReactFlow } from '@xyflow/react';
 
 import { useWorkflowStore } from '../../store/useWorkflowStore';
-import { useBuildWorkflowHierarchy } from '../../hooks';
+import { useWorkflowHierarchy } from '../../hooks';
 import { type TreeTaskData, type TaskNodeType } from '../../types';
 import { AppEditableText } from '../app';
 import { TaskProperties } from '../task';
@@ -30,7 +30,7 @@ import { TaskProperties } from '../task';
 export function WorkflowHierarchy() {
   const { getNode, fitView } = useReactFlow();
   const [context, setContext] = useState<TreeContext>({});
-  const treeModel = useBuildWorkflowHierarchy();
+  const treeModel = useWorkflowHierarchy();
 
   const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
   const workflowName = useWorkflowStore((state) => state.workflows[activeWorkflowId].name);
