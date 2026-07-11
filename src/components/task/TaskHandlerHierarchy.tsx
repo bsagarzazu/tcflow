@@ -16,76 +16,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { type TreeModel, type TreeContext } from '@siemens/ix';
+import { type TreeContext } from '@siemens/ix';
 import { IxTree, IxIcon } from '@siemens/ix-react';
 import { iconFolderFilled } from '@siemens/ix-icons/icons';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
-import { useWorkflowStore } from '../../store/useWorkflowStore';
-import { TC_ACTION_REGISTRY } from '../../constants';
+import { useBuildTaskHandlerHierarchy } from '../../hooks/useTaskHandlerHierarchy';
+import { type TreeHandlerData } from '../../types';
 
-type TreeData = {
-  type: 'action' | undefined;
-  name: string;
-};
-
-export function TaskHandlerHierarchy(taskNodeId: string) {
+export function TaskHandlerHierarchy({ taskNodeId }: { taskNodeId: string }) {
   const [context, setContext] = useState<TreeContext>({});
-
-  const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
-  const workflow = useWorkflowStore((state) => state.workflows[activeWorkflowId]);
-  const taskNode = workflow.nodes.find((n) => n.id === taskNodeId);
-
-  const taskHandlerHierarchy = useMemo(() => {
-    const model: TreeModel<TreeData> = {
-      root: {
-        id: 'root',
-        data: { type: undefined, name: '' },
-        hasChildren: false,
-        children: [],
-      },
-    };
-
-    if (!taskNode) return model;
-
-    taskNode.data.actions.forEach((action) => {
-      model[action.id] = {
-        id: action.id,
-        data: {
-          type: 'action',
-          name: TC_ACTION_REGISTRY[action.actionType],
-        },
-        hasChildren: true,
-        children: [],
-      };
-
-      action.handlers.forEach((handler) => {
-        model[handler.id] = {
-          id: handler.id,
-          data: {
-            type: undefined,
-            name: handler.name,
-          },
-          hasChildren: false,
-          children: [],
-        };
-
-        model[action.id].children.push(handler.id);
-      });
-    });
-
-    return model;
-  }, [taskNode]);
+  const treeModel = useBuildTaskHandlerHierarchy(taskNodeId);
 
   return (
     <IxTree
       root={'root'}
-      model={taskHandlerHierarchy}
+      model={treeModel}
       context={context}
       onContextChange={({ detail }) => {
         setContext(detail);
       }}
-      renderItem={(data: TreeData) => (
+      renderItem={(data: TreeHandlerData) => (
         <div
           style={{
             display: 'flex',

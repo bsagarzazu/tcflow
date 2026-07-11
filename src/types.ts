@@ -50,3 +50,4 @@ type WorkflowEdgeData = {
 export type WorkflowEdgeType = Edge<WorkflowEdgeData>;
 
 export type TreeData = Partial<TaskNodeData> & { id: string; icon?: string };
+export type TreeHandlerData = { name: string; type: 'action' | undefined };
