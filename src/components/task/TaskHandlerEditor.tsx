@@ -108,7 +108,7 @@ export function TaskHandlerEditor({ handlerId }: { handlerId: string | null }) {
             {Array.from({ length: ROWS_VISIBLE }).map((_, index) => {
               const dataIndex = startIndex + index;
               const field = fields[dataIndex];
-              const isSelected = selectedArgIndex === dataIndex;
+              const isSelected = field && selectedArgIndex === dataIndex;
 
               return (
                 <tr
@@ -120,21 +120,25 @@ export function TaskHandlerEditor({ handlerId }: { handlerId: string | null }) {
                   }}
                 >
                   <td>
-                    {field && (
+                    {field ? (
                       <IxInput
                         style={{ width: '100%' }}
                         {...register(`${handlerPath}.arguments.${dataIndex}.argument` as any)}
                         onFocus={() => setSelectedArgIndex(dataIndex)}
                       ></IxInput>
+                    ) : (
+                      <IxInput style={{ width: '100%' }} disabled></IxInput>
                     )}
                   </td>
                   <td>
-                    {field && (
+                    {field ? (
                       <IxInput
                         style={{ width: '100%' }}
                         {...register(`${handlerPath}.arguments.${dataIndex}.value` as any)}
                         onFocus={() => setSelectedArgIndex(dataIndex)}
                       ></IxInput>
+                    ) : (
+                      <IxInput style={{ width: '100%' }} disabled></IxInput>
                     )}
                   </td>
                 </tr>
