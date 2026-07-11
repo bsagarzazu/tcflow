@@ -23,7 +23,7 @@ import { useReactFlow } from '@xyflow/react';
 
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { useWorkflowHierarchy } from '../../hooks';
-import { type TreeTaskData, type TaskNodeType } from '../../types';
+import { type TreeTaskData } from '../../types';
 import { AppEditableText } from '../app';
 import { TaskProperties } from '../task';
 
