@@ -37,7 +37,7 @@ import { useAppStore } from '../../store/useAppStore';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { type TaskNodeType } from '../../types';
 import { generateId } from '../../core/utils';
-import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts';
+import { useKeyboardShortcuts } from '../../hooks';
 import { AppWatermark, AppFooterNotice } from '../app';
 import { TaskNode, TaskProperties } from '../task';
 

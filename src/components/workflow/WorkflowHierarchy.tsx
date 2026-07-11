@@ -22,7 +22,7 @@ import { IxPane, IxTree, IxIcon, showModal } from '@siemens/ix-react';
 import { useReactFlow } from '@xyflow/react';
 
 import { useWorkflowStore } from '../../store/useWorkflowStore';
-import { useBuildWorkflowHierarchy } from '../../hooks/useWorkflowHierarchy';
+import { useBuildWorkflowHierarchy } from '../../hooks';
 import { type TreeTaskData, type TaskNodeType } from '../../types';
 import { AppEditableText } from '../app';
 import { TaskProperties } from '../task';

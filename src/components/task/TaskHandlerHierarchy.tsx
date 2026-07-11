@@ -21,7 +21,7 @@ import { IxTree, IxIcon } from '@siemens/ix-react';
 import { iconFolderFilled } from '@siemens/ix-icons/icons';
 import { useState } from 'react';
 
-import { useBuildTaskHandlerHierarchy } from '../../hooks/useTaskHandlerHierarchy';
+import { useBuildTaskHandlerHierarchy } from '../../hooks';
 import { type TreeHandlerData } from '../../types';
 
 export function TaskHandlerHierarchy({ taskNodeId }: { taskNodeId: string }) {
