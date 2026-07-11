@@ -32,7 +32,7 @@ export function useTaskHandlerHierarchy(taskNodeId: string) {
     const model: TreeModel<TreeHandlerData> = {
       root: {
         id: 'root',
-        data: { type: undefined, name: '' },
+        data: { id: '', type: undefined, name: '' },
         hasChildren: true,
         children: [],
       },
@@ -44,6 +44,7 @@ export function useTaskHandlerHierarchy(taskNodeId: string) {
       model[action.id] = {
         id: action.id,
         data: {
+          id: action.id,
           type: 'action',
           name: TC_ACTION_REGISTRY[action.actionType],
         },
@@ -57,6 +58,7 @@ export function useTaskHandlerHierarchy(taskNodeId: string) {
         model[handler.id] = {
           id: handler.id,
           data: {
+            id: handler.id,
             type: undefined,
             name: handler.name,
           },

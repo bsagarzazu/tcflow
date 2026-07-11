@@ -18,7 +18,11 @@
 
 import { type TreeContext } from '@siemens/ix';
 import { IxTree, IxIcon } from '@siemens/ix-react';
-import { iconFolderFilled, iconDocumentSettings } from '@siemens/ix-icons/icons';
+import {
+  iconFolderFilled,
+  iconFolderOpenFilled,
+  iconDocumentSettings,
+} from '@siemens/ix-icons/icons';
 import { useEffect, useState } from 'react';
 
 import { useTaskHandlerHierarchy } from '../../hooks';
@@ -37,11 +41,9 @@ export function TaskHandlerHierarchy({
   const treeModel = useTaskHandlerHierarchy(taskNodeId);
 
   useEffect(() => {
-    if (!handlerId) {
-      setContext({});
-      return;
-    }
-    setContext({ [handlerId]: { isExpanded: false, isSelected: true } });
+    if (!handlerId) return;
+
+    setContext((prev) => ({ ...prev, [handlerId]: { ...prev[handlerId], isSelected: true } }));
   }, [handlerId, setContext]);
 
   return (
@@ -53,25 +55,37 @@ export function TaskHandlerHierarchy({
         setHandlerId(event.detail);
       }}
       onContextChange={(event) => {
-        setContext(event.detail);
+        setContext({ ...event.detail });
       }}
-      renderItem={(data: TreeHandlerData) => (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <IxIcon
-            name={data.type === 'action' ? iconFolderFilled : iconDocumentSettings}
-            size="16"
+      renderItem={(data: TreeHandlerData) => {
+        const isAction = data.type === 'action';
+        const nodeContext = context[data.id];
+        const isExpanded = nodeContext?.isExpanded;
+
+        const iconName = isAction
+          ? isExpanded
+            ? iconFolderOpenFilled
+            : iconFolderFilled
+          : iconDocumentSettings;
+
+        return (
+          <div
             style={{
-              marginInlineEnd: '0.5rem',
+              display: 'flex',
+              alignItems: 'center',
             }}
-          />
-          {data.name}
-        </div>
-      )}
+          >
+            <IxIcon
+              name={iconName}
+              size="16"
+              style={{
+                marginInlineEnd: '0.5rem',
+              }}
+            />
+            {data.name}
+          </div>
+        );
+      }}
     ></IxTree>
   );
 }
