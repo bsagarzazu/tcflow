@@ -1,4 +1,4 @@
-# <img src="public/favicon.svg" width="40" height="40" align="center"> Flow
+# <div style="display: flex; align-items: center; gap: 0.5rem;"><img src="public/favicon.svg" width="40" height="40" align="center"> Flow </div>
 
 Web-based Teamcenter workflow editor built with [Siemens iX](https://github.com/siemens/ix) and [React Flow](https://github.com/xyflow/xyflow).
 
