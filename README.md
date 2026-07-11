@@ -23,7 +23,7 @@ Please [create an Issue]() if you found a bug or want to request a new feature.
 
 ## Sponsors & Support
 
-If you find this tool useful in your daily work, consider [becoming a sponsor]().
+If you find this tool useful in your daily work, consider [becoming a sponsor](https://github.com/sponsors/bsagarzazu).
 
 ## Companies using TcFlow
 
