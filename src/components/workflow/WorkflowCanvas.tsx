@@ -35,8 +35,7 @@ import { WorkflowContextMenu } from './WorkflowContextMenu';
 
 import { useAppStore } from '../../store/useAppStore';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
-import { type TaskNodeType } from '../../types';
-import { generateId } from '../../core/utils';
+import { type TCTaskType } from '../../types';
 import { useKeyboardShortcuts } from '../../hooks';
 import { AppWatermark, AppFooterNotice } from '../app';
 import { TaskNode, TaskProperties } from '../task';
@@ -64,6 +63,7 @@ export function WorkflowCanvas() {
   const onViewportChange = useWorkflowStore((state) => state.onViewportChange);
   const onConnect = useWorkflowStore((state) => state.onConnect);
   const setNodes = useWorkflowStore((state) => state.setNodes);
+  const addNode = useWorkflowStore((state) => state.addNode);
 
   const nodesInitialized = useNodesInitialized();
   const { screenToFlowPosition, fitView, setViewport } = useReactFlow();
@@ -102,15 +102,7 @@ export function WorkflowCanvas() {
         y: event.clientY,
       });
 
-      const taskName = `${taskType.replace(/([A-Z])/g, ' $1').trim()} Task`;
-      const newTask = {
-        id: generateId(),
-        type: 'task',
-        position,
-        data: { type: taskType, name: taskName },
-        deletable: true,
-      };
-      setNodes(nodes.concat(newTask as TaskNodeType));
+      addNode(taskType as TCTaskType, position);
     },
     [screenToFlowPosition, nodes, setNodes],
   );

@@ -27,10 +27,18 @@ import {
   addEdge,
   type Connection,
   type Viewport,
+  type XYPosition,
 } from '@xyflow/react';
 
 import { generateId } from '../core/utils';
-import { type TaskNodeType, type WorkflowEdgeType } from '../types';
+import {
+  type TaskNodeType,
+  type TCActionType,
+  type WorkflowEdgeType,
+  type TCAction,
+  type TCTaskType,
+} from '../types';
+import { TC_ACTION_REGISTRY, TC_TASK_REGISTRY } from '../constants';
 
 interface Workflow {
   name: string;
@@ -60,21 +68,30 @@ interface WorkflowState {
     type: 'success' | 'failure' | 'conditional',
     conditionValue?: 'True' | 'False',
   ) => void;
+  addNode: (type: TCTaskType, position: XYPosition) => void;
 }
+
+const getActions = (): TCAction[] => {
+  return (Object.keys(TC_ACTION_REGISTRY) as unknown as TCAction[]).map((type) => ({
+    id: generateId(),
+    actionType: Number(type) as TCActionType,
+    handlers: [],
+  }));
+};
 
 const getInitialNodes = (): TaskNodeType[] => [
   {
     id: 'start',
     type: 'task',
     position: { x: 0, y: 0 },
-    data: { type: 'Start', name: 'Start', actions: [] },
+    data: { type: 'Start', name: 'Start', actions: getActions() },
     deletable: false,
   },
   {
     id: 'end',
     type: 'task',
     position: { x: 800, y: 0 },
-    data: { type: 'End', name: 'End', actions: [] },
+    data: { type: 'End', name: 'End', actions: getActions() },
     deletable: false,
   },
 ];
@@ -325,6 +342,30 @@ export const useWorkflowStore = create<WorkflowState>()(
                         }
                       : edge,
                   ),
+                },
+              },
+            };
+          });
+        },
+
+        addNode: (type: TCTaskType, position: XYPosition) => {
+          set((state) => {
+            const activeId = state.activeWorkflowId;
+            const activeWorkflow = state.workflows[activeId];
+
+            const newNode: TaskNodeType = {
+              id: generateId(),
+              type: 'task',
+              position,
+              data: { type: type, name: TC_TASK_REGISTRY[type].label, actions: getActions() },
+            };
+
+            return {
+              workflows: {
+                ...state.workflows,
+                [activeId]: {
+                  ...activeWorkflow,
+                  nodes: activeWorkflow.nodes.concat(newNode),
                 },
               },
             };

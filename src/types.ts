@@ -23,13 +23,13 @@ import { TC_ACTION_REGISTRY, TC_TASK_REGISTRY } from './constants';
 export type TCActionType = keyof typeof TC_ACTION_REGISTRY;
 export type TCTaskType = keyof typeof TC_TASK_REGISTRY;
 
-interface TCHandler {
+export interface TCHandler {
   id: string;
   name: string;
   arguments: string[];
 }
 
-interface TCAction {
+export interface TCAction {
   id: string;
   actionType: TCActionType;
   handlers: TCHandler[];
