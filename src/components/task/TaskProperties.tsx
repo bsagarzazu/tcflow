@@ -42,6 +42,14 @@ type TaskPropertiesProps = {
   nodeId: string;
 };
 
+type TaskPropertiesFormData = TaskNodeType['data'] & {
+  newHandler: {
+    name: string;
+    isRule: boolean;
+    arguments: any[];
+  };
+};
+
 export function TaskProperties({ nodeId }: TaskPropertiesProps) {
   const [selectedHandlerId, setSelectedHandlerId] = useState<string | null>(null);
   const modalRef = useRef<ModalRef>(null);
@@ -52,22 +60,29 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
 
   const updateNodeData = useWorkflowStore((state) => state.updateNodeData);
 
-  const methods = useForm<TaskNodeType['data']>({
-    defaultValues: taskNode.data,
+  const methods = useForm<TaskPropertiesFormData>({
+    defaultValues: {
+      ...taskNode.data,
+      newHandler: { name: '', isRule: false, arguments: [] },
+    },
   });
+
+  const { watch, setValue, handleSubmit } = methods;
+  const currentName = watch('name');
 
   const onClose = () => {
     modalRef.current?.close('close');
   };
 
-  const onSubmit = (data: TaskNodeType['data']) => {
-    updateNodeData(taskNode.id, data);
+  const onSubmit = (data: TaskPropertiesFormData) => {
+    const { newHandler, ...cleanData } = data;
+    updateNodeData(taskNode.id, cleanData);
     modalRef.current?.close('submit');
   };
 
   return (
     <Modal ref={modalRef} size="840">
-      <IxModalHeader onCloseClick={() => onClose()}>
+      <IxModalHeader onCloseClick={onClose}>
         <div
           style={{
             display: 'flex',
@@ -79,35 +94,42 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
           }}
         >
           <IxIcon size="32" name={TC_TASK_REGISTRY[taskNode.data.type].ixIcon}></IxIcon>
-          <AppEditableText
-            value={taskNode.data.name}
-            onSave={(newName) => updateNodeData(taskNode.id, { ...taskNode.data, name: newName })}
-          />
+          {taskNode.data.type === 'Start' || taskNode.data.type === 'End' ? (
+            <span>{currentName}</span>
+          ) : (
+            <AppEditableText value={currentName} onSave={(newName) => setValue('name', newName)} />
+          )}
         </div>
       </IxModalHeader>
-      <IxModalContent>
+
+      <IxModalContent style={{ overflow: 'hidden' }}>
         <FormProvider {...methods}>
-          <form id="task-properties-form" onSubmit={methods.handleSubmit(onSubmit)}>
+          <form id="task-properties-form" onSubmit={handleSubmit(onSubmit)}>
             <IxLayoutGrid>
               <IxRow>
                 <IxCol size="4">
                   <TaskHandlerHierarchy
-                    taskNodeId={taskNode.id}
+                    taskNodeId={nodeId}
                     handlerId={selectedHandlerId}
                     setHandlerId={setSelectedHandlerId}
                   />
                 </IxCol>
                 <IxCol size="8">
-                  <TaskHandlerEditor handlerId={selectedHandlerId as string} />
+                  <TaskHandlerEditor
+                    handlerId={selectedHandlerId}
+                    setHandlerId={setSelectedHandlerId}
+                  />
                 </IxCol>
               </IxRow>
             </IxLayoutGrid>
           </form>
         </FormProvider>
       </IxModalContent>
+
       <IxModalFooter>
-        <IxButton variant="secondary">Create</IxButton>
-        <IxButton variant="secondary">Delete</IxButton>
+        <IxButton variant="secondary" onClick={onClose}>
+          Cancel
+        </IxButton>
         <IxButton variant="primary" type="submit" form="task-properties-form">
           Save
         </IxButton>
