@@ -1,8 +1,8 @@
-# <picture><img src="https://raw.githubusercontent.com/bsagarzazu/tcflow/refs/heads/main/src/assets/banner.svg" height="120"></picture>
+# <picture><img src="src/assets/banner.svg" height="120"></picture>
 
 Web-based Teamcenter workflow editor built with [Siemens iX](https://github.com/siemens/ix) and [React Flow](https://github.com/xyflow/xyflow).
 
-<picture><img src="https://github.com/bsagarzazu/tcflow/blob/main/public/og-image.png?raw=true"></picture>
+<picture><img src="public/og-image.png"></picture>
 
 ## Features
 
