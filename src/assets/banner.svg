@@ -11,7 +11,7 @@
     }
     </style>
   </defs>
-  <g transform="translate(164, 120) scale(0.85)">
+  <g transform="translate(160, 94) scale(0.85)">
     <g id="icono-original">
       <rect x="20" y="47" width="460" height="460" fill="#00997F" />
       <g fill="#FFFFFF">
@@ -23,7 +23,7 @@
         <path d="M336 138 L398 179 L336 220 Z" />
       </g>
     </g>
-    <text x="540" y="384" 
+    <text x="540" y="355" 
           font-family="'Inter Variable', system-ui, sans-serif" 
           font-size="250" 
           font-weight="500" 
