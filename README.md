@@ -1,8 +1,8 @@
-# <span style="pointer-events: none;"><img src="src/assets/banner.svg" height="120"></span>
+# <picture><img src="src/assets/banner.svg" height="120"></picture>
 
 Web-based Teamcenter workflow editor built with [Siemens iX](https://github.com/siemens/ix) and [React Flow](https://github.com/xyflow/xyflow).
 
-<span style="pointer-events: none;"><img src="public/og-image.png"></span>
+<picture><img src="public/og-image.png"></picture>
 
 ## Features
 
