@@ -52,7 +52,9 @@ export function TaskHandlerHierarchy({
       model={treeModel}
       context={context}
       onNodeClicked={(event) => {
-        setHandlerId(event.detail);
+        const id = event.detail;
+        if (treeModel[id].data.type === 'action') return;
+        setHandlerId(id);
       }}
       onContextChange={(event) => {
         setContext({ ...event.detail });
