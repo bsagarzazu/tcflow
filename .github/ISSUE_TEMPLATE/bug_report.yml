@@ -1,6 +1,6 @@
 name: Bug Report
 description: File a general bug report.
-title: ''
+title: '[Bug]: '
 labels: ['bug']
 assignees:
   - bsagarzazu
@@ -34,7 +34,6 @@ body:
     attributes:
       label: Relevant log output
       description: If applicable, copy and paste any relevant log output.
-      render: shell
   - type: upload
     id: screenshots
     attributes:
