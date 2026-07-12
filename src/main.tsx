@@ -17,6 +17,9 @@
  */
 
 import '@siemens/ix/dist/siemens-ix/siemens-ix.css';
+import '@fontsource-variable/inter/index.css';
+import './index.css';
+
 import { IxApplicationContext } from '@siemens/ix-react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';

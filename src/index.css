@@ -1,0 +1,7 @@
+:root {
+  --theme-font-family: 'Inter Variable', system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--theme-font-family);
+}
