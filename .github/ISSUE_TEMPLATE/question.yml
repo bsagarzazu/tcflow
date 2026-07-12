@@ -1,0 +1,26 @@
+name: Question
+description: Ask a question about this project.
+title: ''
+labels: ['question']
+assignees:
+  - bsagarzazu
+body:
+  - type: checkboxes
+    id: previous-issues
+    attributes:
+      label: Previous Issues
+      options:
+        - label: I have checked that there is no existing issue regarding this question.
+          required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: Describe your question in as much detail as possible. Include any relevant context or background information.
+    validations:
+      required: true
+  - type: upload
+    id: images
+    attributes:
+      label: Upload images
+      description: If applicable, add images to help explain your question.
