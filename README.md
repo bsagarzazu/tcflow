@@ -17,9 +17,16 @@ Web-based Teamcenter workflow editor built with [Siemens iX](https://github.com/
 - **Themes**: Dark and light mode support.
 - **Free & open-source**: Licensed under AGPLv3.
 
+> **Note**: As a beta release, TcFlow is expected to have multiple bugs, mainly related to the PLMXML interoperability, as well as the following limitations:
+>
+> - PLMXML files containing multiple workflows are not yet supported.
+> - At the moment, only True and False condition values are supported for condition tasks.
+
 ## Reporting Bugs & Feature Requests
 
-Please [create an Issue]() if you found a bug or want to request a new feature.
+Please [create an Issue](https://github.com/bsagarzazu/tcflow/issues/new) if you found a bug or want to request a new feature.
+
+I include the features I plan to add in the [Backlog Milestone](https://github.com/bsagarzazu/tcflow/milestone/8). Expressing your interest in them by reacting to the corresponding Issue might lead me to implement them first.
 
 > **Note**: TcFlow is a personal project. While I plan to actively maintain it and fix bugs, PRs are currently not accepted. Please open an issue to discuss any ideas first.
 
