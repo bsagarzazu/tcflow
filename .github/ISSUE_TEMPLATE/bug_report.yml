@@ -40,12 +40,8 @@ body:
     attributes:
       label: Upload screenshots
       description: If applicable, add screenshots to help explain your problem.
-    validations:
-      required: false
   - type: upload
     id: files
     attributes:
       label: Upload files
       description: If applicable, add files to help explain your problem.
-    validations:
-      required: false
