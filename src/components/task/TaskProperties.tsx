@@ -77,8 +77,20 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
   };
 
   const onSubmit = (data: TaskPropertiesFormData) => {
-    const { newHandler, ...cleanData } = data;
-    updateNodeData(taskNode.id, cleanData);
+    const { newHandler, tempActionType, ...cleanData } = data;
+
+    const finalData = {
+      ...cleanData,
+      actions: cleanData.actions.map((action) => ({
+        ...action,
+        handlers: action.handlers.map((handler) => ({
+          ...handler,
+          arguments: handler.arguments.filter((arg) => arg.argument && arg.argument.trim() !== ''),
+        })),
+      })),
+    };
+
+    updateNodeData(taskNode.id, finalData);
     modalRef.current?.close('submit');
   };
 
