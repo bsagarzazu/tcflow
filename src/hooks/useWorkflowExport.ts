@@ -75,7 +75,7 @@ export function useWorkflowExport() {
     let string = '';
     let type = '';
     if (format === 'plmxml') {
-      string = workflowToPlmxml(flowData);
+      string = workflowToPlmxml(flowData, workflowName);
       type = 'application/xml';
     } else {
       string = workflowToJson(flowData);

@@ -16,26 +16,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { XMLBuilder, XMLParser } from 'fast-xml-parser';
+import XMLBuilder from 'fast-xml-builder';
+import { XMLParser } from 'fast-xml-parser';
 import { type ReactFlowJsonObject } from '@xyflow/react';
 
 import { APP_NAME, APP_VERSION, APP_AUTHOR, TC_TASK_REGISTRY } from '../constants';
 import { formatTCLocation } from './utils';
-import { type TCTaskType } from '../types';
+import type { TaskNodeType, WorkflowEdgeType, TCTaskType, TCAction, TCHandler } from '../types';
 
-export const serialize = (data: ReactFlowJsonObject): string => {
+export const serialize = (data: ReactFlowJsonObject, workflowName: string): string => {
   const idMap = new Map<string, string>();
-  data.nodes.forEach((node, index) => {
-    idMap.set(node.id, `id${index + 2}`); // id1 is reserved for Header
+  let idCounter = 2;
+
+  (data.nodes as TaskNodeType[]).forEach((node) => {
+    idMap.set(node.id, `id${++idCounter}`);
+    node.data.actions?.forEach((action: TCAction) => {
+      idMap.set(action.id, `id${++idCounter}`);
+      action.handlers?.forEach((handler: TCHandler) => {
+        idMap.set(handler.id, `id${++idCounter}`);
+      });
+    });
   });
 
   const now = new Date();
-
-  const getDependencies = (nodeId: string): string =>
-    data.edges
-      .filter((edge) => edge.target === nodeId)
-      .map((edge) => `#${idMap.get(edge.source)}`)
-      .join(' ');
 
   const xmlObject = {
     '?xml': {
@@ -45,27 +48,85 @@ export const serialize = (data: ReactFlowJsonObject): string => {
     PLMXML: {
       '@_xmlns': 'http://www.plmxml.org/Schemas/PLMXMLSchema',
       '@_language': 'en-us',
-      '@_time': now.toISOString().split('T')[1].slice(0, 8),
+      '@_time': now.toTimeString().split(' ')[0],
       '@_schemaVersion': '6',
       '@_author': `${APP_NAME} v${APP_VERSION} - ${APP_AUTHOR}`,
       '@_date': now.toISOString().split('T')[0],
 
       Header: {
         '@_id': 'id1',
-        '@_traverseRootRefs': Array.from(idMap.values())
+        '@_traverseRootRefs': `id2 ${Array.from(idMap.values())
           .map((id) => `#${id}`)
-          .join(' '),
+          .join(' ')}`,
         '@_transferContext': 'workflow_template_mode',
       },
 
-      WorkflowTemplate: data.nodes.map((node) => ({
-        '@_id': idMap.get(node.id),
-        '@_name': node.data.name,
-        '@_objectType':
-          TC_TASK_REGISTRY[node.data.type as TCTaskType].objectType || 'EPMTaskTemplate',
-        '@_location': formatTCLocation(node.position.x, node.position.y),
-        '@_dependencyTaskTemplateRefs': getDependencies(node.id) || undefined,
-      })),
+      WorkflowTemplate: [
+        {
+          '@_id': 'id2',
+          '@_name': workflowName,
+          '@_objectType': 'EPMTaskTemplate',
+          '@_templateClassification': 'process',
+          '@_subTemplateRefs': data.nodes.map((node) => `#${idMap.get(node.id)}`).join(' '),
+          '@_iconKey': 'process',
+        },
+        ...(data.nodes as TaskNodeType[]).map((node) => {
+          const config = TC_TASK_REGISTRY[node.data.type as TCTaskType];
+          const dependencies = (data.edges as WorkflowEdgeType[])
+            .filter((edge) => edge.target === node.id)
+            .map((edge) => `#${idMap.get(edge.source)}`)
+            .join(' ');
+
+          return {
+            '@_id': idMap.get(node.id),
+            '@_name': node.data.name,
+            '@_objectType': config.objectType,
+            '@_location': formatTCLocation(node.position.x, node.position.y),
+            '@_iconKey': config.tcIconKey,
+            '@_dependencyTaskTemplateRefs': dependencies || undefined,
+            '@_actions':
+              node.data.actions?.map((action: TCAction) => `#${idMap.get(action.id)}`).join(' ') ||
+              undefined,
+          };
+        }),
+      ],
+
+      WorkflowAction: (data.nodes as TaskNodeType[])
+        .flatMap((node) =>
+          node.data.actions?.map((action: TCAction) => ({
+            '@_id': idMap.get(action.id),
+            '@_actionType': action.actionType,
+            '@_actionHandlerRefs':
+              action.handlers?.map((handler: TCHandler) => `#${idMap.get(handler.id)}`).join(' ') ||
+              undefined,
+            '@_parentRef': `#${idMap.get(node.id)}`,
+          })),
+        )
+        .filter(Boolean),
+
+      WorkflowHandler: (data.nodes as TaskNodeType[])
+        .flatMap((node) =>
+          node.data.actions?.flatMap((action: TCAction) =>
+            action.handlers?.map((handler: TCHandler) => ({
+              '@_id': idMap.get(handler.id),
+              '@_name': handler.name,
+              Arguments:
+                handler.arguments && handler.arguments.length > 0
+                  ? {
+                      '@_id': `args_${idMap.get(handler.id)}`,
+                      '@_type': 'string',
+                      UserValue: handler.arguments.map(
+                        (arg: { argument: string; value: string }) => ({
+                          '@_title': 'handler_argument',
+                          '@_value': `${arg.argument}${arg.value ? `=${arg.value}` : ''}`,
+                        }),
+                      ),
+                    }
+                  : undefined,
+            })),
+          ),
+        )
+        .filter(Boolean),
     },
   };
 
