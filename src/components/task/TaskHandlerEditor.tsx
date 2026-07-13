@@ -58,7 +58,7 @@ export function TaskHandlerEditor({
   });
 
   const handleCreate = () => {
-    const data = getValues('newHandler' as any);
+    const data = isEditing ? getValues(handlerPath as any) : getValues('newHandler' as any);
     const targetActionType = getValues('tempActionType' as any);
     const targetActionIndex = actions.findIndex(
       (action) => action.actionType === Number(targetActionType),
