@@ -59,18 +59,27 @@ export function TaskHandlerEditor({
 
   const handleCreate = () => {
     const data = isEditing ? getValues(handlerPath as any) : getValues('newHandler' as any);
-    const targetActionType = getValues('tempActionType' as any);
+
+    const targetActionType = isEditing
+      ? actions[actionIndex].actionType
+      : Number(getValues('tempActionType' as any));
+
     const targetActionIndex = actions.findIndex(
       (action) => action.actionType === Number(targetActionType),
     );
+    if (targetActionIndex === -1) return;
 
     const newHandler = { ...data, id: generateId() };
-    const updatedHandlers = [...actions[targetActionIndex].handlers, newHandler];
+    setValue(`actions.${targetActionIndex}.handlers`, [
+      ...actions[targetActionIndex].handlers,
+      newHandler,
+    ]);
 
-    setValue(`actions.${targetActionIndex}.handlers`, updatedHandlers);
+    if (!isEditing) {
+      setValue('newHandler' as any, { name: '', isRule: false, arguments: [] });
+    }
+
     setHandlerId(newHandler.id);
-
-    setValue('newHandler' as any, { name: '', isRule: false, arguments: [] });
   };
 
   const handleDelete = () => {
@@ -112,7 +121,7 @@ export function TaskHandlerEditor({
   const isRule = watch(`${handlerPath}.isRule` as any);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div key={handlerId || 'new'} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <IxFieldLabel htmlFor="action-select">Action</IxFieldLabel>
         <IxSelect
@@ -173,7 +182,7 @@ export function TaskHandlerEditor({
         />
       </div>
 
-      <TaskHandlerArguments key={handlerId} handlerPath={handlerPath} />
+      <TaskHandlerArguments handlerPath={handlerPath} />
 
       <div
         style={{
@@ -183,7 +192,7 @@ export function TaskHandlerEditor({
         }}
       >
         <IxButton variant="subtle-secondary" onClick={handleCreate}>
-          Create
+          {isEditing ? 'Duplicate' : 'Create'}
         </IxButton>
         <IxButton variant="danger-secondary" disabled={!isEditing} onClick={handleDelete}>
           Delete
