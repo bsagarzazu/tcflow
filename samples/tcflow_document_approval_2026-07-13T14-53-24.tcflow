@@ -1,0 +1,381 @@
+{
+  "type": "tcflow",
+  "version": "0.5.0",
+  "author": "Beñat Sagarzazu",
+  "source": "https://bsagarzazu.github.io/tcflow",
+  "elements": {
+    "nodes": [
+      {
+        "id": "start",
+        "type": "task",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "data": {
+          "type": "Start",
+          "name": "Start",
+          "actions": [
+            {
+              "id": "tcflow-ec0e4e4a-2b6e-439d-a60b-a17d3f311d5b",
+              "actionType": 2,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-fe767245-eebe-490b-b584-c7da82502bda",
+              "actionType": 4,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-9e46c967-c62f-44f9-b523-9d538109d036",
+              "actionType": 8,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-f3289bb1-268f-4565-9f81-9c5fc6c6c4aa",
+              "actionType": 100,
+              "handlers": []
+            }
+          ]
+        },
+        "deletable": false
+      },
+      {
+        "id": "end",
+        "type": "task",
+        "position": {
+          "x": 1382.5,
+          "y": -133.74999999999997
+        },
+        "data": {
+          "type": "End",
+          "name": "End",
+          "actions": [
+            {
+              "id": "tcflow-42293a3f-11c9-4ba6-afee-0734855e17d8",
+              "actionType": 2,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-5b7c54fe-abca-439c-be37-59f3fe3114c3",
+              "actionType": 4,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-c68aac70-b2ea-486f-ba92-663cfd367d82",
+              "actionType": 8,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-7644aa6f-eb1d-4dbd-bf7a-85d4eb9e4773",
+              "actionType": 100,
+              "handlers": []
+            }
+          ]
+        },
+        "deletable": false
+      },
+      {
+        "id": "tcflow-cfd0bdc9-e225-4db9-a571-d5131baa66df",
+        "type": "task",
+        "position": {
+          "x": 420.7098353106986,
+          "y": -0.7546782548693898
+        },
+        "data": {
+          "type": "Condition",
+          "name": "Is Signed",
+          "actions": [
+            {
+              "id": "tcflow-2001e571-a2b2-453a-bfda-4d41c639336f",
+              "actionType": 2,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-17a9e3d4-f804-43aa-8baa-e608ffee6902",
+              "actionType": 4,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-6df0fafc-0a13-4f3c-8203-6e65bcad4703",
+              "actionType": 8,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-c9471eab-cd51-4740-a2c2-9d10b914b5aa",
+              "actionType": 100,
+              "handlers": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "tcflow-b58c60a5-3f9f-4602-8ffc-1c66e1acf983",
+        "type": "task",
+        "position": {
+          "x": 423.20983531069857,
+          "y": 274.2453217451306
+        },
+        "data": {
+          "type": "Or",
+          "name": "Or",
+          "actions": [
+            {
+              "id": "tcflow-f4f96b13-88d6-40d3-94c2-91497e47ddcb",
+              "actionType": 2,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-06b6d8f6-a1a6-4465-911e-0334fc28579d",
+              "actionType": 4,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-29f86134-8015-40ac-8d33-9c29eaedda47",
+              "actionType": 8,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-9fd4e0ba-8621-4359-92ed-86933341bb69",
+              "actionType": 100,
+              "handlers": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "tcflow-2c6c141c-bad7-4a9e-ad0e-9ce4fa70d12d",
+        "type": "task",
+        "position": {
+          "x": 793.2098353106985,
+          "y": -133.2546782548694
+        },
+        "data": {
+          "type": "Review",
+          "name": "Review",
+          "actions": [
+            {
+              "id": "tcflow-7e2b5d9f-e968-4140-847b-b93afa1f0972",
+              "actionType": 2,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-fd439229-fa41-495e-bc75-1a6ea12dea92",
+              "actionType": 4,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-a6df6bc1-9f05-43d4-9057-afbc5728526d",
+              "actionType": 8,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-a245df00-347c-4227-88b3-c7e380a79e92",
+              "actionType": 100,
+              "handlers": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "tcflow-286a4cb9-85a3-47a9-ae65-a8aa9be507a3",
+        "type": "task",
+        "position": {
+          "x": 794.4598353106985,
+          "y": 140.4953217451306
+        },
+        "data": {
+          "type": "Do",
+          "name": "Sign Document",
+          "actions": [
+            {
+              "id": "tcflow-02fbf752-bba7-42d1-b8ce-c8bc1ce7aab8",
+              "actionType": 2,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-71caa15f-7b73-4890-89a1-fce84dec1054",
+              "actionType": 4,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-120f5f7b-a585-4498-9bd7-0ee524ff1710",
+              "actionType": 8,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-6d8472e2-3694-47cd-b098-0f6ebb4f17a1",
+              "actionType": 100,
+              "handlers": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "tcflow-c4dd4bf3-9f40-45dd-a124-ced754449e1a",
+        "type": "task",
+        "position": {
+          "x": 1093.2098353106985,
+          "y": -133.2546782548694
+        },
+        "data": {
+          "type": "AddStatus",
+          "name": "Add Status",
+          "actions": [
+            {
+              "id": "tcflow-3cbd5c9e-e964-4add-9359-3b2b80bd0109",
+              "actionType": 2,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-10eee707-edff-4e4c-8ee1-8aae43824697",
+              "actionType": 4,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-c4e5055e-cacc-4723-b462-bce97b8fb534",
+              "actionType": 8,
+              "handlers": []
+            },
+            {
+              "id": "tcflow-db6477ce-2519-42bb-bb24-490b59a6f84b",
+              "actionType": 100,
+              "handlers": []
+            }
+          ]
+        }
+      }
+    ],
+    "edges": [
+      {
+        "type": "smoothstep",
+        "style": {
+          "strokeWidth": 2
+        },
+        "markerEnd": {
+          "type": "arrowclosed",
+          "width": 20,
+          "height": 20
+        },
+        "source": "start",
+        "target": "tcflow-b58c60a5-3f9f-4602-8ffc-1c66e1acf983",
+        "id": "tcflow-fc75a76b-dd6f-4974-b5e6-9e98215e2440",
+        "data": {
+          "type": "success"
+        }
+      },
+      {
+        "type": "smoothstep",
+        "style": {
+          "strokeWidth": 2
+        },
+        "markerEnd": {
+          "type": "arrowclosed",
+          "width": 20,
+          "height": 20
+        },
+        "source": "tcflow-b58c60a5-3f9f-4602-8ffc-1c66e1acf983",
+        "target": "tcflow-cfd0bdc9-e225-4db9-a571-d5131baa66df",
+        "id": "tcflow-aa59065d-2ae2-4d31-bd99-db426846d7eb",
+        "data": {
+          "type": "success"
+        }
+      },
+      {
+        "type": "smoothstep",
+        "style": {
+          "strokeWidth": 2
+        },
+        "markerEnd": {
+          "type": "arrowclosed",
+          "width": 20,
+          "height": 20
+        },
+        "source": "tcflow-286a4cb9-85a3-47a9-ae65-a8aa9be507a3",
+        "target": "tcflow-b58c60a5-3f9f-4602-8ffc-1c66e1acf983",
+        "id": "tcflow-3b1ab133-2d7c-4c44-846d-3577185b768b",
+        "data": {
+          "type": "success"
+        },
+        "selected": false
+      },
+      {
+        "type": "smoothstep",
+        "style": {
+          "strokeWidth": 2
+        },
+        "markerEnd": {
+          "type": "arrowclosed",
+          "width": 20,
+          "height": 20
+        },
+        "source": "tcflow-cfd0bdc9-e225-4db9-a571-d5131baa66df",
+        "target": "tcflow-2c6c141c-bad7-4a9e-ad0e-9ce4fa70d12d",
+        "id": "tcflow-2caebe45-8f53-4e01-91f2-eb91c67beae6",
+        "data": {
+          "type": "conditional",
+          "conditionValue": "True"
+        },
+        "label": "True"
+      },
+      {
+        "type": "smoothstep",
+        "style": {
+          "strokeWidth": 2
+        },
+        "markerEnd": {
+          "type": "arrowclosed",
+          "width": 20,
+          "height": 20
+        },
+        "source": "tcflow-cfd0bdc9-e225-4db9-a571-d5131baa66df",
+        "target": "tcflow-286a4cb9-85a3-47a9-ae65-a8aa9be507a3",
+        "id": "tcflow-b4c95993-3739-4f34-b888-a7a0f44231b2",
+        "data": {
+          "type": "conditional",
+          "conditionValue": "False"
+        },
+        "label": "False"
+      },
+      {
+        "type": "smoothstep",
+        "style": {
+          "strokeWidth": 2
+        },
+        "markerEnd": {
+          "type": "arrowclosed",
+          "width": 20,
+          "height": 20
+        },
+        "source": "tcflow-2c6c141c-bad7-4a9e-ad0e-9ce4fa70d12d",
+        "target": "tcflow-c4dd4bf3-9f40-45dd-a124-ced754449e1a",
+        "id": "tcflow-32f6dfa5-4f76-406e-882c-63c34ff4f3f3",
+        "data": {
+          "type": "success"
+        }
+      },
+      {
+        "type": "smoothstep",
+        "style": {
+          "strokeWidth": 2
+        },
+        "markerEnd": {
+          "type": "arrowclosed",
+          "width": 20,
+          "height": 20
+        },
+        "source": "tcflow-c4dd4bf3-9f40-45dd-a124-ced754449e1a",
+        "target": "end",
+        "id": "tcflow-56a1368f-daf1-4652-8dfc-c266708d227e",
+        "data": {
+          "type": "success"
+        }
+      }
+    ],
+    "viewport": {
+      "x": 141.43213175144115,
+      "y": 207.6037426038955,
+      "zoom": 0.8
+    }
+  }
+}
