@@ -121,7 +121,14 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
           <form id="task-properties-form" onSubmit={handleSubmit(onSubmit)}>
             <IxLayoutGrid>
               <IxRow>
-                <IxCol size="4">
+                <IxCol
+                  size="4"
+                  style={{
+                    borderRight:
+                      'var(--theme-input--border-thickness, 1px) solid var(--theme-input--border-color)',
+                    paddingRight: '1rem',
+                  }}
+                >
                   <TaskHandlerHierarchy
                     handlerId={selectedHandlerId}
                     setHandlerId={setSelectedHandlerId}
