@@ -173,7 +173,7 @@ export function TaskHandlerEditor({
         />
       </div>
 
-      <TaskHandlerArguments handlerPath={handlerPath} />
+      <TaskHandlerArguments key={handlerId} handlerPath={handlerPath} />
 
       <div
         style={{
