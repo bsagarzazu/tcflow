@@ -166,7 +166,9 @@ export function TaskHandlerEditor({
                 isRule ? 'Select a Rule Handler' : 'Select an Action Handler'
               }
               style={{ flexGrow: 1 }}
-            ></IxSelect>
+            >
+              {field.value && <IxSelectItem value={field.value} label={field.value}></IxSelectItem>}
+            </IxSelect>
           )}
         />
       </div>
