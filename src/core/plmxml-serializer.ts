@@ -21,8 +21,12 @@ import { XMLParser } from 'fast-xml-parser';
 import { type ReactFlowJsonObject } from '@xyflow/react';
 
 import { APP_NAME, APP_VERSION, APP_AUTHOR, TC_TASK_REGISTRY } from '../constants';
-import { formatTCLocation } from './utils';
+import { formatTCLocation, hexToDecimal, generateId } from './utils';
 import type { TaskNodeType, WorkflowEdgeType, TCTaskType, TCAction, TCHandler } from '../types';
+
+const REVERSE_TYPE_MAP = Object.fromEntries(
+  Object.entries(TC_TASK_REGISTRY).map(([key, value]) => [value.objectType, key]),
+);
 
 export const serialize = (data: ReactFlowJsonObject, workflowName: string): string => {
   const idMap = new Map<string, string>();
@@ -140,4 +144,85 @@ export const serialize = (data: ReactFlowJsonObject, workflowName: string): stri
   return builder.build(xmlObject);
 };
 
-export const deserialize = (content: string) => {};
+export const deserialize = (content: string) => {
+  const parser = new XMLParser({
+    ignoreAttributes: false,
+    attributeNamePrefix: '@_',
+    isArray: (name) =>
+      ['WorkflowTemplate', 'WorkflowAction', 'WorkflowHandler', 'UserValue'].includes(name),
+  });
+
+  const jsonObject = parser.parse(content);
+  const plmxml = jsonObject.PLMXML;
+  if (!plmxml) return null;
+
+  const handlersMap = new Map<string, TCHandler>();
+  (plmxml.WorkflowHandler || []).forEach((handler: any) => {
+    const args =
+      handler.Arguments?.UserValue?.map((userValue: any) => {
+        const [key, ...rest] = userValue['@_value'].split('=');
+        return { argument: key, value: rest.join('=') };
+      }) || [];
+
+    handlersMap.set(handler['@_id'], {
+      id: generateId(),
+      name: handler['@_name'],
+      arguments: args,
+    });
+  });
+
+  const actionsMap = new Map<string, TCAction>();
+  (plmxml.WorkflowAction || []).forEach((action: any) => {
+    const handlers =
+      action['@_actionHandlerRefs']?.split(' ').map((id: string) => id.replace('#', '')) || [];
+
+    actionsMap.set(action['@_id'], {
+      id: generateId(),
+      actionType: Number(action['@_actionType']) as TCAction['actionType'],
+      handlers: handlers.map((id: string) => handlersMap.get(id)).filter(Boolean) as TCHandler[],
+    });
+  });
+
+  const xmlIdToUuid = new Map<string, string>();
+  const nodes = (plmxml.WorkflowTemplate || [])
+    .filter((template: any) => template['@_templateClassification'] !== 'process')
+    .map((template: any) => {
+      const uuid = generateId();
+      xmlIdToUuid.set(template['@_id'], uuid);
+      const [hexX, hexY] = template['@_location'].split(',');
+      const actionIds =
+        template['@_actions']?.split(' ').map((id: string) => id.replace('#', '')) || [];
+
+      return {
+        id: uuid,
+        type: 'task',
+        position: { x: hexToDecimal(hexX), y: hexToDecimal(hexY) },
+        data: {
+          name: template['@_name'],
+          type: REVERSE_TYPE_MAP[template['@_objectType']] as TCTaskType,
+          actions: actionIds.map((id: string) => actionsMap.get(id)).filter(Boolean) as TCAction[],
+        },
+      };
+    });
+
+  const edges = (plmxml.WorkflowTemplate || [])
+    .flatMap((template: any) => {
+      const deps = template['@_dependencyTaskTemplateRefs'];
+      if (!deps) return [];
+
+      return deps.split(' ').map((depId: string) => ({
+        id: generateId(),
+        source: xmlIdToUuid.get(depId.replace('#', '')),
+        target: xmlIdToUuid.get(template['@_id']),
+        type: 'smoothstep',
+        data: {
+          type: 'success',
+          conditionValue: undefined,
+        },
+        label: undefined,
+      }));
+    })
+    .filter((e: any) => e.source && e.target) as WorkflowEdgeType[];
+
+  return { nodes, edges };
+};
