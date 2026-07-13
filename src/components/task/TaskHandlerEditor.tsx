@@ -191,7 +191,12 @@ export function TaskHandlerEditor({
           gap: '1rem',
         }}
       >
-        <IxButton variant="subtle-secondary" onClick={handleCreate}>
+        <IxButton
+          variant="subtle-secondary"
+          onClick={handleCreate}
+          data-umami-event="create"
+          data-umami-event-object="handler"
+        >
           {isEditing ? 'Duplicate' : 'Create'}
         </IxButton>
         <IxButton variant="danger-secondary" disabled={!isEditing} onClick={handleDelete}>

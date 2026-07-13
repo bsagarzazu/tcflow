@@ -41,16 +41,52 @@ export function AppMenu() {
   return (
     <IxMenu>
       <IxMenuCategory icon={iconFolderOpenFilled} label="Open workflow">
-        <IxMenuItem onClick={() => jsonInputRef.current?.click()}>JSON</IxMenuItem>
-        <IxMenuItem onClick={() => plmxmlInputRef.current?.click()}>PLMXML</IxMenuItem>
+        <IxMenuItem
+          onClick={() => jsonInputRef.current?.click()}
+          data-umami-event="import"
+          data-umami-event-format="json"
+        >
+          JSON
+        </IxMenuItem>
+        <IxMenuItem
+          onClick={() => plmxmlInputRef.current?.click()}
+          data-umami-event="import"
+          data-umami-event-format="plmxml"
+        >
+          PLMXML
+        </IxMenuItem>
       </IxMenuCategory>
       <IxMenuCategory icon={iconDownload} label="Save workflow">
-        <IxMenuItem onClick={() => exportAsFile('tcflow')}>JSON</IxMenuItem>
-        <IxMenuItem onClick={() => exportAsFile('plmxml')}>PLMXML</IxMenuItem>
+        <IxMenuItem
+          onClick={() => exportAsFile('tcflow')}
+          data-umami-event="export"
+          data-umami-event-format="json"
+        >
+          JSON
+        </IxMenuItem>
+        <IxMenuItem
+          onClick={() => exportAsFile('plmxml')}
+          data-umami-event="export"
+          data-umami-event-format="plmxml"
+        >
+          PLMXML
+        </IxMenuItem>
       </IxMenuCategory>
       <IxMenuCategory icon={iconImageFilled} label="Export image">
-        <IxMenuItem onClick={() => exportAsImage('png')}>PNG</IxMenuItem>
-        <IxMenuItem onClick={() => exportAsImage('svg')}>SVG</IxMenuItem>
+        <IxMenuItem
+          onClick={() => exportAsImage('png')}
+          data-umami-event="export"
+          data-umami-event-format="png"
+        >
+          PNG
+        </IxMenuItem>
+        <IxMenuItem
+          onClick={() => exportAsImage('svg')}
+          data-umami-event="export"
+          data-umami-event-format="svg"
+        >
+          SVG
+        </IxMenuItem>
       </IxMenuCategory>
       <IxMenuItem
         icon={iconGithubLogo}

@@ -53,6 +53,8 @@ export function AppTabs() {
       <IxTabItem
         tabKey="tab-add"
         onTabClick={() => addWorkflow(`New Workflow (${workflowList.length})`)}
+        data-umami-event="create"
+        data-umami-event-object="workflow"
       >
         <IxIcon name={iconAddCircleFilled}></IxIcon>
       </IxTabItem>
