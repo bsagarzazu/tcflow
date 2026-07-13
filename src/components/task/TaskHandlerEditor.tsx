@@ -16,47 +16,119 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxToggle, IxSelect, IxInput, IxIconButton } from '@siemens/ix-react';
-import {
-  iconAddCircleFilled,
-  iconRemoveCircleFilled,
-  iconChevronUp,
-  iconChevronDown,
-} from '@siemens/ix-icons/icons';
-import { useMemo, useState } from 'react';
+import { IxToggle, IxSelect, IxSelectItem, IxButton, IxFieldLabel } from '@siemens/ix-react';
+import { useMemo } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
+import { TaskHandlerArguments } from './TaskHandlerArguments';
+
+import { TC_ACTION_REGISTRY } from '../../constants';
 import type { TaskNodeType } from '../../types';
+import { generateId } from '../../core/utils';
 
-export function TaskHandlerEditor({ handlerId }: { handlerId: string | null }) {
-  const { control, register, watch } = useFormContext<TaskNodeType['data']>();
-  const [selectedArgIndex, setSelectedArgIndex] = useState<number>(0);
-  const [startIndex, setStartIndex] = useState<number>(0);
-  const ROWS_VISIBLE = 5;
-
+export function TaskHandlerEditor({
+  handlerId,
+  setHandlerId,
+}: {
+  handlerId: string | null;
+  setHandlerId: (id: string | null) => void;
+}) {
+  const { control, watch, setValue, getValues } = useFormContext<TaskNodeType['data']>();
   const actions = watch('actions');
 
   const { actionIndex, handlerIndex } = useMemo(() => {
+    if (!handlerId) return { actionIndex: -1, handlerIndex: -1 };
     for (let i = 0; i < actions.length; i++) {
-      const handlers = actions[i].handlers.findIndex((handler) => handler.id === handlerId);
-      if (handlers !== -1) {
-        return { actionIndex: i, handlerIndex: handlers };
+      const handlerIndex = actions[i].handlers.findIndex((handler) => handler.id === handlerId);
+      if (handlerIndex !== -1) {
+        return { actionIndex: i, handlerIndex: handlerIndex };
       }
     }
     return { actionIndex: -1, handlerIndex: -1 };
   }, [handlerId, actions]);
 
-  const handlerPath = `actions.${actionIndex}.handlers.${handlerIndex}`;
+  const isEditing = handlerId !== null && actionIndex !== -1 && handlerIndex !== -1;
+
+  const handlerPath = isEditing ? `actions.${actionIndex}.handlers.${handlerIndex}` : 'newHandler';
+
+  const { remove } = useFieldArray({
+    control,
+    name: `actions.${actionIndex === -1 ? 0 : actionIndex}.handlers` as any,
+  });
+
+  const handleCreate = () => {
+    const data = getValues('newHandler' as any);
+    const targetActionType = getValues('tempActionType' as any);
+    const targetActionIndex = actions.findIndex(
+      (action) => action.actionType === Number(targetActionType),
+    );
+
+    const newHandler = { ...data, id: generateId() };
+    const updatedHandlers = [...actions[targetActionIndex].handlers, newHandler];
+    setValue(`actions.${targetActionIndex}.handlers`, updatedHandlers);
+
+    setValue('newHandler' as any, { name: '', isRule: false, arguments: [] });
+    setHandlerId(newHandler.id);
+  };
+
+  const handleDelete = () => {
+    remove(handlerIndex);
+    setHandlerId(null);
+  };
+
+  const handleMoveAction = (newActionType: string) => {
+    const targetActionType = Number(newActionType);
+    const currentActions = getValues('actions');
+
+    const targetActionIndex = currentActions.findIndex(
+      (action) => action.actionType === targetActionType,
+    );
+    if (targetActionIndex === -1 || targetActionIndex === actionIndex) return;
+
+    const handlerData = getValues(handlerPath as any);
+
+    // Remove the handler from the current action
+    const sourceHandlers = currentActions[actionIndex].handlers.filter(
+      (handler) => handler.id !== handlerId,
+    );
+    setValue(`actions.${actionIndex}.handlers`, sourceHandlers);
+
+    // Add the handler to the target action
+    const targetHandlers = [...currentActions[targetActionIndex].handlers, handlerData];
+    setValue(`actions.${targetActionIndex}.handlers`, targetHandlers);
+  };
 
   const isRule = watch(`${handlerPath}.isRule` as any);
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: `${handlerPath}.arguments` as any,
-  });
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <IxFieldLabel htmlFor="action-select">Action</IxFieldLabel>
+        <Controller
+          control={control}
+          name={isEditing ? (`actions.${actionIndex}.actionType` as any) : 'tempActionType'}
+          render={({ field }) => (
+            <IxSelect
+              id="action-select"
+              value={field.value || '2'}
+              i18nSelectListHeader="Select an Action"
+              onValueChange={(event) => {
+                if (isEditing) {
+                  handleMoveAction(event.detail as string);
+                } else {
+                  setValue('tempActionType' as any, event.detail);
+                }
+              }}
+              style={{ width: '25%' }}
+            >
+              {Object.entries(TC_ACTION_REGISTRY).map(([actionNumber, actionName]) => (
+                <IxSelectItem value={actionNumber} label={actionName}></IxSelectItem>
+              ))}
+            </IxSelect>
+          )}
+        />
+      </div>
+
       <div
         style={{
           display: 'flex',
@@ -71,7 +143,7 @@ export function TaskHandlerEditor({ handlerId }: { handlerId: string | null }) {
             <IxToggle
               text-off="Action Handler"
               text-on="Rule Handler"
-              style={{ minWidth: '20ch', flexShrink: 0 }}
+              style={{ width: '35%' }}
               onCheckedChange={(event) => field.onChange(event.detail)}
             ></IxToggle>
           )}
@@ -93,107 +165,21 @@ export function TaskHandlerEditor({ handlerId }: { handlerId: string | null }) {
         />
       </div>
 
-      <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-        <table className="ix-table">
-          <thead>
-            <tr>
-              <th style={{ width: '30%' }}>Argument</th>
-              <th style={{ width: '70%' }}>Value(s)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.from({ length: ROWS_VISIBLE }).map((_, index) => {
-              const dataIndex = startIndex + index;
-              const field = fields[dataIndex];
-              const isSelected = field && selectedArgIndex === dataIndex;
+      <TaskHandlerArguments handlerPath={handlerPath} />
 
-              return (
-                <tr
-                  key={field?.id || `empty-${index}`}
-                  onClick={() => field && setSelectedArgIndex(dataIndex)}
-                  style={{
-                    backgroundColor: isSelected ? 'var(--theme-color-component-2)' : 'transparent',
-                    cursor: field ? 'pointer' : 'default',
-                  }}
-                >
-                  <td>
-                    {field ? (
-                      <IxInput
-                        style={{ width: '100%' }}
-                        {...register(`${handlerPath}.arguments.${dataIndex}.argument` as any)}
-                        onFocus={() => setSelectedArgIndex(dataIndex)}
-                      ></IxInput>
-                    ) : (
-                      <IxInput style={{ width: '100%' }} disabled></IxInput>
-                    )}
-                  </td>
-                  <td>
-                    {field ? (
-                      <IxInput
-                        style={{ width: '100%' }}
-                        {...register(`${handlerPath}.arguments.${dataIndex}.value` as any)}
-                        onFocus={() => setSelectedArgIndex(dataIndex)}
-                      ></IxInput>
-                    ) : (
-                      <IxInput style={{ width: '100%' }} disabled></IxInput>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <IxIconButton
-            variant="subtle-tertiary"
-            icon={iconChevronUp}
-            disabled={startIndex === 0}
-            onClick={() => {
-              const nextIndex = Math.max(0, selectedArgIndex - 1);
-              setStartIndex(nextIndex);
-              if (nextIndex < startIndex) {
-                setSelectedArgIndex(nextIndex);
-              }
-            }}
-          ></IxIconButton>
-          <IxIconButton
-            variant="subtle-tertiary"
-            icon={iconChevronDown}
-            disabled={startIndex + ROWS_VISIBLE >= fields.length}
-            onClick={() => {
-              const nextIndex = Math.min(fields.length - 1, selectedArgIndex + 1);
-              setSelectedArgIndex(nextIndex);
-              if (nextIndex >= startIndex + ROWS_VISIBLE) {
-                setStartIndex(nextIndex - ROWS_VISIBLE + 1);
-              }
-            }}
-          ></IxIconButton>
-          <IxIconButton
-            variant="subtle-tertiary"
-            icon={iconAddCircleFilled}
-            onClick={() => {
-              append({ argument: '', value: '' });
-              const nextIndex = fields.length;
-              setSelectedArgIndex(nextIndex);
-              if (nextIndex >= ROWS_VISIBLE) {
-                setStartIndex(nextIndex - ROWS_VISIBLE + 1);
-              }
-            }}
-          ></IxIconButton>
-          <IxIconButton
-            variant="subtle-tertiary"
-            icon={iconRemoveCircleFilled}
-            disabled={!fields[selectedArgIndex]}
-            onClick={() => {
-              remove(selectedArgIndex);
-              const nextIndex = Math.max(0, selectedArgIndex - 1);
-              setSelectedArgIndex(nextIndex);
-              if (startIndex > 0 && fields.length - 1 < startIndex + ROWS_VISIBLE) {
-                setStartIndex((prev) => prev - 1);
-              }
-            }}
-          ></IxIconButton>
-        </div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          gap: '1rem',
+        }}
+      >
+        <IxButton variant="subtle-secondary" onClick={handleCreate}>
+          Create
+        </IxButton>
+        <IxButton variant="danger-secondary" disabled={!isEditing} onClick={handleDelete}>
+          Delete
+        </IxButton>
       </div>
     </div>
   );
