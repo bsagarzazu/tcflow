@@ -35,6 +35,7 @@ export function TaskHandlerEditor({
 }) {
   const { control, watch, setValue, getValues } = useFormContext<TaskNodeType['data']>();
   const actions = watch('actions');
+  const tempActionType = watch('tempActionType' as any);
 
   const { actionIndex, handlerIndex } = useMemo(() => {
     if (!handlerId) return { actionIndex: -1, handlerIndex: -1 };
@@ -80,23 +81,32 @@ export function TaskHandlerEditor({
   const handleMoveAction = (newActionType: string) => {
     const targetActionType = Number(newActionType);
     const currentActions = getValues('actions');
-
     const targetActionIndex = currentActions.findIndex(
       (action) => action.actionType === targetActionType,
     );
+
     if (targetActionIndex === -1 || targetActionIndex === actionIndex) return;
 
     const handlerData = getValues(handlerPath as any);
 
-    // Remove the handler from the current action
-    const sourceHandlers = currentActions[actionIndex].handlers.filter(
-      (handler) => handler.id !== handlerId,
-    );
-    setValue(`actions.${actionIndex}.handlers`, sourceHandlers);
+    const newActions = currentActions.map((action, index) => {
+      if (index === actionIndex) {
+        return {
+          ...action,
+          handlers: action.handlers.filter((handler) => handler.id !== handlerId),
+        };
+      }
+      if (index === targetActionIndex) {
+        return {
+          ...action,
+          handlers: [...action.handlers, handlerData],
+        };
+      }
+      return action;
+    });
 
-    // Add the handler to the target action
-    const targetHandlers = [...currentActions[targetActionIndex].handlers, handlerData];
-    setValue(`actions.${targetActionIndex}.handlers`, targetHandlers);
+    setValue('actions', newActions);
+    setHandlerId(handlerData.id);
   };
 
   const isRule = watch(`${handlerPath}.isRule` as any);
@@ -105,29 +115,24 @@ export function TaskHandlerEditor({
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <IxFieldLabel htmlFor="action-select">Action</IxFieldLabel>
-        <Controller
-          control={control}
-          name={isEditing ? (`actions.${actionIndex}.actionType` as any) : 'tempActionType'}
-          render={({ field }) => (
-            <IxSelect
-              id="action-select"
-              value={field.value}
-              i18nSelectListHeader="Select an Action"
-              onValueChange={(event) => {
-                if (isEditing) {
-                  handleMoveAction(event.detail as string);
-                } else {
-                  setValue('tempActionType' as any, event.detail);
-                }
-              }}
-              style={{ width: '25%' }}
-            >
-              {Object.entries(TC_ACTION_REGISTRY).map(([actionNumber, actionName]) => (
-                <IxSelectItem value={actionNumber} label={actionName}></IxSelectItem>
-              ))}
-            </IxSelect>
-          )}
-        />
+        <IxSelect
+          id="action-select"
+          value={isEditing ? actions[actionIndex].actionType.toString() : tempActionType}
+          i18nSelectListHeader="Select an Action"
+          onValueChange={(event) => {
+            const newValue = event.detail as string;
+            if (isEditing) {
+              handleMoveAction(newValue);
+            } else {
+              setValue('tempActionType' as any, newValue);
+            }
+          }}
+          style={{ width: '25%' }}
+        >
+          {Object.entries(TC_ACTION_REGISTRY).map(([actionNumber, actionName]) => (
+            <IxSelectItem value={actionNumber} label={actionName}></IxSelectItem>
+          ))}
+        </IxSelect>
       </div>
 
       <div
