@@ -130,7 +130,7 @@ export function TaskHandlerEditor({
           style={{ width: '25%' }}
         >
           {Object.entries(TC_ACTION_REGISTRY).map(([actionNumber, actionName]) => (
-            <IxSelectItem value={actionNumber} label={actionName}></IxSelectItem>
+            <IxSelectItem key={actionNumber} value={actionNumber} label={actionName}></IxSelectItem>
           ))}
         </IxSelect>
       </div>
