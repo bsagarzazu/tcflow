@@ -48,6 +48,7 @@ type TaskPropertiesFormData = TaskNodeType['data'] & {
     isRule: boolean;
     arguments: any[];
   };
+  tempActionType: string;
 };
 
 export function TaskProperties({ nodeId }: TaskPropertiesProps) {
@@ -64,6 +65,7 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
     defaultValues: {
       ...taskNode.data,
       newHandler: { name: '', isRule: false, arguments: [] },
+      tempActionType: '2',
     },
   });
 
@@ -109,7 +111,6 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
               <IxRow>
                 <IxCol size="4">
                   <TaskHandlerHierarchy
-                    taskNodeId={nodeId}
                     handlerId={selectedHandlerId}
                     setHandlerId={setSelectedHandlerId}
                   />

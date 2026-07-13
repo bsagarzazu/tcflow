@@ -19,16 +19,11 @@
 import { type TreeModel } from '@siemens/ix';
 import { useMemo } from 'react';
 
-import { useWorkflowStore } from '../store/useWorkflowStore';
-import { type TreeHandlerData } from '../types';
+import { type TCAction, type TreeHandlerData } from '../types';
 import { TC_ACTION_REGISTRY } from '../constants';
 
-export function useTaskHandlerHierarchy(taskNodeId: string) {
-  const activeWorkflowId = useWorkflowStore((state) => state.activeWorkflowId);
-  const workflow = useWorkflowStore((state) => state.workflows[activeWorkflowId]);
-  const taskNode = workflow.nodes.find((n) => n.id === taskNodeId);
-
-  const taskHandlerHierarchy = useMemo(() => {
+export function useTaskHandlerHierarchy(actions: TCAction[]) {
+  return useMemo(() => {
     const model: TreeModel<TreeHandlerData> = {
       root: {
         id: 'root',
@@ -38,9 +33,9 @@ export function useTaskHandlerHierarchy(taskNodeId: string) {
       },
     };
 
-    if (!taskNode) return model;
+    if (!actions) return model;
 
-    taskNode.data.actions.forEach((action) => {
+    actions.forEach((action) => {
       model[action.id] = {
         id: action.id,
         data: {
@@ -48,7 +43,7 @@ export function useTaskHandlerHierarchy(taskNodeId: string) {
           type: 'action',
           name: TC_ACTION_REGISTRY[action.actionType],
         },
-        hasChildren: true,
+        hasChildren: action.handlers.length > 0,
         children: [],
       };
 
@@ -71,7 +66,5 @@ export function useTaskHandlerHierarchy(taskNodeId: string) {
     });
 
     return model;
-  }, [taskNode]);
-
-  return taskHandlerHierarchy;
+  }, [actions]);
 }

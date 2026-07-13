@@ -65,10 +65,11 @@ export function TaskHandlerEditor({
 
     const newHandler = { ...data, id: generateId() };
     const updatedHandlers = [...actions[targetActionIndex].handlers, newHandler];
+
     setValue(`actions.${targetActionIndex}.handlers`, updatedHandlers);
+    setHandlerId(newHandler.id);
 
     setValue('newHandler' as any, { name: '', isRule: false, arguments: [] });
-    setHandlerId(newHandler.id);
   };
 
   const handleDelete = () => {
@@ -110,7 +111,7 @@ export function TaskHandlerEditor({
           render={({ field }) => (
             <IxSelect
               id="action-select"
-              value={field.value || '2'}
+              value={field.value}
               i18nSelectListHeader="Select an Action"
               onValueChange={(event) => {
                 if (isEditing) {

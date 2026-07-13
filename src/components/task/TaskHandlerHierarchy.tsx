@@ -24,27 +24,43 @@ import {
   iconDocumentSettings,
 } from '@siemens/ix-icons/icons';
 import { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { useTaskHandlerHierarchy } from '../../hooks';
-import { type TreeHandlerData } from '../../types';
+import { type TreeHandlerData, type TaskNodeType } from '../../types';
 
 export function TaskHandlerHierarchy({
-  taskNodeId,
   handlerId,
   setHandlerId,
 }: {
-  taskNodeId: string;
   handlerId: string | null;
   setHandlerId: (handlerId: string | null) => void;
 }) {
+  const { watch } = useFormContext<TaskNodeType['data']>();
+  const actions = watch('actions');
+
   const [context, setContext] = useState<TreeContext>({});
-  const treeModel = useTaskHandlerHierarchy(taskNodeId);
+  const treeModel = useTaskHandlerHierarchy(actions);
 
   useEffect(() => {
     if (!handlerId) return;
 
-    setContext((prev) => ({ ...prev, [handlerId]: { ...prev[handlerId], isSelected: true } }));
-  }, [handlerId, setContext]);
+    const findParentId = () => {
+      for (const key in treeModel) {
+        if (treeModel[key].children.includes(handlerId)) {
+          return key;
+        }
+      }
+    };
+
+    const parentId = findParentId();
+
+    setContext((prev) => ({
+      ...prev,
+      ...(parentId ? { [parentId]: { ...prev[parentId], isExpanded: true } } : {}),
+      [handlerId]: { ...prev[handlerId], isSelected: true },
+    }));
+  }, [handlerId, treeModel, setContext]);
 
   return (
     <IxTree
@@ -72,6 +88,7 @@ export function TaskHandlerHierarchy({
 
         return (
           <div
+            key={data.id}
             style={{
               display: 'flex',
               alignItems: 'center',
