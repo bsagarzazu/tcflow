@@ -102,7 +102,7 @@ export function TaskHandlerHierarchy({
 
   return (
     <IxTree
-      key={JSON.stringify(actions)}
+      key={JSON.stringify(actions.map((action) => action.handlers.length))}
       root={'root'}
       model={treeModel}
       context={computedContext}
