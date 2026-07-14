@@ -9,30 +9,30 @@
         "id": "start",
         "type": "task",
         "position": {
-          "x": 0,
-          "y": 0
+          "x": -32.89261744966443,
+          "y": -98.6778523489933
         },
         "data": {
           "type": "Start",
           "name": "Start",
           "actions": [
             {
-              "id": "tcflow-ec0e4e4a-2b6e-439d-a60b-a17d3f311d5b",
+              "id": "tcflow-113137f5-be36-4d07-80b7-e0391d840511",
               "actionType": 2,
               "handlers": []
             },
             {
-              "id": "tcflow-fe767245-eebe-490b-b584-c7da82502bda",
+              "id": "tcflow-dc382c35-412a-4682-bf71-fb6b8f9fd365",
               "actionType": 4,
               "handlers": []
             },
             {
-              "id": "tcflow-9e46c967-c62f-44f9-b523-9d538109d036",
+              "id": "tcflow-cea25f40-4982-4002-b28b-c4698e81e3c3",
               "actionType": 8,
               "handlers": []
             },
             {
-              "id": "tcflow-f3289bb1-268f-4565-9f81-9c5fc6c6c4aa",
+              "id": "tcflow-0aa7e7b7-f021-4caf-b5cd-b764b6cec93a",
               "actionType": 100,
               "handlers": []
             }
@@ -44,30 +44,30 @@
         "id": "end",
         "type": "task",
         "position": {
-          "x": 1382.5,
-          "y": -133.74999999999997
+          "x": 578.8255033557047,
+          "y": 81.66442953020135
         },
         "data": {
           "type": "End",
           "name": "End",
           "actions": [
             {
-              "id": "tcflow-42293a3f-11c9-4ba6-afee-0734855e17d8",
+              "id": "tcflow-ca7897c6-5d37-4367-a368-51e58f3bc4da",
               "actionType": 2,
               "handlers": []
             },
             {
-              "id": "tcflow-5b7c54fe-abca-439c-be37-59f3fe3114c3",
+              "id": "tcflow-930e96b2-3dc4-4733-b06d-6984db21ef06",
               "actionType": 4,
               "handlers": []
             },
             {
-              "id": "tcflow-c68aac70-b2ea-486f-ba92-663cfd367d82",
+              "id": "tcflow-c8bd79d9-442e-4005-b481-7c429bfe7aea",
               "actionType": 8,
               "handlers": []
             },
             {
-              "id": "tcflow-7644aa6f-eb1d-4dbd-bf7a-85d4eb9e4773",
+              "id": "tcflow-d628b3b2-2e16-4db2-8221-15d7551c474d",
               "actionType": 100,
               "handlers": []
             }
@@ -76,67 +76,33 @@
         "deletable": false
       },
       {
-        "id": "tcflow-cfd0bdc9-e225-4db9-a571-d5131baa66df",
+        "id": "tcflow-6290165f-fbcc-4075-b10e-9aeb42e044aa",
         "type": "task",
         "position": {
-          "x": 420.7098353106986,
-          "y": -0.7546782548693898
-        },
-        "data": {
-          "type": "Condition",
-          "name": "Is Signed",
-          "actions": [
-            {
-              "id": "tcflow-2001e571-a2b2-453a-bfda-4d41c639336f",
-              "actionType": 2,
-              "handlers": []
-            },
-            {
-              "id": "tcflow-17a9e3d4-f804-43aa-8baa-e608ffee6902",
-              "actionType": 4,
-              "handlers": []
-            },
-            {
-              "id": "tcflow-6df0fafc-0a13-4f3c-8203-6e65bcad4703",
-              "actionType": 8,
-              "handlers": []
-            },
-            {
-              "id": "tcflow-c9471eab-cd51-4740-a2c2-9d10b914b5aa",
-              "actionType": 100,
-              "handlers": []
-            }
-          ]
-        }
-      },
-      {
-        "id": "tcflow-b58c60a5-3f9f-4602-8ffc-1c66e1acf983",
-        "type": "task",
-        "position": {
-          "x": 423.20983531069857,
-          "y": 274.2453217451306
+          "x": 277.8859060402685,
+          "y": -98.1946308724832
         },
         "data": {
           "type": "Or",
           "name": "Or",
           "actions": [
             {
-              "id": "tcflow-f4f96b13-88d6-40d3-94c2-91497e47ddcb",
+              "id": "tcflow-f1f67e0e-7519-436f-8252-c44ee58b746b",
               "actionType": 2,
               "handlers": []
             },
             {
-              "id": "tcflow-06b6d8f6-a1a6-4465-911e-0334fc28579d",
+              "id": "tcflow-3465d934-4e10-4622-8549-ab30ff6fe217",
               "actionType": 4,
               "handlers": []
             },
             {
-              "id": "tcflow-29f86134-8015-40ac-8d33-9c29eaedda47",
+              "id": "tcflow-edb5b031-2c86-4bab-bc4c-d7b08b09d53f",
               "actionType": 8,
               "handlers": []
             },
             {
-              "id": "tcflow-9fd4e0ba-8621-4359-92ed-86933341bb69",
+              "id": "tcflow-7f6ef0f7-56f8-4915-82e4-a16ebffa62a8",
               "actionType": 100,
               "handlers": []
             }
@@ -144,33 +110,33 @@
         }
       },
       {
-        "id": "tcflow-2c6c141c-bad7-4a9e-ad0e-9ce4fa70d12d",
+        "id": "tcflow-eebe5bae-80bc-454a-9741-28c625159281",
         "type": "task",
         "position": {
-          "x": 793.2098353106985,
-          "y": -133.2546782548694
+          "x": 575.0536912751678,
+          "y": -97.06040268456374
         },
         "data": {
           "type": "Review",
           "name": "Review",
           "actions": [
             {
-              "id": "tcflow-7e2b5d9f-e968-4140-847b-b93afa1f0972",
+              "id": "tcflow-d55b0bc8-2309-49d1-b2be-29229e7d1074",
               "actionType": 2,
               "handlers": []
             },
             {
-              "id": "tcflow-fd439229-fa41-495e-bc75-1a6ea12dea92",
+              "id": "tcflow-108f3e61-7111-4452-b0f3-7193e8a2277a",
               "actionType": 4,
               "handlers": []
             },
             {
-              "id": "tcflow-a6df6bc1-9f05-43d4-9057-afbc5728526d",
+              "id": "tcflow-ea60a19e-3330-4fd5-a578-36f42b6029a1",
               "actionType": 8,
               "handlers": []
             },
             {
-              "id": "tcflow-a245df00-347c-4227-88b3-c7e380a79e92",
+              "id": "tcflow-b49a7cd4-11e8-4c91-8e65-f46ef95db5a2",
               "actionType": 100,
               "handlers": []
             }
@@ -178,33 +144,33 @@
         }
       },
       {
-        "id": "tcflow-286a4cb9-85a3-47a9-ae65-a8aa9be507a3",
+        "id": "tcflow-2eaab037-8399-40af-baf0-2a756a29b2f4",
         "type": "task",
         "position": {
-          "x": 794.4598353106985,
-          "y": 140.4953217451306
+          "x": 576.1879194630873,
+          "y": -275.13422818791946
         },
         "data": {
           "type": "Do",
-          "name": "Sign Document",
+          "name": "Solve Problem",
           "actions": [
             {
-              "id": "tcflow-02fbf752-bba7-42d1-b8ce-c8bc1ce7aab8",
+              "id": "tcflow-07b781b8-495c-4983-b680-f8d13f76db5f",
               "actionType": 2,
               "handlers": []
             },
             {
-              "id": "tcflow-71caa15f-7b73-4890-89a1-fce84dec1054",
+              "id": "tcflow-261ec224-3458-4721-8d3d-876422471d93",
               "actionType": 4,
               "handlers": []
             },
             {
-              "id": "tcflow-120f5f7b-a585-4498-9bd7-0ee524ff1710",
+              "id": "tcflow-66e57d85-9e41-418f-8378-3e1735ec4ce9",
               "actionType": 8,
               "handlers": []
             },
             {
-              "id": "tcflow-6d8472e2-3694-47cd-b098-0f6ebb4f17a1",
+              "id": "tcflow-61a743ec-cdf5-4198-840e-db3e50c43a67",
               "actionType": 100,
               "handlers": []
             }
@@ -212,35 +178,58 @@
         }
       },
       {
-        "id": "tcflow-c4dd4bf3-9f40-45dd-a124-ced754449e1a",
+        "id": "tcflow-3c5a22a9-6b4e-490b-8bab-bea5ddce6a2f",
         "type": "task",
         "position": {
-          "x": 1093.2098353106985,
-          "y": -133.2546782548694
+          "x": 271.0805369127517,
+          "y": 82.14765100671144
         },
         "data": {
           "type": "AddStatus",
           "name": "Add Status",
           "actions": [
             {
-              "id": "tcflow-3cbd5c9e-e964-4add-9359-3b2b80bd0109",
+              "id": "tcflow-8d32c434-5354-4b0f-8d7d-94ffacfdeb0a",
               "actionType": 2,
               "handlers": []
             },
             {
-              "id": "tcflow-10eee707-edff-4e4c-8ee1-8aae43824697",
+              "id": "tcflow-52599209-9302-41c5-a952-9bea500449a9",
               "actionType": 4,
               "handlers": []
             },
             {
-              "id": "tcflow-c4e5055e-cacc-4723-b462-bce97b8fb534",
+              "id": "tcflow-35f41b76-5b34-4794-9d73-0ba5b1475e58",
               "actionType": 8,
               "handlers": []
             },
             {
-              "id": "tcflow-db6477ce-2519-42bb-bb24-490b59a6f84b",
+              "id": "tcflow-d751c1fe-b8e0-4675-8704-b734c1b1c2a0",
               "actionType": 100,
-              "handlers": []
+              "handlers": [
+                {
+                  "name": "EPM-create-status",
+                  "isRule": false,
+                  "arguments": [
+                    {
+                      "argument": "-status",
+                      "value": "TCM Released"
+                    }
+                  ],
+                  "id": "tcflow-a32f78bc-17f9-406e-87b5-a03f7c5a7ee4"
+                },
+                {
+                  "name": "EPM-set-status",
+                  "isRule": false,
+                  "arguments": [
+                    {
+                      "argument": "-action",
+                      "value": "replace"
+                    }
+                  ],
+                  "id": "tcflow-1715f0c4-fd1f-4316-af21-48ea00c109dd"
+                }
+              ]
             }
           ]
         }
@@ -258,8 +247,8 @@
           "height": 20
         },
         "source": "start",
-        "target": "tcflow-b58c60a5-3f9f-4602-8ffc-1c66e1acf983",
-        "id": "tcflow-fc75a76b-dd6f-4974-b5e6-9e98215e2440",
+        "target": "tcflow-6290165f-fbcc-4075-b10e-9aeb42e044aa",
+        "id": "tcflow-631cc4d8-869e-4e41-b70f-35e5006db650",
         "data": {
           "type": "success"
         }
@@ -274,9 +263,44 @@
           "width": 20,
           "height": 20
         },
-        "source": "tcflow-b58c60a5-3f9f-4602-8ffc-1c66e1acf983",
-        "target": "tcflow-cfd0bdc9-e225-4db9-a571-d5131baa66df",
-        "id": "tcflow-aa59065d-2ae2-4d31-bd99-db426846d7eb",
+        "source": "tcflow-6290165f-fbcc-4075-b10e-9aeb42e044aa",
+        "target": "tcflow-eebe5bae-80bc-454a-9741-28c625159281",
+        "id": "tcflow-53c25759-8c18-43f5-ab57-a65a7730bc55",
+        "data": {
+          "type": "success"
+        }
+      },
+      {
+        "type": "smoothstep",
+        "style": {
+          "strokeWidth": 2,
+          "strokeDasharray": "5,5"
+        },
+        "markerEnd": {
+          "type": "arrowclosed",
+          "width": 20,
+          "height": 20
+        },
+        "source": "tcflow-eebe5bae-80bc-454a-9741-28c625159281",
+        "target": "tcflow-2eaab037-8399-40af-baf0-2a756a29b2f4",
+        "id": "tcflow-3ad4fe1f-b79d-45ac-b52a-381d852464fd",
+        "data": {
+          "type": "failure"
+        }
+      },
+      {
+        "type": "smoothstep",
+        "style": {
+          "strokeWidth": 2
+        },
+        "markerEnd": {
+          "type": "arrowclosed",
+          "width": 20,
+          "height": 20
+        },
+        "source": "tcflow-2eaab037-8399-40af-baf0-2a756a29b2f4",
+        "target": "tcflow-6290165f-fbcc-4075-b10e-9aeb42e044aa",
+        "id": "tcflow-27bb9696-88b8-4338-a158-115921ab75c7",
         "data": {
           "type": "success"
         }
@@ -291,65 +315,9 @@
           "width": 20,
           "height": 20
         },
-        "source": "tcflow-286a4cb9-85a3-47a9-ae65-a8aa9be507a3",
-        "target": "tcflow-b58c60a5-3f9f-4602-8ffc-1c66e1acf983",
-        "id": "tcflow-3b1ab133-2d7c-4c44-846d-3577185b768b",
-        "data": {
-          "type": "success"
-        },
-        "selected": false
-      },
-      {
-        "type": "smoothstep",
-        "style": {
-          "strokeWidth": 2
-        },
-        "markerEnd": {
-          "type": "arrowclosed",
-          "width": 20,
-          "height": 20
-        },
-        "source": "tcflow-cfd0bdc9-e225-4db9-a571-d5131baa66df",
-        "target": "tcflow-2c6c141c-bad7-4a9e-ad0e-9ce4fa70d12d",
-        "id": "tcflow-2caebe45-8f53-4e01-91f2-eb91c67beae6",
-        "data": {
-          "type": "conditional",
-          "conditionValue": "True"
-        },
-        "label": "True"
-      },
-      {
-        "type": "smoothstep",
-        "style": {
-          "strokeWidth": 2
-        },
-        "markerEnd": {
-          "type": "arrowclosed",
-          "width": 20,
-          "height": 20
-        },
-        "source": "tcflow-cfd0bdc9-e225-4db9-a571-d5131baa66df",
-        "target": "tcflow-286a4cb9-85a3-47a9-ae65-a8aa9be507a3",
-        "id": "tcflow-b4c95993-3739-4f34-b888-a7a0f44231b2",
-        "data": {
-          "type": "conditional",
-          "conditionValue": "False"
-        },
-        "label": "False"
-      },
-      {
-        "type": "smoothstep",
-        "style": {
-          "strokeWidth": 2
-        },
-        "markerEnd": {
-          "type": "arrowclosed",
-          "width": 20,
-          "height": 20
-        },
-        "source": "tcflow-2c6c141c-bad7-4a9e-ad0e-9ce4fa70d12d",
-        "target": "tcflow-c4dd4bf3-9f40-45dd-a124-ced754449e1a",
-        "id": "tcflow-32f6dfa5-4f76-406e-882c-63c34ff4f3f3",
+        "source": "tcflow-eebe5bae-80bc-454a-9741-28c625159281",
+        "target": "tcflow-3c5a22a9-6b4e-490b-8bab-bea5ddce6a2f",
+        "id": "tcflow-693dc37d-8f0a-424c-8fc2-de4bb0a82222",
         "data": {
           "type": "success"
         }
@@ -364,18 +332,18 @@
           "width": 20,
           "height": 20
         },
-        "source": "tcflow-c4dd4bf3-9f40-45dd-a124-ced754449e1a",
+        "source": "tcflow-3c5a22a9-6b4e-490b-8bab-bea5ddce6a2f",
         "target": "end",
-        "id": "tcflow-56a1368f-daf1-4652-8dfc-c266708d227e",
+        "id": "tcflow-faf77ad4-d693-4fe5-84b1-a91b7e278fbc",
         "data": {
           "type": "success"
         }
       }
     ],
     "viewport": {
-      "x": 141.43213175144115,
-      "y": 207.6037426038955,
-      "zoom": 0.8
+      "x": 156.75016620564634,
+      "y": 295.1292175282217,
+      "zoom": 1.044660675955349
     }
   }
 }
