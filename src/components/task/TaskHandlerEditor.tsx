@@ -22,7 +22,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { TaskHandlerArguments } from './TaskHandlerArguments';
 
-import { TC_ACTION_REGISTRY } from '../../constants';
+import { TC_ACTION_REGISTRY, TC_ACTION_ORDER } from '../../constants';
 import type { TaskNodeType } from '../../types';
 import { generateId } from '../../core/utils';
 
@@ -151,8 +151,12 @@ export function TaskHandlerEditor({
           }}
           style={{ width: '25%' }}
         >
-          {Object.entries(TC_ACTION_REGISTRY).map(([actionNumber, actionName]) => (
-            <IxSelectItem key={actionNumber} value={actionNumber} label={actionName}></IxSelectItem>
+          {TC_ACTION_ORDER.map((actionNumber) => (
+            <IxSelectItem
+              key={actionNumber}
+              value={actionNumber.toString()}
+              label={TC_ACTION_REGISTRY[actionNumber]}
+            ></IxSelectItem>
           ))}
         </IxSelect>
       </div>
