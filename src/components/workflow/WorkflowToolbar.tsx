@@ -27,6 +27,13 @@ export function WorkflowToolbar() {
     if (event.dataTransfer) {
       event.dataTransfer.setData('application/tcflow', taskType);
       event.dataTransfer.effectAllowed = 'move';
+
+      if (window.umami) {
+        window.umami.track('create', {
+          object: 'task',
+          type: taskType,
+        });
+      }
     }
   };
 
@@ -45,9 +52,6 @@ export function WorkflowToolbar() {
             variant="subtle-tertiary"
             icon={TC_TASK_REGISTRY[type].ixIcon}
             aria-describedby={`tooltip-${type}`}
-            data-umami-event="create"
-            data-umami-event-object="task"
-            data-umami-event-type={type}
           ></IxIconButton>
           <IxTooltip id={`tooltip-${type}`} for={`#trigger-${type}`} placement="bottom">
             {TC_TASK_REGISTRY[type].label}
