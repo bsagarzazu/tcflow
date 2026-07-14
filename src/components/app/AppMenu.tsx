@@ -92,10 +92,17 @@ export function AppMenu() {
         icon={iconGithubLogo}
         slot="bottom"
         onClick={() => window.open(APP_REPO, '_blank')}
+        data-umami-event="open-github"
+        data-umami-event-detail="main"
       >
         GitHub
       </IxMenuItem>
-      <IxMenuItem icon={iconLightDark} slot="bottom" onClick={toggleTheme}>
+      <IxMenuItem
+        icon={iconLightDark}
+        slot="bottom"
+        onClick={toggleTheme}
+        data-umami-event="toggle-theme"
+      >
         Toggle Theme
       </IxMenuItem>
       <input
