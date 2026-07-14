@@ -104,7 +104,8 @@ export const TC_TASK_REGISTRY = {
 
 export const TC_ACTION_REGISTRY = {
   2: 'Start',
+  100: 'Perform',
   4: 'Complete',
   8: 'Skip',
-  100: 'Perform',
 } as const;
+export const TC_ACTION_ORDER = [2, 100, 4, 8] as const;

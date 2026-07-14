@@ -16,13 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { TC_ACTION_REGISTRY } from '../constants';
+import { TC_ACTION_ORDER } from '../constants';
 import { type TCAction, type TCActionType, type TaskNodeType } from '../types';
 
 export const generateId = () => `tcflow-${crypto.randomUUID()}`;
 
 export const getActions = (): TCAction[] => {
-  return (Object.keys(TC_ACTION_REGISTRY) as unknown as TCAction[]).map((type) => ({
+  return TC_ACTION_ORDER.map((type) => ({
     id: generateId(),
     actionType: Number(type) as TCActionType,
     handlers: [],
