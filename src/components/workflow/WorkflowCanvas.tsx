@@ -37,7 +37,7 @@ import { useAppStore } from '../../store/useAppStore';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { type TCTaskType } from '../../types';
 import { useKeyboardShortcuts } from '../../hooks';
-import { AppWatermark, AppFooterNotice, AppPrivacyNotice } from '../app';
+import { AppWatermark, AppFooterNotice, AppPrivacyNotice, AppBetaNotice } from '../app';
 import { TaskNode, TaskProperties } from '../task';
 
 const nodeTypes = {
@@ -193,6 +193,7 @@ export function WorkflowCanvas() {
         <AppWatermark />
         <AppFooterNotice />
         <AppPrivacyNotice />
+        <AppBetaNotice />
       </ReactFlow>
     </div>
   );

@@ -1,3 +1,4 @@
+export { AppBetaNotice } from './AppBetaNotice';
 export { AppEditableText } from './AppEditableText';
 export { AppFooterNotice } from './AppFooterNotice';
 export { AppHeader } from './AppHeader';
