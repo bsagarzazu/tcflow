@@ -42,19 +42,21 @@ export function TaskHandlerHierarchy({
 
   const [context, setContext] = useState<TreeContext>({});
 
+  const parentId = handlerId
+    ? Object.keys(treeModel).find((key) => treeModel[key].children?.includes(handlerId))
+    : null;
+
   const currentStructureKey = JSON.stringify(actions.map((action) => action.handlers.length));
   const lastStructureKeyRef = useRef(currentStructureKey);
   const hasStructureChanged = currentStructureKey !== lastStructureKeyRef.current;
   if (hasStructureChanged) {
     lastStructureKeyRef.current = currentStructureKey;
-    setContext({});
+    const nextContext = { ...context };
+    if (parentId) nextContext[parentId] = { ...nextContext[parentId], isExpanded: true };
+    setContext(nextContext);
   }
 
   const computedContext = useMemo(() => {
-    const parentId = handlerId
-      ? Object.keys(treeModel).find((key) => treeModel[key].children?.includes(handlerId))
-      : null;
-
     const nextContext: TreeContext = {};
 
     Object.keys(treeModel).forEach((key) => {
@@ -80,7 +82,7 @@ export function TaskHandlerHierarchy({
     });
 
     return nextContext;
-  }, [handlerId, treeModel, context]);
+  }, [handlerId, parentId, treeModel, context]);
 
   const renderTreeItem = useCallback(
     (data: TreeHandlerData) => {
