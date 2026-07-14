@@ -169,6 +169,7 @@ export function TaskHandlerEditor({
           name={`${handlerPath}.isRule` as any}
           render={({ field }) => (
             <IxToggle
+              checked={field.value}
               text-off="Action Handler"
               text-on="Rule Handler"
               style={{ width: '35%' }}
