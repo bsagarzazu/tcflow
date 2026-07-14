@@ -18,7 +18,7 @@
 
 import { IxToggle, IxSelect, IxSelectItem, IxButton, IxFieldLabel } from '@siemens/ix-react';
 import { useMemo } from 'react';
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import { TaskHandlerArguments } from './TaskHandlerArguments';
 
@@ -52,11 +52,6 @@ export function TaskHandlerEditor({
 
   const handlerPath = isEditing ? `actions.${actionIndex}.handlers.${handlerIndex}` : 'newHandler';
 
-  const { remove } = useFieldArray({
-    control,
-    name: `actions.${actionIndex === -1 ? 0 : actionIndex}.handlers` as any,
-  });
-
   const handleCreate = () => {
     const data = isEditing ? getValues(handlerPath as any) : getValues('newHandler' as any);
 
@@ -70,10 +65,18 @@ export function TaskHandlerEditor({
     if (targetActionIndex === -1) return;
 
     const newHandler = { ...data, id: generateId() };
-    setValue(`actions.${targetActionIndex}.handlers`, [
-      ...actions[targetActionIndex].handlers,
-      newHandler,
-    ]);
+
+    const updatedActions = actions.map((action, index) => {
+      if (index === targetActionIndex) {
+        return {
+          ...action,
+          handlers: [...action.handlers, newHandler],
+        };
+      }
+      return action;
+    });
+
+    setValue('actions', updatedActions);
 
     if (!isEditing) {
       setValue('newHandler' as any, { name: '', isRule: false, arguments: [] });
@@ -83,7 +86,17 @@ export function TaskHandlerEditor({
   };
 
   const handleDelete = () => {
-    remove(handlerIndex);
+    const updatedActions = actions.map((action, index) => {
+      if (index === actionIndex) {
+        return {
+          ...action,
+          handlers: action.handlers.filter((handler) => handler.id !== handlerId),
+        };
+      }
+      return action;
+    });
+
+    setValue('actions', updatedActions);
     setHandlerId(null);
   };
 
