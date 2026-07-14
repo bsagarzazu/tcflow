@@ -16,7 +16,35 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { TC_ACTION_REGISTRY } from '../constants';
+import { type TCAction, type TCActionType, type TaskNodeType } from '../types';
+
 export const generateId = () => `tcflow-${crypto.randomUUID()}`;
+
+export const getActions = (): TCAction[] => {
+  return (Object.keys(TC_ACTION_REGISTRY) as unknown as TCAction[]).map((type) => ({
+    id: generateId(),
+    actionType: Number(type) as TCActionType,
+    handlers: [],
+  }));
+};
+
+export const getInitialNodes = (): TaskNodeType[] => [
+  {
+    id: 'start',
+    type: 'task',
+    position: { x: 0, y: 0 },
+    data: { type: 'Start', name: 'Start', actions: getActions() },
+    deletable: false,
+  },
+  {
+    id: 'end',
+    type: 'task',
+    position: { x: 800, y: 0 },
+    data: { type: 'End', name: 'End', actions: getActions() },
+    deletable: false,
+  },
+];
 
 export const decimalToHex = (decimal: number): string => Math.round(decimal).toString(16);
 export const hexToDecimal = (hex: string): number => parseInt(hex, 16);

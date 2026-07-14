@@ -30,15 +30,9 @@ import {
   type XYPosition,
 } from '@xyflow/react';
 
-import { generateId } from '../core/utils';
-import {
-  type TaskNodeType,
-  type TCActionType,
-  type WorkflowEdgeType,
-  type TCAction,
-  type TCTaskType,
-} from '../types';
-import { TC_ACTION_REGISTRY, TC_TASK_REGISTRY } from '../constants';
+import { generateId, getInitialNodes, getActions } from '../core/utils';
+import { type TaskNodeType, type WorkflowEdgeType, type TCTaskType } from '../types';
+import { TC_TASK_REGISTRY } from '../constants';
 
 interface Workflow {
   name: string;
@@ -70,31 +64,6 @@ interface WorkflowState {
   ) => void;
   addNode: (type: TCTaskType, position: XYPosition) => void;
 }
-
-const getActions = (): TCAction[] => {
-  return (Object.keys(TC_ACTION_REGISTRY) as unknown as TCAction[]).map((type) => ({
-    id: generateId(),
-    actionType: Number(type) as TCActionType,
-    handlers: [],
-  }));
-};
-
-const getInitialNodes = (): TaskNodeType[] => [
-  {
-    id: 'start',
-    type: 'task',
-    position: { x: 0, y: 0 },
-    data: { type: 'Start', name: 'Start', actions: getActions() },
-    deletable: false,
-  },
-  {
-    id: 'end',
-    type: 'task',
-    position: { x: 800, y: 0 },
-    data: { type: 'End', name: 'End', actions: getActions() },
-    deletable: false,
-  },
-];
 
 const initialId = generateId();
 
