@@ -40,7 +40,13 @@ export function useWorkflowImport() {
       if (workflow) {
         setNodes(workflow.nodes);
         setEdges(workflow.edges);
-        setViewport(workflow.viewport);
+        if (
+          workflow.viewport &&
+          typeof workflow.viewport.x === 'number' &&
+          typeof workflow.viewport.y === 'number'
+        ) {
+          setViewport(workflow.viewport);
+        }
       }
     };
 
