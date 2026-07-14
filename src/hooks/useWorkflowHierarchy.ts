@@ -17,6 +17,7 @@
  */
 
 import { type TreeModel } from '@siemens/ix';
+import { iconWarning } from '@siemens/ix-icons/icons';
 import { useMemo } from 'react';
 
 import { useWorkflowStore } from '../store/useWorkflowStore';
@@ -50,7 +51,7 @@ export function useWorkflowHierarchy() {
           id: node.id,
           name: node.data.name,
           type: node.data.type,
-          icon: TC_TASK_REGISTRY[node.data.type].ixIcon,
+          icon: TC_TASK_REGISTRY[node.data.type]?.ixIcon || iconWarning,
         },
         hasChildren: false,
         children: [],

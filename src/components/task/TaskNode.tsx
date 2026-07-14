@@ -16,7 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxActionCard } from '@siemens/ix-react';
+import { IxActionCard, IxTooltip } from '@siemens/ix-react';
+import { iconWarning } from '@siemens/ix-icons/icons';
 import { Handle, Position, type NodeProps } from '@xyflow/react';
 
 import { type TaskNodeType } from '../../types';
@@ -24,20 +25,33 @@ import { TC_TASK_REGISTRY } from '../../constants';
 
 export function TaskNode({ data, selected }: NodeProps<TaskNodeType>) {
   const config = TC_TASK_REGISTRY[data.type];
+  const isUnknownType = !config;
 
   const isStart = data.type === 'Start';
   const isFinish = data.type === 'End';
 
   return (
-    <IxActionCard
-      icon={config.ixIcon}
-      heading={data.name}
-      variant="filled"
-      style={{ width: '200px' }}
-      selected={selected}
-    >
-      {!isStart && <Handle type="target" position={Position.Left} />}
-      {!isFinish && <Handle type="source" position={Position.Right} />}
-    </IxActionCard>
+    <>
+      <IxActionCard
+        id={`trigger-type-warning-${data.name}`}
+        icon={config?.ixIcon || iconWarning}
+        heading={data.name}
+        variant="filled"
+        style={{ width: '200px' }}
+        selected={selected}
+      >
+        {!isStart && <Handle type="target" position={Position.Left} />}
+        {!isFinish && <Handle type="source" position={Position.Right} />}
+      </IxActionCard>
+      {isUnknownType && (
+        <IxTooltip
+          id={`tooltip-type-warning-${data.name}`}
+          for={`#trigger-type-warning-${data.name}`}
+          style={{ textAlign: 'justify' }}
+        >
+          This task type is not yet supported.
+        </IxTooltip>
+      )}
+    </>
   );
 }
