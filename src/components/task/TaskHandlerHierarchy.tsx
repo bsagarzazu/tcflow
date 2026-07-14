@@ -23,7 +23,7 @@ import {
   iconFolderOpenFilled,
   iconDocumentSettings,
 } from '@siemens/ix-icons/icons';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useTaskHandlerHierarchy } from '../../hooks';
@@ -42,24 +42,39 @@ export function TaskHandlerHierarchy({
 
   const [context, setContext] = useState<TreeContext>({});
 
+  const currentStructureKey = JSON.stringify(actions.map((action) => action.handlers.length));
+  const lastStructureKeyRef = useRef(currentStructureKey);
+  const hasStructureChanged = currentStructureKey !== lastStructureKeyRef.current;
+  if (hasStructureChanged) {
+    lastStructureKeyRef.current = currentStructureKey;
+    setContext({});
+  }
+
   const computedContext = useMemo(() => {
-    if (!handlerId) return context;
+    const parentId = handlerId
+      ? Object.keys(treeModel).find((key) => treeModel[key].children?.includes(handlerId))
+      : null;
 
-    const parentId = Object.keys(treeModel).find((key) =>
-      treeModel[key].children?.includes(handlerId),
-    );
-
-    const nextContext: TreeContext = { ...context };
+    const nextContext: TreeContext = {};
 
     Object.keys(treeModel).forEach((key) => {
       const node = treeModel[key];
       const isAction = node.data.type === 'action';
-      const isExpanded = context[key]?.isExpanded;
       const hasChildren = node.children && node.children.length > 0;
+
+      const wasExpanded = context[key]?.isExpanded;
+      let isExpanded = false;
+      if (isAction && hasChildren) {
+        if (key === parentId) {
+          isExpanded = wasExpanded !== false;
+        } else {
+          isExpanded = wasExpanded ?? true;
+        }
+      }
 
       nextContext[key] = {
         ...context[key],
-        isExpanded: isAction ? key === parentId || (isExpanded && hasChildren) : false,
+        isExpanded: isExpanded,
         isSelected: key === handlerId,
       };
     });
@@ -102,7 +117,7 @@ export function TaskHandlerHierarchy({
 
   return (
     <IxTree
-      key={JSON.stringify(actions.map((action) => action.handlers.length))}
+      key={currentStructureKey}
       root={'root'}
       model={treeModel}
       context={computedContext}
