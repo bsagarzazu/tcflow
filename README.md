@@ -43,3 +43,5 @@ I would love to hear if you are using TcFlow at your organization! Let me know t
 TcFlow is licensed under the [AGPLv3 License](LICENSE), which means that any modifications must be open source and shared under the same license.
 
 If your company requires using TcFlow without these open-source restrictions, [contact me for a commercial license](https://www.linkedin.com/in/bsagarzazu/).
+
+> **Disclaimer**: TcFlow is a personal project and is not affiliated with, associated with, authorized by, sponsored by, or in any way connected with Siemens AG or Siemens Digital Industries Software.
