@@ -194,7 +194,7 @@ export function WorkflowCanvas() {
           style: { strokeWidth: 2 },
           markerEnd: { type: MarkerType.ArrowClosed, width: 20, height: 20 },
         }}
-        minZoom={0.8}
+        minZoom={0.6}
         maxZoom={1.2}
         colorMode={theme}
       >
