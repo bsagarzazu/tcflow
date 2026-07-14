@@ -23,7 +23,7 @@ import {
   iconFolderOpenFilled,
   iconDocumentSettings,
 } from '@siemens/ix-icons/icons';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useTaskHandlerHierarchy } from '../../hooks';
@@ -38,45 +38,39 @@ export function TaskHandlerHierarchy({
 }) {
   const { watch } = useFormContext<TaskNodeType['data']>();
   const actions = watch('actions');
-
-  const [context, setContext] = useState<TreeContext>({});
   const treeModel = useTaskHandlerHierarchy(actions);
 
-  useEffect(() => {
-    if (!handlerId) return;
+  const [context, setContext] = useState<TreeContext>({});
+
+  const computedContext = useMemo(() => {
+    if (!handlerId) return context;
 
     const parentId = Object.keys(treeModel).find((key) =>
       treeModel[key].children?.includes(handlerId),
     );
 
-    setContext((prev) => {
-      if (prev[handlerId]?.isSelected && parentId && prev[parentId]?.isExpanded) {
-        return prev;
-      }
+    const nextContext: TreeContext = { ...context };
 
-      const nextContext: TreeContext = {};
+    Object.keys(treeModel).forEach((key) => {
+      const node = treeModel[key];
+      const isAction = node.data.type === 'action';
+      const isExpanded = context[key]?.isExpanded;
+      const hasChildren = node.children && node.children.length > 0;
 
-      Object.keys(treeModel).forEach((key) => {
-        const node = treeModel[key];
-        const isAction = node.data.type === 'action';
-        const isExpanded = prev[key]?.isExpanded;
-        const hasChildren = node.children && node.children.length > 0;
-
-        nextContext[key] = {
-          ...prev[key],
-          isExpanded: isAction ? key === parentId || (isExpanded && hasChildren) : false,
-          isSelected: key === handlerId,
-        };
-      });
-
-      return nextContext;
+      nextContext[key] = {
+        ...context[key],
+        isExpanded: isAction ? key === parentId || (isExpanded && hasChildren) : false,
+        isSelected: key === handlerId,
+      };
     });
-  }, [handlerId, treeModel, setContext]);
+
+    return nextContext;
+  }, [handlerId, treeModel, context]);
 
   const renderTreeItem = useCallback(
     (data: TreeHandlerData) => {
       const isAction = data.type === 'action';
-      const isExpanded = context[data.id]?.isExpanded;
+      const isExpanded = computedContext[data.id]?.isExpanded;
 
       const iconName = isAction
         ? isExpanded
@@ -103,15 +97,15 @@ export function TaskHandlerHierarchy({
         </div>
       );
     },
-    [context],
+    [computedContext],
   );
 
   return (
     <IxTree
-      key={`${handlerId || 'new'}-${JSON.stringify(actions.map((action) => action.handlers.length))}`}
+      key={JSON.stringify(actions)}
       root={'root'}
       model={treeModel}
-      context={context}
+      context={computedContext}
       onNodeClicked={(event) => {
         const id = event.detail;
         if (treeModel[id].data.type === 'action') return;
