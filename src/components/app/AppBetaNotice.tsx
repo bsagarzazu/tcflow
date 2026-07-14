@@ -34,6 +34,7 @@ export function AppBetaNotice() {
       <IxTooltip
         id="tooltip-beta-notice"
         for="#trigger-beta-notice"
+        interactive
         style={{ textAlign: 'justify' }}
       >
         <p>
