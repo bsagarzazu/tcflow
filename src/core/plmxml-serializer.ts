@@ -21,7 +21,7 @@ import { XMLParser } from 'fast-xml-parser';
 import { type ReactFlowJsonObject } from '@xyflow/react';
 
 import { APP_NAME, APP_VERSION, APP_AUTHOR, TC_TASK_REGISTRY } from '../constants';
-import { formatTCLocation, hexToDecimal, generateId } from './utils';
+import { formatTCLocation, hexToDecimal, generateId, getActions } from './utils';
 import type { TaskNodeType, WorkflowEdgeType, TCTaskType, TCAction, TCHandler } from '../types';
 
 const REVERSE_TYPE_MAP = Object.fromEntries(
@@ -187,11 +187,25 @@ export const deserialize = (content: string) => {
   const nodes = (plmxml.WorkflowTemplate || [])
     .filter((template: any) => template['@_templateClassification'] !== 'process')
     .map((template: any) => {
+      const actions = getActions();
+      const xmlActionIds =
+        template['@_actions']?.split(' ').map((id: string) => id.replace('#', '')) || [];
+
+      xmlActionIds.forEach((xmlActionId: string) => {
+        const actionFromXML = actionsMap.get(xmlActionId);
+        if (actionFromXML) {
+          const targetAction = actions.find(
+            (action) => action.actionType === actionFromXML.actionType,
+          );
+          if (targetAction) {
+            targetAction.handlers = actionFromXML.handlers;
+          }
+        }
+      });
+
       const uuid = generateId();
       xmlIdToUuid.set(template['@_id'], uuid);
       const [hexX, hexY] = template['@_location'].split(',');
-      const actionIds =
-        template['@_actions']?.split(' ').map((id: string) => id.replace('#', '')) || [];
 
       return {
         id: uuid,
@@ -200,7 +214,7 @@ export const deserialize = (content: string) => {
         data: {
           name: template['@_name'],
           type: REVERSE_TYPE_MAP[template['@_objectType']] as TCTaskType,
-          actions: actionIds.map((id: string) => actionsMap.get(id)).filter(Boolean) as TCAction[],
+          actions: actions,
         },
       };
     });
