@@ -39,6 +39,7 @@ import { type TCTaskType } from '../../types';
 import { useKeyboardShortcuts } from '../../hooks';
 import { AppWatermark, AppFooterNotice, AppPrivacyNotice, AppBetaNotice } from '../app';
 import { TaskNode, TaskProperties } from '../task';
+import { TC_TASK_REGISTRY } from '../../constants';
 
 const nodeTypes = {
   task: TaskNode,
@@ -158,6 +159,10 @@ export function WorkflowCanvas() {
   const onNodeDoubleClick = useCallback(
     async (event: React.MouseEvent, node: Node) => {
       event.preventDefault();
+
+      const isUnknownType = !TC_TASK_REGISTRY[node.data.type as TCTaskType];
+      if (isUnknownType) return;
+
       await showModal({
         content: <TaskProperties nodeId={node.id} />,
       });
