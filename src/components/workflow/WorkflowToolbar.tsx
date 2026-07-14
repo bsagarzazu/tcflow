@@ -27,13 +27,6 @@ export function WorkflowToolbar() {
     if (event.dataTransfer) {
       event.dataTransfer.setData('application/tcflow', taskType);
       event.dataTransfer.effectAllowed = 'move';
-
-      if (window.umami) {
-        window.umami.track('create', {
-          object: 'task',
-          type: taskType,
-        });
-      }
     }
   };
 

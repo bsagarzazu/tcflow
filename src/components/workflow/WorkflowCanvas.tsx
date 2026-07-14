@@ -103,6 +103,13 @@ export function WorkflowCanvas() {
       });
 
       addNode(taskType as TCTaskType, position);
+
+      if (window.umami) {
+        window.umami.track('create', {
+          object: 'task',
+          type: taskType,
+        });
+      }
     },
     [screenToFlowPosition, nodes, setNodes],
   );
