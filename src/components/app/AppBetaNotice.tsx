@@ -41,7 +41,7 @@ export function AppBetaNotice() {
           As a beta release, TcFlow is expected to have multiple bugs, mainly related to the PLMXML
           interoperability, as well as{' '}
           <a
-            href="https://github.com/teamcenter/tcflow/#features"
+            href="https://github.com/bsagarzazu/tcflow/#features"
             target="_blank"
             data-umami-event="open-github"
             data-umami-event-detail="features"
