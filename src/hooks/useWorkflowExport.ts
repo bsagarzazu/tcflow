@@ -16,18 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useReactFlow, getNodesBounds, getViewportForBounds } from '@xyflow/react';
+import { useReactFlow } from '@xyflow/react';
 import { toPng, toSvg } from 'html-to-image';
 
+import { useAppStore } from '../store/useAppStore';
 import { useWorkflowStore } from '../store/useWorkflowStore';
 import { serialize as workflowToJson } from '../core/json-serializer';
 import { serialize as workflowToPlmxml } from '../core/plmxml-serializer';
 
-const imageWidth = 1024;
-const imageHeight = 768;
-
 export function useWorkflowExport() {
-  const { getNodes, toObject } = useReactFlow();
+  const { toObject } = useReactFlow();
 
   const workflowName = useWorkflowStore((state) => state.workflows[state.activeWorkflowId]?.name);
 
@@ -45,20 +43,19 @@ export function useWorkflowExport() {
   };
 
   const exportAsImage = (format: 'png' | 'svg') => {
-    const element = document.querySelector('.react-flow__viewport') as HTMLElement;
+    const theme = useAppStore.getState().theme;
+    const element = document.querySelector('.react-flow__renderer') as HTMLElement;
     if (!element) return;
 
-    const nodesBounds = getNodesBounds(getNodes());
-    const viewport = getViewportForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2, 2);
+    const { width, height } = element.getBoundingClientRect();
 
     const props = {
-      backgroundColor: '#23233C',
-      width: imageWidth,
-      height: imageHeight,
+      backgroundColor: theme === 'dark' ? '#000028' : '#FFF',
+      width: width,
+      height: height,
       style: {
-        width: `${imageWidth}px`,
-        height: `${imageHeight}px`,
-        transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
+        width: `${width}px`,
+        height: `${height}px`,
       },
     };
 
