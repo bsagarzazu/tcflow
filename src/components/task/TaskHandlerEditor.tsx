@@ -17,7 +17,7 @@
  */
 
 import { IxToggle, IxSelect, IxSelectItem, IxButton, IxFieldLabel } from '@siemens/ix-react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { TaskHandlerArguments } from './TaskHandlerArguments';
@@ -33,7 +33,8 @@ export function TaskHandlerEditor({
   handlerId: string | null;
   setHandlerId: (id: string | null) => void;
 }) {
-  const { control, watch, setValue, getValues } = useFormContext<TaskNodeType['data']>();
+  const { control, watch, setValue, getValues, resetField } =
+    useFormContext<TaskNodeType['data']>();
   const actions = watch('actions');
   const tempActionType = watch('tempActionType' as any);
 
@@ -53,7 +54,7 @@ export function TaskHandlerEditor({
   const handlerPath = isEditing ? `actions.${actionIndex}.handlers.${handlerIndex}` : 'newHandler';
 
   const handleCreate = () => {
-    const data = isEditing ? getValues(handlerPath as any) : getValues('newHandler' as any);
+    const data = getValues(handlerPath as any);
 
     const targetActionType = isEditing
       ? actions[actionIndex].actionType
@@ -100,6 +101,12 @@ export function TaskHandlerEditor({
     setHandlerId(null);
   };
 
+  const [clearCounter, setClearCounter] = useState(0);
+  const handleClear = () => {
+    resetField(handlerPath as any, { defaultValue: { name: '', isRule: false, arguments: [] } });
+    setClearCounter((prev) => prev + 1);
+  };
+
   const handleMoveAction = (newActionType: string) => {
     const targetActionType = Number(newActionType);
     const currentActions = getValues('actions');
@@ -134,7 +141,10 @@ export function TaskHandlerEditor({
   const isRule = watch(`${handlerPath}.isRule` as any);
 
   return (
-    <div key={handlerId || 'new'} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div
+      key={`${handlerId}-${clearCounter}`}
+      style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
+    >
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <IxFieldLabel htmlFor="action-select">Action</IxFieldLabel>
         <IxSelect
@@ -209,6 +219,16 @@ export function TaskHandlerEditor({
           gap: '1rem',
         }}
       >
+        <IxButton
+          variant="subtle-secondary"
+          disabled={
+            !watch((handlerPath + '.name') as any) &&
+            watch((handlerPath + '.arguments') as any).length === 0
+          }
+          onClick={handleClear}
+        >
+          Clear
+        </IxButton>
         <IxButton
           variant="subtle-secondary"
           onClick={handleCreate}
