@@ -28,7 +28,13 @@ export default function App() {
   const hasHydrated = useWorkflowStore.persist.hasHydrated() && useAppStore.persist.hasHydrated();
 
   if (!hasHydrated) {
-    return <IxSpinner></IxSpinner>;
+    return (
+      <div
+        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
+      >
+        <IxSpinner size="large"></IxSpinner>
+      </div>
+    );
   }
 
   return (
