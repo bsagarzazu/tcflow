@@ -17,10 +17,17 @@ Web-based Teamcenter workflow editor built with [Siemens iX](https://github.com/
 - **Themes**: Dark and light mode support.
 - **Free & open-source**: Licensed under AGPLv3.
 
+Umami is used to collect anonymous usage statistics. See the detailed list of registered events [here](./ANALYTICS.md).
+
 > **Note**: As a beta release, TcFlow is expected to have multiple bugs, mainly related to the PLMXML interoperability, as well as the following limitations:
 >
-> - PLMXML files containing multiple workflows are not yet supported.
+> - PLMXML interoperability is not yet supported for:
+>   - PLMXML files containing multiple workflows.
+>   - Complex Task types such as Review Tasks and Condition Tasks.
+>   - Rule Handlers and complex Business Rules.
 > - At the moment, only True and False condition values are supported for condition tasks.
+> - Only Start, Perform, Skip and Complete actions are currently supported.
+> - Task coordinates might require adjustments after importing in both TcFlow and Teamcenter.
 
 ## Reporting Bugs & Feature Requests
 
