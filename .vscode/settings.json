@@ -10,7 +10,18 @@
   },
   "psi-header.changes-tracking": {
     "isActive": true,
-    "exclude": ["json", "jsonc", "markdown", "png", "svg", "ignore", "xml", "yaml", "css"],
+    "exclude": [
+      "json",
+      "jsonc",
+      "markdown",
+      "png",
+      "svg",
+      "ignore",
+      "xml",
+      "yaml",
+      "css",
+      "plaintext"
+    ],
     "excludeGlob": ["**/vite-env.d.ts", "**/umami.d.ts", "**/index.ts"],
     "autoHeader": "autoSave",
     "enforceHeader": true
