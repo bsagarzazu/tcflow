@@ -21,7 +21,14 @@ import { XMLParser } from 'fast-xml-parser';
 import { type ReactFlowJsonObject } from '@xyflow/react';
 
 import { APP_NAME, APP_VERSION, APP_AUTHOR, TC_TASK_REGISTRY } from '../constants';
-import { formatTCLocation, hexToDecimal, generateId, getActions } from './utils';
+import {
+  formatTCLocation,
+  hexToDecimal,
+  generateId,
+  getActions,
+  getStartNode,
+  getEndNode,
+} from './utils';
 import type { TaskNodeType, WorkflowEdgeType, TCTaskType, TCAction, TCHandler } from '../types';
 
 const REVERSE_TYPE_MAP = Object.fromEntries(
@@ -218,6 +225,13 @@ export const deserialize = (content: string) => {
         },
       };
     });
+
+  if (!nodes.some((node: TaskNodeType) => node.data.type === 'Start')) {
+    nodes.push(getStartNode());
+  }
+  if (!nodes.some((node: TaskNodeType) => node.data.type === 'End')) {
+    nodes.push(getEndNode());
+  }
 
   const edges = (plmxml.WorkflowTemplate || [])
     .flatMap((template: any) => {

@@ -29,22 +29,21 @@ export const getActions = (): TCAction[] => {
   }));
 };
 
-export const getInitialNodes = (): TaskNodeType[] => [
-  {
-    id: 'start',
-    type: 'task',
-    position: { x: 0, y: 0 },
-    data: { type: 'Start', name: 'Start', actions: getActions() },
-    deletable: false,
-  },
-  {
-    id: 'end',
-    type: 'task',
-    position: { x: 800, y: 0 },
-    data: { type: 'End', name: 'End', actions: getActions() },
-    deletable: false,
-  },
-];
+export const getInitialNodes = (): TaskNodeType[] => [getStartNode(), getEndNode()];
+export const getStartNode = (): TaskNodeType => ({
+  id: 'start',
+  type: 'task',
+  position: { x: 0, y: 0 },
+  data: { type: 'Start', name: 'Start', actions: getActions() },
+  deletable: false,
+});
+export const getEndNode = (): TaskNodeType => ({
+  id: 'end',
+  type: 'task',
+  position: { x: 800, y: 0 },
+  data: { type: 'End', name: 'End', actions: getActions() },
+  deletable: false,
+});
 
 export const decimalToHex = (decimal: number): string => Math.round(decimal).toString(16);
 export const hexToDecimal = (hex: string): number => parseInt(hex, 16);
