@@ -33,8 +33,7 @@ export function TaskHandlerEditor({
   handlerId: string | null;
   setHandlerId: (id: string | null) => void;
 }) {
-  const { control, watch, setValue, getValues, resetField } =
-    useFormContext<TaskNodeType['data']>();
+  const { control, watch, setValue, getValues } = useFormContext<TaskNodeType['data']>();
   const actions = watch('actions');
   const tempActionType = watch('tempActionType' as any);
 
@@ -103,7 +102,7 @@ export function TaskHandlerEditor({
 
   const [clearCounter, setClearCounter] = useState(0);
   const handleClear = () => {
-    resetField(handlerPath as any, { defaultValue: { name: '', isRule: false, arguments: [] } });
+    setValue(handlerPath as any, { name: '', isRule: false, arguments: [] });
     setClearCounter((prev) => prev + 1);
   };
 
