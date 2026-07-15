@@ -31,7 +31,7 @@ Umami is used to collect anonymous usage statistics. See the detailed list of re
 
 ## Reporting Bugs & Feature Requests
 
-Please [create an Issue](https://github.com/bsagarzazu/tcflow/issues/new) if you found a bug or want to request a new feature.
+Please [create an Issue](https://github.com/bsagarzazu/tcflow/issues/new/choose) if you found a bug or want to request a new feature.
 
 I include the features I plan to add in the [Backlog Milestone](https://github.com/bsagarzazu/tcflow/milestone/8). Expressing your interest in them by reacting to the corresponding Issue might lead me to implement them first.
 
