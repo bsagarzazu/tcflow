@@ -44,7 +44,7 @@ export function useWorkflowExport() {
 
   const exportAsImage = (format: 'png' | 'svg') => {
     const theme = useAppStore.getState().theme;
-    const element = document.querySelector('.react-flow__renderer') as HTMLElement;
+    const element = document.querySelector('.react-flow') as HTMLElement;
     if (!element) return;
 
     const { width, height } = element.getBoundingClientRect();
