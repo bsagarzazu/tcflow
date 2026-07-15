@@ -23,7 +23,7 @@ import { Handle, Position, type NodeProps } from '@xyflow/react';
 import { type TaskNodeType } from '../../types';
 import { TC_TASK_REGISTRY } from '../../constants';
 
-export function TaskNode({ data, selected }: NodeProps<TaskNodeType>) {
+export function TaskNode({ id, data, selected }: NodeProps<TaskNodeType>) {
   const config = TC_TASK_REGISTRY[data.type];
   const isUnknownType = !config;
 
@@ -33,7 +33,7 @@ export function TaskNode({ data, selected }: NodeProps<TaskNodeType>) {
   return (
     <>
       <IxActionCard
-        id={`trigger-type-warning-${data.name}`}
+        id={`trigger-type-warning-${id}`}
         icon={config?.ixIcon || iconWarning}
         heading={data.name}
         variant="filled"
@@ -45,8 +45,8 @@ export function TaskNode({ data, selected }: NodeProps<TaskNodeType>) {
       </IxActionCard>
       {isUnknownType && (
         <IxTooltip
-          id={`tooltip-type-warning-${data.name}`}
-          for={`#trigger-type-warning-${data.name}`}
+          id={`tooltip-type-warning-${id}`}
+          for={`#trigger-type-warning-${id}`}
           style={{ textAlign: 'justify' }}
         >
           This task type is not yet supported.
