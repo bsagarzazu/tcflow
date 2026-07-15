@@ -140,7 +140,7 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
                 </IxCol>
                 <IxCol size="8">
                   <TaskHandlerEditor
-                    key={selectedHandlerId}
+                    key={`${version}-${selectedHandlerId}`}
                     handlerId={selectedHandlerId}
                     setHandlerId={setSelectedHandlerId}
                     onUpdate={triggerRerender}

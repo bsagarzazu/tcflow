@@ -104,11 +104,6 @@ export function TaskHandlerEditor({
     onUpdate();
   };
 
-  const handleClear = () => {
-    setValue(handlerPath as any, { name: '', isRule: false, arguments: [] });
-    onUpdate();
-  };
-
   const handleMoveAction = (newActionType: string) => {
     const targetActionType = Number(newActionType);
     const currentActions = getValues('actions');
@@ -222,13 +217,10 @@ export function TaskHandlerEditor({
       >
         <IxButton
           variant="subtle-secondary"
-          disabled={
-            !watch((handlerPath + '.name') as any) &&
-            watch((handlerPath + '.arguments') as any).length === 0
-          }
-          onClick={handleClear}
+          disabled={!isEditing}
+          onClick={() => setHandlerId(null)}
         >
-          Clear
+          New
         </IxButton>
         <IxButton
           variant="subtle-secondary"
