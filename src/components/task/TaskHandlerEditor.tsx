@@ -234,6 +234,7 @@ export function TaskHandlerEditor({
           onClick={handleCreate}
           data-umami-event="create"
           data-umami-event-object="handler"
+          data-umami-event-action={actions[actionIndex]?.actionType}
         >
           {isEditing ? 'Duplicate' : 'Create'}
         </IxButton>
