@@ -23,7 +23,7 @@ import {
   iconFolderOpenFilled,
   iconDocumentSettings,
 } from '@siemens/ix-icons/icons';
-import { useCallback, useMemo, useState, useRef } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useTaskHandlerHierarchy } from '../../hooks';
@@ -45,16 +45,6 @@ export function TaskHandlerHierarchy({
   const parentId = handlerId
     ? Object.keys(treeModel).find((key) => treeModel[key].children?.includes(handlerId))
     : null;
-
-  const currentStructureKey = JSON.stringify(actions.map((action) => action.handlers.length));
-  const lastStructureKeyRef = useRef(currentStructureKey);
-  const hasStructureChanged = currentStructureKey !== lastStructureKeyRef.current;
-  if (hasStructureChanged) {
-    lastStructureKeyRef.current = currentStructureKey;
-    const nextContext = { ...context };
-    if (parentId) nextContext[parentId] = { ...nextContext[parentId], isExpanded: true };
-    setContext(nextContext);
-  }
 
   const computedContext = useMemo(() => {
     const nextContext: TreeContext = {};
@@ -119,7 +109,6 @@ export function TaskHandlerHierarchy({
 
   return (
     <IxTree
-      key={currentStructureKey}
       root={'root'}
       model={treeModel}
       context={computedContext}

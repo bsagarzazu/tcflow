@@ -55,6 +55,9 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
   const [selectedHandlerId, setSelectedHandlerId] = useState<string | null>(null);
   const modalRef = useRef<ModalRef>(null);
 
+  const [version, setVersion] = useState(0);
+  const triggerRerender = () => setVersion((v) => v + 1);
+
   const taskNode = useWorkflowStore((state) =>
     state.workflows[state.activeWorkflowId]?.nodes.find((node) => node.id === nodeId),
   ) as TaskNodeType;
@@ -130,14 +133,17 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
                   }}
                 >
                   <TaskHandlerHierarchy
+                    key={version}
                     handlerId={selectedHandlerId}
                     setHandlerId={setSelectedHandlerId}
                   />
                 </IxCol>
                 <IxCol size="8">
                   <TaskHandlerEditor
+                    key={selectedHandlerId}
                     handlerId={selectedHandlerId}
                     setHandlerId={setSelectedHandlerId}
+                    onUpdate={triggerRerender}
                   />
                 </IxCol>
               </IxRow>

@@ -17,7 +17,7 @@
  */
 
 import { IxToggle, IxSelect, IxSelectItem, IxButton, IxFieldLabel } from '@siemens/ix-react';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { TaskHandlerArguments } from './TaskHandlerArguments';
@@ -29,9 +29,11 @@ import { generateId } from '../../core/utils';
 export function TaskHandlerEditor({
   handlerId,
   setHandlerId,
+  onUpdate,
 }: {
   handlerId: string | null;
   setHandlerId: (id: string | null) => void;
+  onUpdate: () => void;
 }) {
   const { control, watch, setValue, getValues } = useFormContext<TaskNodeType['data']>();
   const actions = watch('actions');
@@ -53,7 +55,7 @@ export function TaskHandlerEditor({
   const handlerPath = isEditing ? `actions.${actionIndex}.handlers.${handlerIndex}` : 'newHandler';
 
   const handleCreate = () => {
-    const data = getValues(handlerPath as any);
+    const data = watch(handlerPath as any);
 
     const targetActionType = isEditing
       ? actions[actionIndex].actionType
@@ -76,13 +78,14 @@ export function TaskHandlerEditor({
       return action;
     });
 
-    setValue('actions', updatedActions);
+    setValue('actions', updatedActions, { shouldDirty: true });
 
     if (!isEditing) {
       setValue('newHandler' as any, { name: '', isRule: false, arguments: [] });
     }
 
     setHandlerId(newHandler.id);
+    onUpdate();
   };
 
   const handleDelete = () => {
@@ -96,14 +99,14 @@ export function TaskHandlerEditor({
       return action;
     });
 
-    setValue('actions', updatedActions);
+    setValue('actions', updatedActions, { shouldDirty: true });
     setHandlerId(null);
+    onUpdate();
   };
 
-  const [clearCounter, setClearCounter] = useState(0);
   const handleClear = () => {
     setValue(handlerPath as any, { name: '', isRule: false, arguments: [] });
-    setClearCounter((prev) => prev + 1);
+    onUpdate();
   };
 
   const handleMoveAction = (newActionType: string) => {
@@ -133,17 +136,15 @@ export function TaskHandlerEditor({
       return action;
     });
 
-    setValue('actions', newActions);
+    setValue('actions', newActions, { shouldDirty: true });
     setHandlerId(handlerData.id);
+    onUpdate();
   };
 
   const isRule = watch(`${handlerPath}.isRule` as any);
 
   return (
-    <div
-      key={`${handlerId}-${clearCounter}`}
-      style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
-    >
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <IxFieldLabel htmlFor="action-select">Action</IxFieldLabel>
         <IxSelect
@@ -198,6 +199,7 @@ export function TaskHandlerEditor({
               editable
               value={field.value}
               onValueChange={(event) => field.onChange(event.detail)}
+              onIxBlur={() => onUpdate()}
               i18nPlaceholderEditable={
                 isRule ? 'Select a Rule Handler' : 'Select an Action Handler'
               }
