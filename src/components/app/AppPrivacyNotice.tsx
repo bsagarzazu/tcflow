@@ -34,6 +34,7 @@ export function AppPrivacyNotice() {
       <IxTooltip
         id="tooltip-privacy-notice"
         for="#trigger-privacy-notice"
+        interactive
         style={{ textAlign: 'justify' }}
       >
         <p>
@@ -41,8 +42,17 @@ export function AppPrivacyNotice() {
           collected.
         </p>
         <p>
-          Umami is used to collect anonymous usage statistics (such as the number of executions of
-          different actions).
+          Umami is used to collect anonymous usage statistics. See the detailed list of registered
+          events{' '}
+          <a
+            href="https://github.com/bsagarzazu/tcflow/blob/main/ANALYTICS.md"
+            target="_blank"
+            data-umami-event="open-github"
+            data-umami-event-detail="analytics"
+          >
+            here
+          </a>
+          .
         </p>
       </IxTooltip>
     </>

@@ -44,7 +44,7 @@ export function AppBetaNotice() {
             href="https://github.com/bsagarzazu/tcflow/#features"
             target="_blank"
             data-umami-event="open-github"
-            data-umami-event-detail="features"
+            data-umami-event-detail="limitations"
           >
             the following limitations
           </a>
