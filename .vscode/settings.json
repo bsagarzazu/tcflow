@@ -22,7 +22,7 @@
       "css",
       "plaintext"
     ],
-    "excludeGlob": ["**/vite-env.d.ts", "**/umami.d.ts", "**/index.ts"],
+    "excludeGlob": ["**/vite-env.d.ts", "**/eslint.config.js", "**/umami.d.ts", "**/index.ts"],
     "autoHeader": "autoSave",
     "enforceHeader": true
   },

@@ -69,17 +69,11 @@ export function useWorkflowExport() {
   const exportAsFile = (format: 'tcflow' | 'plmxml') => {
     const flowData = toObject();
 
-    let string = '';
-    let type = '';
-    if (format === 'plmxml') {
-      string = workflowToPlmxml(flowData, workflowName);
-      type = 'application/xml';
-    } else {
-      string = workflowToJson(flowData);
-      type = 'application/json';
-    }
+    const content =
+      format === 'plmxml' ? workflowToPlmxml(flowData, workflowName) : workflowToJson(flowData);
+    const type = format === 'plmxml' ? 'application/xml' : 'application/json';
 
-    const blob = new Blob([string], { type: type });
+    const blob = new Blob([content], { type: type });
     const url = URL.createObjectURL(blob);
     triggerDownload(url, getFilename(format));
     URL.revokeObjectURL(url);
