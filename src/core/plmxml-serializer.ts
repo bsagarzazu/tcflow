@@ -214,22 +214,36 @@ export const deserialize = (content: string) => {
       xmlIdToUuid.set(template['@_id'], uuid);
       const [hexX, hexY] = template['@_location'].split(',');
 
+      const isStartNode =
+        template['@_name'].toLowerCase() === 'start' &&
+        template['@_objectType'] === 'EPMTaskTemplate' &&
+        template['@_iconKey'] === 'process';
+      const isEndNode =
+        template['@_name'].toLowerCase() === 'end' &&
+        template['@_objectType'] === 'EPMTaskTemplate' &&
+        template['@_iconKey'] === 'process';
+
       return {
         id: uuid,
         type: 'task',
         position: { x: hexToDecimal(hexX), y: hexToDecimal(hexY) },
         data: {
           name: template['@_name'],
-          type: REVERSE_TYPE_MAP[template['@_objectType']] as TCTaskType,
+          type: isStartNode
+            ? 'Start'
+            : isEndNode
+              ? 'End'
+              : (REVERSE_TYPE_MAP[template['@_objectType']] as TCTaskType),
           actions: actions,
         },
+        deletable: !(isStartNode || isEndNode),
       };
     });
 
-  if (!nodes.some((node: TaskNodeType) => node.data.type === 'Start')) {
+  if (!nodes.some((node: TaskNodeType) => node.data.name.toLowerCase() === 'start')) {
     nodes.push(getStartNode());
   }
-  if (!nodes.some((node: TaskNodeType) => node.data.type === 'End')) {
+  if (!nodes.some((node: TaskNodeType) => node.data.name.toLowerCase() === 'end')) {
     nodes.push(getEndNode());
   }
 
