@@ -1,6 +1,6 @@
 # <a href="https://bsagarzazu.github.io/tcflow" target="_blank"><img src="src/assets/banner.svg" height="120"></a>
 
-Web-based Teamcenter workflow editor built with [Siemens iX](https://github.com/siemens/ix) and [React Flow](https://github.com/xyflow/xyflow).
+Web-based Teamcenter workflow editor built with [Siemens iX](https://github.com/siemens/ix), [React Flow](https://github.com/xyflow/xyflow) and [Zustand](https://github.com/pmndrs/zustand).
 
 <a href="https://bsagarzazu.github.io/tcflow" target="_blank"><img src="public/og-image.png" width="100%"></a>
 
