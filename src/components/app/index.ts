@@ -5,6 +5,7 @@ export { AppHeader } from './AppHeader';
 export { AppIcon } from './AppIcon';
 export { AppLogo } from './AppLogo';
 export { AppMenu } from './AppMenu';
+export { AppMobilePlaceholder } from './AppMobilePlaceholder';
 export { AppPrivacyNotice } from './AppPrivacyNotice';
 export { AppTabs } from './AppTabs';
 export { AppWatermark } from './AppWatermark';

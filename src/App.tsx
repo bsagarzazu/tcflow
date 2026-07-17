@@ -18,14 +18,22 @@
 
 import { IxApplication, IxContent, IxSpinner } from '@siemens/ix-react';
 import { ReactFlowProvider } from '@xyflow/react';
+import { useEffect, useState } from 'react';
 
 import { useAppStore } from './store/useAppStore';
 import { useWorkflowStore } from './store/useWorkflowStore';
-import { AppHeader, AppMenu, AppTabs } from './components/app';
+import { AppHeader, AppMenu, AppTabs, AppMobilePlaceholder } from './components/app';
 import { WorkflowCanvas, WorkflowHierarchy } from './components/workflow';
 
 export default function App() {
   const hasHydrated = useWorkflowStore.persist.hasHydrated() && useAppStore.persist.hasHydrated();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   if (!hasHydrated) {
     return (
@@ -39,30 +47,34 @@ export default function App() {
 
   return (
     <IxApplication>
-      <ReactFlowProvider>
-        <AppHeader />
+      {isMobile ? (
+        <AppMobilePlaceholder />
+      ) : (
+        <ReactFlowProvider>
+          <AppHeader />
 
-        <AppMenu />
+          <AppMenu />
 
-        <IxContent style={{ padding: 0 }}>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: '100%',
-              height: '100%',
-              overflow: 'hidden',
-            }}
-          >
-            <AppTabs />
+          <IxContent style={{ padding: 0 }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+                height: '100%',
+                overflow: 'hidden',
+              }}
+            >
+              <AppTabs />
 
-            <div style={{ display: 'flex', width: '100%', flex: '1', overflow: 'hidden' }}>
-              <WorkflowCanvas />
-              <WorkflowHierarchy />
+              <div style={{ display: 'flex', width: '100%', flex: '1', overflow: 'hidden' }}>
+                <WorkflowCanvas />
+                <WorkflowHierarchy />
+              </div>
             </div>
-          </div>
-        </IxContent>
-      </ReactFlowProvider>
+          </IxContent>
+        </ReactFlowProvider>
+      )}
     </IxApplication>
   );
 }

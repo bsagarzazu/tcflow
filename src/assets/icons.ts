@@ -49,3 +49,22 @@ export const registerCustomIcons = () => {
     'custom-icon-or-task': iconOrTaskSvg,
   });
 };
+
+export const bannerTcFlowSvg = `
+<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(160, 94) scale(0.85)">
+    <g id="icono-original">
+      <rect x="20" y="47" width="460" height="460" fill="#00997F" />
+      <g fill="#FFFFFF">
+        <g fill="none" stroke="#FFFFFF" stroke-width="36" stroke-linecap="square" stroke-linejoin="miter">
+          <path d="M125 179 H342" />
+          <path d="M187 197 V384" />
+          <path d="M318 287 H264 V384 H318" />
+        </g>
+        <path d="M336 138 L398 179 L336 220 Z" />
+      </g>
+    </g>
+    <text x="540" y="355" font-family="'Inter Variable', system-ui, sans-serif" font-size="250" font-weight="500" fill="currentColor">Flow</text>
+  </g>
+</svg>
+`;
