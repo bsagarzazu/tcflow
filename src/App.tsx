@@ -18,7 +18,6 @@
 
 import { IxApplication, IxContent, IxSpinner } from '@siemens/ix-react';
 import { ReactFlowProvider } from '@xyflow/react';
-import { useEffect, useState } from 'react';
 
 import { useAppStore } from './store/useAppStore';
 import { useWorkflowStore } from './store/useWorkflowStore';
@@ -27,13 +26,6 @@ import { WorkflowCanvas, WorkflowHierarchy } from './components/workflow';
 
 export default function App() {
   const hasHydrated = useWorkflowStore.persist.hasHydrated() && useAppStore.persist.hasHydrated();
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 1024);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   if (!hasHydrated) {
     return (
@@ -47,9 +39,10 @@ export default function App() {
 
   return (
     <IxApplication>
-      {isMobile ? (
+      <div data-nosnippet className="mobile-only" style={{ width: '100%', height: '100%' }}>
         <AppMobilePlaceholder />
-      ) : (
+      </div>
+      <div className="desktop-only" style={{ width: '100%', height: '100%' }}>
         <ReactFlowProvider>
           <AppHeader />
 
@@ -74,7 +67,7 @@ export default function App() {
             </div>
           </IxContent>
         </ReactFlowProvider>
-      )}
+      </div>
     </IxApplication>
   );
 }
