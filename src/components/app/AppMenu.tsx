@@ -16,19 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useRef } from 'react';
-import { IxMenu, IxMenuCategory, IxMenuItem } from '@siemens/ix-react';
+import { useCallback, useRef } from 'react';
+import { IxMenu, IxMenuCategory, IxMenuItem, showModal } from '@siemens/ix-react';
 import {
   iconFolderOpenFilled,
   iconDownload,
   iconImageFilled,
   iconGithubLogo,
   iconLightDark,
+  iconAnalyze,
 } from '@siemens/ix-icons/icons';
 
 import { useAppStore } from '../../store/useAppStore';
 import { useWorkflowExport, useWorkflowImport } from '../../hooks';
 import { APP_REPO } from '../../constants';
+import { AnalyticsDashboard } from '../analytics';
 
 export function AppMenu() {
   const toggleTheme = useAppStore((state) => state.toggleTheme);
@@ -38,9 +40,15 @@ export function AppMenu() {
   const jsonInputRef = useRef<HTMLInputElement>(null);
   const plmxmlInputRef = useRef<HTMLInputElement>(null);
 
+  const openAnalyticsDashboard = useCallback(async () => {
+    await showModal({
+      content: <AnalyticsDashboard />,
+    });
+  }, [showModal]);
+
   return (
     <IxMenu>
-      <IxMenuCategory icon={iconFolderOpenFilled} label="Open workflow">
+      <IxMenuCategory icon={iconFolderOpenFilled} label="Open Workflow">
         <IxMenuItem
           onClick={() => jsonInputRef.current?.click()}
           data-umami-event="import"
@@ -56,7 +64,7 @@ export function AppMenu() {
           PLMXML
         </IxMenuItem>
       </IxMenuCategory>
-      <IxMenuCategory icon={iconDownload} label="Save workflow">
+      <IxMenuCategory icon={iconDownload} label="Save Workflow">
         <IxMenuItem
           onClick={() => exportAsFile('tcflow')}
           data-umami-event="export"
@@ -72,7 +80,7 @@ export function AppMenu() {
           PLMXML
         </IxMenuItem>
       </IxMenuCategory>
-      <IxMenuCategory icon={iconImageFilled} label="Export image">
+      <IxMenuCategory icon={iconImageFilled} label="Export Image">
         <IxMenuItem
           onClick={() => exportAsImage('png')}
           data-umami-event="export"
@@ -88,6 +96,13 @@ export function AppMenu() {
           SVG
         </IxMenuItem>
       </IxMenuCategory>
+      <IxMenuItem
+        icon={iconAnalyze}
+        onClick={() => openAnalyticsDashboard()}
+        data-umami-event="analytics"
+      >
+        Open Analytics
+      </IxMenuItem>
       <IxMenuItem
         icon={iconGithubLogo}
         slot="bottom"
