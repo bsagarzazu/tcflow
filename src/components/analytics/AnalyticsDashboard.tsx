@@ -16,6 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { IxModalContent, IxModalHeader, Modal, type ModalRef } from '@siemens/ix-react';
+import { useRef } from 'react';
+
 export function AnalyticsDashboard() {
-  return <></>;
+  const modalRef = useRef<ModalRef>(null);
+
+  return (
+    <Modal ref={modalRef} size="full-width">
+      <IxModalHeader onCloseClick={() => modalRef.current?.close('close')}>
+        Analytics Dashboard
+      </IxModalHeader>
+      <IxModalContent></IxModalContent>
+    </Modal>
+  );
 }
