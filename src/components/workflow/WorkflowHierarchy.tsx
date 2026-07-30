@@ -18,7 +18,8 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { type TreeContext } from '@siemens/ix';
-import { IxPane, IxTree, IxIcon, showModal } from '@siemens/ix-react';
+import { IxPane, IxTree, IxIcon, showModal, IxIconButton } from '@siemens/ix-react';
+import { iconEditDocument } from '@siemens/ix-icons/icons';
 import { useReactFlow } from '@xyflow/react';
 
 import { useWorkflowStore } from '../../store/useWorkflowStore';
@@ -96,20 +97,26 @@ export function WorkflowHierarchy() {
             style={{
               display: 'flex',
               alignItems: 'center',
-            }}
-            onDoubleClick={(event) => {
-              event.stopPropagation();
-              openProperties(data.id);
+              justifyContent: 'space-between',
+              width: '100%',
             }}
           >
-            <IxIcon
-              name={data.icon}
+            <div>
+              <IxIcon
+                name={data.icon}
+                size="16"
+                style={{
+                  marginInlineEnd: '0.5rem',
+                }}
+              ></IxIcon>
+              {data.name}
+            </div>
+            <IxIconButton
+              icon={iconEditDocument}
               size="16"
-              style={{
-                marginInlineEnd: '0.5rem',
-              }}
-            />
-            {data.name}
+              variant="subtle-tertiary"
+              onClick={() => openProperties(data.id)}
+            ></IxIconButton>
           </div>
         )}
       ></IxTree>
