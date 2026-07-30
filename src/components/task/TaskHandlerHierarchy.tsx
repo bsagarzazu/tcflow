@@ -41,6 +41,7 @@ export function TaskHandlerHierarchy({
   const treeModel = useTaskHandlerHierarchy(actions);
 
   const [context, setContext] = useState<TreeContext>({});
+  const [version, setVersion] = useState(0);
 
   const parentId = handlerId
     ? Object.keys(treeModel).find((key) => treeModel[key].children?.includes(handlerId))
@@ -109,6 +110,7 @@ export function TaskHandlerHierarchy({
 
   return (
     <IxTree
+      key={version}
       root={'root'}
       model={treeModel}
       context={computedContext}
@@ -119,6 +121,7 @@ export function TaskHandlerHierarchy({
       }}
       onContextChange={(event) => {
         setContext({ ...event.detail });
+        setVersion((prev) => prev + 1);
       }}
       renderItem={renderTreeItem}
     ></IxTree>
