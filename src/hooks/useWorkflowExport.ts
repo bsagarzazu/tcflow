@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useReactFlow } from '@xyflow/react';
+import { useReactFlow, getNodesBounds, getViewportForBounds } from '@xyflow/react';
 import { toPng, toSvg } from 'html-to-image';
 
 import { useAppStore } from '../store/useAppStore';
@@ -25,7 +25,7 @@ import { serialize as workflowToJson } from '../core/json-serializer';
 import { serialize as workflowToPlmxml } from '../core/plmxml-serializer';
 
 export function useWorkflowExport() {
-  const { toObject } = useReactFlow();
+  const { toObject, getNodes } = useReactFlow();
 
   const workflowName = useWorkflowStore((state) => state.workflows[state.activeWorkflowId]?.name);
 
@@ -42,20 +42,26 @@ export function useWorkflowExport() {
     a.click();
   };
 
+  const imageWidth = 1024;
+  const imageHeight = 768;
+
   const exportAsImage = (format: 'png' | 'svg') => {
     const theme = useAppStore.getState().theme;
-    const element = document.querySelector('.react-flow') as HTMLElement;
-    if (!element) return;
 
-    const { width, height } = element.getBoundingClientRect();
+    const nodesBounds = getNodesBounds(getNodes());
+    const viewport = getViewportForBounds(nodesBounds, imageWidth, imageHeight, 0.1, 2, 0.5);
+
+    const element = document.querySelector('.react-flow__viewport') as HTMLElement;
+    if (!element) return;
 
     const props = {
       backgroundColor: theme === 'dark' ? '#000028' : '#FFF',
-      width: width,
-      height: height,
+      width: imageWidth,
+      height: imageHeight,
       style: {
-        width: `${width}px`,
-        height: `${height}px`,
+        width: `${imageWidth}px`,
+        height: `${imageHeight}px`,
+        transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
       },
     };
 
