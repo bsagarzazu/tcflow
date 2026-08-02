@@ -28,7 +28,7 @@ import {
 } from '@siemens/ix-icons/icons';
 
 export const APP_NAME = 'TcFlow';
-export const APP_VERSION = '0.7.0-beta';
+export const APP_VERSION = '0.7.1-beta';
 export const APP_AUTHOR = 'Beñat Sagarzazu';
 export const APP_URL = 'https://bsagarzazu.github.io/tcflow';
 export const APP_REPO = 'https://github.com/bsagarzazu/tcflow';
