@@ -82,12 +82,12 @@ export function useContextMenuActions(id: string) {
   const deleteTaskNode = useCallback(() => {
     setNodes(nodes.filter((node) => node.id !== id));
     setEdges(edges.filter((edge) => edge.source !== id && edge.target !== id));
-  }, [id, setNodes, setEdges]);
+  }, [id, nodes, edges, setNodes, setEdges]);
 
   const cutTaskNode = useCallback(() => {
     copyTaskNode();
     deleteTaskNode();
-  }, [id, copyTaskNode, deleteTaskNode]);
+  }, [copyTaskNode, deleteTaskNode]);
 
   const updateEdgeType = useCallback(
     (status: 'success' | 'failure' | 'conditional', conditionValue?: 'True' | 'False') => {
@@ -98,7 +98,7 @@ export function useContextMenuActions(id: string) {
 
   const deleteEdge = useCallback(() => {
     setEdges(edges.filter((edge) => edge.id !== id));
-  }, [id, setEdges]);
+  }, [id, edges, setEdges]);
 
   return {
     cutTaskNode,

@@ -112,7 +112,7 @@ export function WorkflowCanvas() {
         });
       }
     },
-    [screenToFlowPosition, nodes, setNodes],
+    [screenToFlowPosition, addNode],
   );
 
   const onNodeContextMenu = useCallback(
