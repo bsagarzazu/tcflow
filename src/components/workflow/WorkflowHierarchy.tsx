@@ -66,7 +66,7 @@ export function WorkflowHierarchy() {
         });
       }
     },
-    [getNode, showModal],
+    [getNode],
   );
 
   return (

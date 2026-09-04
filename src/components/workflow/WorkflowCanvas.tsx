@@ -167,7 +167,7 @@ export function WorkflowCanvas() {
         content: <TaskProperties nodeId={node.id} />,
       });
     },
-    [showModal],
+    [],
   );
 
   return (
