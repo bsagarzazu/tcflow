@@ -63,7 +63,6 @@ export function WorkflowCanvas() {
   const onEdgesChange = useWorkflowStore((state) => state.onEdgesChange);
   const onViewportChange = useWorkflowStore((state) => state.onViewportChange);
   const onConnect = useWorkflowStore((state) => state.onConnect);
-  const setNodes = useWorkflowStore((state) => state.setNodes);
   const addNode = useWorkflowStore((state) => state.addNode);
 
   const nodesInitialized = useNodesInitialized();
