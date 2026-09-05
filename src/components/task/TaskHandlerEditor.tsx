@@ -17,7 +17,6 @@
  */
 
 import { IxToggle, IxSelect, IxSelectItem, IxButton, IxFieldLabel } from '@siemens/ix-react';
-import { useMemo } from 'react';
 import { Controller, useFormContext, type FieldPath } from 'react-hook-form';
 
 import { TaskHandlerArguments } from './TaskHandlerArguments';
@@ -39,16 +38,21 @@ export function TaskHandlerEditor({
   const actions = watch('actions');
   const tempActionType = watch('tempActionType') as string;
 
-  const { actionIndex, handlerIndex } = useMemo(() => {
-    if (!handlerId) return { actionIndex: -1, handlerIndex: -1 };
+  let actionIndex = -1;
+  let handlerIndex = -1;
+
+  if (handlerId) {
     for (let i = 0; i < actions.length; i++) {
-      const handlerIndex = actions[i].handlers.findIndex((handler) => handler.id === handlerId);
-      if (handlerIndex !== -1) {
-        return { actionIndex: i, handlerIndex: handlerIndex };
+      const foundHandlerIndex = actions[i].handlers.findIndex(
+        (handler) => handler.id === handlerId,
+      );
+      if (foundHandlerIndex !== -1) {
+        actionIndex = i;
+        handlerIndex = foundHandlerIndex;
+        break;
       }
     }
-    return { actionIndex: -1, handlerIndex: -1 };
-  }, [handlerId, actions]);
+  }
 
   const isEditing = handlerId !== null && actionIndex !== -1 && handlerIndex !== -1;
 
