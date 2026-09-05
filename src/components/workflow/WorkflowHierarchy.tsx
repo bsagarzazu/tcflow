@@ -49,7 +49,7 @@ export function WorkflowHierarchy() {
   }, [selectedNodeId, setContext]);
 
   const selectNode = useCallback(
-    (event: any) => {
+    (event: CustomEvent<string>) => {
       const nodeId = event.detail;
       setNodes(nodes.map((node) => ({ ...node, selected: node.id === nodeId })));
       fitView({ nodes: [{ id: nodeId }], padding: 0.2, duration: 500, maxZoom: 1 });
