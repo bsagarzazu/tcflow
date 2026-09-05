@@ -29,7 +29,7 @@ import {
   type ModalRef,
 } from '@siemens/ix-react';
 import { useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { TC_TASK_REGISTRY } from '../../constants';
@@ -63,8 +63,8 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
     },
   });
 
-  const { watch, setValue, handleSubmit } = methods;
-  const currentName = watch('name');
+  const { setValue, handleSubmit } = methods;
+  const currentName = useWatch({ control: methods.control, name: 'name' });
 
   const onClose = () => {
     modalRef.current?.close('close');
