@@ -33,22 +33,13 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { TC_TASK_REGISTRY } from '../../constants';
-import { type TaskNodeType } from '../../types';
+import type { TaskNodeType, TaskPropertiesFormData } from '../../types';
 import { AppEditableText } from '../app';
 import { TaskHandlerHierarchy } from './TaskHandlerHierarchy';
 import { TaskHandlerEditor } from './TaskHandlerEditor';
 
 type TaskPropertiesProps = {
   nodeId: string;
-};
-
-type TaskPropertiesFormData = TaskNodeType['data'] & {
-  newHandler: {
-    name: string;
-    isRule: boolean;
-    arguments: any[];
-  };
-  tempActionType: string;
 };
 
 export function TaskProperties({ nodeId }: TaskPropertiesProps) {

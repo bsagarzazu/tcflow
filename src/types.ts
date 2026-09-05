@@ -23,10 +23,15 @@ import { TC_ACTION_REGISTRY, TC_TASK_REGISTRY } from './constants';
 export type TCActionType = keyof typeof TC_ACTION_REGISTRY;
 export type TCTaskType = keyof typeof TC_TASK_REGISTRY;
 
+export interface TCHandlerArgument {
+  argument: string;
+  value: string;
+}
+
 export interface TCHandler {
   id: string;
   name: string;
-  arguments: { argument: string; value: string }[];
+  arguments: TCHandlerArgument[];
 }
 
 export interface TCAction {
@@ -51,3 +56,12 @@ export type WorkflowEdgeType = Edge<WorkflowEdgeData>;
 
 export type TreeTaskData = Partial<TaskNodeData> & { id: string; icon?: string };
 export type TreeHandlerData = { id: string; name: string; type: 'action' | undefined };
+
+export type TaskPropertiesFormData = TaskNodeType['data'] & {
+  newHandler: {
+    name: string;
+    isRule: boolean;
+    arguments: TCHandlerArgument[];
+  };
+  tempActionType: string;
+};

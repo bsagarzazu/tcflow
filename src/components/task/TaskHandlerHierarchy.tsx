@@ -27,7 +27,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useTaskHandlerHierarchy } from '../../hooks';
-import { type TreeHandlerData, type TaskNodeType } from '../../types';
+import type { TreeHandlerData, TaskPropertiesFormData } from '../../types';
 
 export function TaskHandlerHierarchy({
   handlerId,
@@ -36,7 +36,7 @@ export function TaskHandlerHierarchy({
   handlerId: string | null;
   setHandlerId: (handlerId: string | null) => void;
 }) {
-  const { watch } = useFormContext<TaskNodeType['data']>();
+  const { watch } = useFormContext<TaskPropertiesFormData>();
   const actions = watch('actions');
   const treeModel = useTaskHandlerHierarchy(actions);
 

@@ -18,12 +18,12 @@
 
 import { IxToggle, IxSelect, IxSelectItem, IxButton, IxFieldLabel } from '@siemens/ix-react';
 import { useMemo } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext, type FieldPath } from 'react-hook-form';
 
 import { TaskHandlerArguments } from './TaskHandlerArguments';
 
 import { TC_ACTION_REGISTRY, TC_ACTION_ORDER } from '../../constants';
-import type { TaskNodeType } from '../../types';
+import type { TaskPropertiesFormData } from '../../types';
 import { generateId } from '../../core/utils';
 
 export function TaskHandlerEditor({
@@ -35,9 +35,9 @@ export function TaskHandlerEditor({
   setHandlerId: (id: string | null) => void;
   onUpdate: () => void;
 }) {
-  const { control, watch, setValue, getValues } = useFormContext<TaskNodeType['data']>();
+  const { control, watch, setValue, getValues } = useFormContext<TaskPropertiesFormData>();
   const actions = watch('actions');
-  const tempActionType = watch('tempActionType' as any);
+  const tempActionType = watch('tempActionType') as string;
 
   const { actionIndex, handlerIndex } = useMemo(() => {
     if (!handlerId) return { actionIndex: -1, handlerIndex: -1 };
@@ -55,11 +55,15 @@ export function TaskHandlerEditor({
   const handlerPath = isEditing ? `actions.${actionIndex}.handlers.${handlerIndex}` : 'newHandler';
 
   const handleCreate = () => {
-    const data = watch(handlerPath as any);
+    const data = watch(handlerPath as FieldPath<TaskPropertiesFormData>) as {
+      name: string;
+      isRule: boolean;
+      arguments: { argument: string; value: string }[];
+    };
 
     const targetActionType = isEditing
       ? actions[actionIndex].actionType
-      : Number(getValues('tempActionType' as any));
+      : Number(getValues('tempActionType' as FieldPath<TaskPropertiesFormData>) as string);
 
     const targetActionIndex = actions.findIndex(
       (action) => action.actionType === Number(targetActionType),
@@ -81,7 +85,11 @@ export function TaskHandlerEditor({
     setValue('actions', updatedActions, { shouldDirty: true });
 
     if (!isEditing) {
-      setValue('newHandler' as any, { name: '', isRule: false, arguments: [] });
+      setValue('newHandler' as FieldPath<TaskPropertiesFormData>, {
+        name: '',
+        isRule: false,
+        arguments: [],
+      });
     }
 
     setHandlerId(newHandler.id);
@@ -113,7 +121,12 @@ export function TaskHandlerEditor({
 
     if (targetActionIndex === -1 || targetActionIndex === actionIndex) return;
 
-    const handlerData = getValues(handlerPath as any);
+    const handlerData = getValues(handlerPath as FieldPath<TaskPropertiesFormData>) as {
+      id: string;
+      name: string;
+      isRule: boolean;
+      arguments: { argument: string; value: string }[];
+    };
 
     const newActions = currentActions.map((action, index) => {
       if (index === actionIndex) {
@@ -136,7 +149,7 @@ export function TaskHandlerEditor({
     onUpdate();
   };
 
-  const isRule = watch(`${handlerPath}.isRule` as any);
+  const isRule = watch(`${handlerPath}.isRule` as FieldPath<TaskPropertiesFormData>) as boolean;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -151,7 +164,7 @@ export function TaskHandlerEditor({
             if (isEditing) {
               handleMoveAction(newValue);
             } else {
-              setValue('tempActionType' as any, newValue);
+              setValue('tempActionType' as FieldPath<TaskPropertiesFormData>, newValue);
             }
           }}
           style={{ width: '25%' }}
@@ -175,10 +188,10 @@ export function TaskHandlerEditor({
       >
         <Controller
           control={control}
-          name={`${handlerPath}.isRule` as any}
+          name={`${handlerPath}.isRule` as FieldPath<TaskPropertiesFormData>}
           render={({ field }) => (
             <IxToggle
-              checked={field.value}
+              checked={field.value as boolean}
               text-off="Action Handler"
               text-on="Rule Handler"
               style={{ width: '35%' }}
@@ -188,11 +201,11 @@ export function TaskHandlerEditor({
         />
         <Controller
           control={control}
-          name={`${handlerPath}.name` as any}
+          name={`${handlerPath}.name` as FieldPath<TaskPropertiesFormData>}
           render={({ field }) => (
             <IxSelect
               editable
-              value={field.value}
+              value={field.value as string}
               onValueChange={(event) => field.onChange(event.detail)}
               onIxBlur={() => onUpdate()}
               i18nPlaceholderEditable={
@@ -200,7 +213,12 @@ export function TaskHandlerEditor({
               }
               style={{ flexGrow: 1 }}
             >
-              {field.value && <IxSelectItem value={field.value} label={field.value}></IxSelectItem>}
+              {(field.value as string) && (
+                <IxSelectItem
+                  value={field.value as string}
+                  label={field.value as string}
+                ></IxSelectItem>
+              )}
             </IxSelect>
           )}
         />

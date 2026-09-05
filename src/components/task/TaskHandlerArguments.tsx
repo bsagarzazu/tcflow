@@ -24,10 +24,16 @@ import {
   iconChevronDown,
 } from '@siemens/ix-icons/icons';
 import { useState } from 'react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import {
+  useFieldArray,
+  useFormContext,
+  type FieldPath,
+  type FieldArrayPath,
+} from 'react-hook-form';
+import type { TaskPropertiesFormData } from '../../types';
 
 export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
-  const { register, control } = useFormContext();
+  const { register, control } = useFormContext<TaskPropertiesFormData>();
 
   const [selectedArgIndex, setSelectedArgIndex] = useState<number>(0);
   const [startIndex, setStartIndex] = useState<number>(0);
@@ -35,7 +41,7 @@ export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: `${handlerPath}.arguments` as any,
+    name: `${handlerPath}.arguments` as FieldArrayPath<TaskPropertiesFormData>,
   });
 
   return (
@@ -66,7 +72,9 @@ export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
                   {field ? (
                     <IxInput
                       style={{ width: '100%' }}
-                      {...register(`${handlerPath}.arguments.${dataIndex}.argument` as any)}
+                      {...register(
+                        `${handlerPath}.arguments.${dataIndex}.argument` as FieldPath<TaskPropertiesFormData>,
+                      )}
                       onFocus={() => setSelectedArgIndex(dataIndex)}
                     ></IxInput>
                   ) : (
@@ -77,7 +85,9 @@ export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
                   {field ? (
                     <IxInput
                       style={{ width: '100%' }}
-                      {...register(`${handlerPath}.arguments.${dataIndex}.value` as any)}
+                      {...register(
+                        `${handlerPath}.arguments.${dataIndex}.value` as FieldPath<TaskPropertiesFormData>,
+                      )}
                       onFocus={() => setSelectedArgIndex(dataIndex)}
                     ></IxInput>
                   ) : (
