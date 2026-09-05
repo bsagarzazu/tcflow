@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { type TreeContext } from '@siemens/ix';
 import { IxPane, IxTree, IxIcon, showModal } from '@siemens/ix-react';
 import { useReactFlow } from '@xyflow/react';
@@ -40,13 +40,14 @@ export function WorkflowHierarchy() {
 
   const selectedNodeId = nodes.find((node) => node.selected)?.id;
 
-  useEffect(() => {
-    if (!selectedNodeId) {
-      setContext({});
-      return;
-    }
-    setContext({ [selectedNodeId]: { isExpanded: false, isSelected: true } });
-  }, [selectedNodeId, setContext]);
+  const computedContext: TreeContext = selectedNodeId
+    ? Object.fromEntries(
+        Object.entries(context).map(([nodeId, nodeContext]) => [
+          nodeId,
+          { ...nodeContext, isSelected: nodeId === selectedNodeId },
+        ]),
+      )
+    : {};
 
   const selectNode = useCallback(
     (event: CustomEvent<string>) => {
@@ -86,7 +87,7 @@ export function WorkflowHierarchy() {
       <IxTree
         root={'root'}
         model={treeModel}
-        context={context}
+        context={computedContext}
         onContextChange={({ detail }) => {
           setContext(detail);
         }}
