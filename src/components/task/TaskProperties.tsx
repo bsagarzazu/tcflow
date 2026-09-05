@@ -112,7 +112,7 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
 
       <IxModalContent style={{ overflow: 'hidden' }}>
         <FormProvider {...methods}>
-          <form id="task-properties-form" onSubmit={handleSubmit(onSubmit)}>
+          <form id="task-properties-form" onSubmit={(event) => handleSubmit(onSubmit)(event)}>
             <IxLayoutGrid>
               <IxRow>
                 <IxCol
