@@ -16,11 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { type TreeModel } from '@siemens/ix';
 import { useMemo } from 'react';
+import { type TreeModel } from '@siemens/ix';
 
-import { type TCAction, type TreeHandlerData } from '../types';
 import { TC_ACTION_REGISTRY } from '../constants';
+import { type TCAction, type TreeHandlerData } from '../types';
 
 export function useTaskHandlerHierarchy(actions: TCAction[]) {
   return useMemo(() => {

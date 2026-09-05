@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { themeSwitcher } from '@siemens/ix';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { themeSwitcher } from '@siemens/ix';
 
 interface AppState {
   theme: 'light' | 'dark';

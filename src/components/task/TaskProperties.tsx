@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { useRef, useState } from 'react';
 import {
   IxButton,
   IxLayoutGrid,
@@ -28,15 +29,14 @@ import {
   Modal,
   type ModalRef,
 } from '@siemens/ix-react';
-import { useRef, useState } from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 
-import { useWorkflowStore } from '../../store/useWorkflowStore';
+import { TaskHandlerEditor } from './TaskHandlerEditor';
 import { TC_TASK_REGISTRY } from '../../constants';
+import { useWorkflowStore } from '../../store/useWorkflowStore';
 import type { TaskNodeType, TaskPropertiesFormData } from '../../types';
 import { AppEditableText } from '../app';
 import { TaskHandlerHierarchy } from './TaskHandlerHierarchy';
-import { TaskHandlerEditor } from './TaskHandlerEditor';
 
 type TaskPropertiesProps = {
   nodeId: string;

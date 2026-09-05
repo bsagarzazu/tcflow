@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxButton } from '@siemens/ix-react';
 import { iconGithubLogo, iconLightDark } from '@siemens/ix-icons/icons';
+import { IxButton } from '@siemens/ix-react';
 
+import { bannerTcFlowSvg } from '../../assets/icons';
 import { APP_REPO } from '../../constants';
 import { useAppStore } from '../../store/useAppStore';
-import { bannerTcFlowSvg } from '../../assets/icons';
 
 export function AppMobilePlaceholder() {
   const toggleTheme = useAppStore((state) => state.toggleTheme);

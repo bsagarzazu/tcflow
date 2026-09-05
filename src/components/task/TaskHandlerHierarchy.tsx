@@ -16,14 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { useCallback, useMemo, useState } from 'react';
 import { type TreeContext } from '@siemens/ix';
-import { IxTree, IxIcon } from '@siemens/ix-react';
 import {
   iconFolderFilled,
   iconFolderOpenFilled,
   iconDocumentSettings,
 } from '@siemens/ix-icons/icons';
-import { useCallback, useMemo, useState } from 'react';
+import { IxTree, IxIcon } from '@siemens/ix-react';
 import { useFormContext } from 'react-hook-form';
 
 import { useTaskHandlerHierarchy } from '../../hooks';

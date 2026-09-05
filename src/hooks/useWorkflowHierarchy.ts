@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { useMemo } from 'react';
 import { type TreeModel } from '@siemens/ix';
 import { iconWarning } from '@siemens/ix-icons/icons';
-import { useMemo } from 'react';
 
-import { useWorkflowStore } from '../store/useWorkflowStore';
 import { TC_TASK_REGISTRY } from '../constants';
+import { useWorkflowStore } from '../store/useWorkflowStore';
 import { type TreeTaskData } from '../types';
 
 export function useWorkflowHierarchy() {

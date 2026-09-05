@@ -16,8 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxIconButton, IxTooltip } from '@siemens/ix-react';
 import { type DragEvent, Fragment } from 'react';
+import { IxIconButton, IxTooltip } from '@siemens/ix-react';
 
 import { TC_TASK_REGISTRY } from '../../constants';
 import { type TCTaskType } from '../../types';

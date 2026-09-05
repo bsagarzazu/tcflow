@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useReactFlow } from '@xyflow/react';
 import { useCallback } from 'react';
+import { useReactFlow } from '@xyflow/react';
 
-import { useWorkflowStore } from '../store/useWorkflowStore';
-import { generateId } from '../core/utils';
 import { serializeNode } from '../core/json-serializer';
+import { generateId } from '../core/utils';
+import { useWorkflowStore } from '../store/useWorkflowStore';
 import type { TaskNodeType } from '../types';
 
 export function useContextMenuActions(id: string) {

@@ -16,7 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxDivider, IxDropdown, IxDropdownItem } from '@siemens/ix-react';
 import {
   iconCopy,
   iconCut,
@@ -27,6 +26,7 @@ import {
   iconSuccess,
   iconNamurFailure,
 } from '@siemens/ix-icons/icons';
+import { IxDivider, IxDropdown, IxDropdownItem } from '@siemens/ix-react';
 import { useReactFlow } from '@xyflow/react';
 
 import { useContextMenuActions } from '../../hooks';

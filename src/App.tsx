@@ -16,14 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { useEffect, useState } from 'react';
 import { IxApplication, IxContent, IxSpinner } from '@siemens/ix-react';
 import { ReactFlowProvider } from '@xyflow/react';
-import { useEffect, useState } from 'react';
 
-import { useAppStore } from './store/useAppStore';
-import { useWorkflowStore } from './store/useWorkflowStore';
 import { AppHeader, AppMenu, AppTabs, AppMobilePlaceholder } from './components/app';
 import { WorkflowCanvas, WorkflowHierarchy } from './components/workflow';
+import { useAppStore } from './store/useAppStore';
+import { useWorkflowStore } from './store/useWorkflowStore';
 
 export default function App() {
   const hasHydrated = useWorkflowStore.persist.hasHydrated() && useAppStore.persist.hasHydrated();

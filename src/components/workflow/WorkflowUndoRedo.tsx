@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ControlButton, Panel, type PanelPosition } from '@xyflow/react';
-import { IxIcon } from '@siemens/ix-react';
 import { iconUndo, iconRedo } from '@siemens/ix-icons/icons';
+import { IxIcon } from '@siemens/ix-react';
+import { ControlButton, Panel, type PanelPosition } from '@xyflow/react';
 import { useStore } from 'zustand';
 
 import { useWorkflowStore } from '../../store/useWorkflowStore';

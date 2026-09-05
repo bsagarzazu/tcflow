@@ -16,20 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxInput, IxIconButton } from '@siemens/ix-react';
+import { useState } from 'react';
 import {
   iconAddCircleFilled,
   iconRemoveCircleFilled,
   iconChevronUp,
   iconChevronDown,
 } from '@siemens/ix-icons/icons';
-import { useState } from 'react';
+import { IxInput, IxIconButton } from '@siemens/ix-react';
 import {
   useFieldArray,
   useFormContext,
   type FieldPath,
   type FieldArrayPath,
 } from 'react-hook-form';
+
 import type { TaskPropertiesFormData } from '../../types';
 
 export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {

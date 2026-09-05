@@ -17,6 +17,7 @@
  */
 
 import { useCallback, useState, useEffect } from 'react';
+import { showModal } from '@siemens/ix-react';
 import {
   ReactFlow,
   useReactFlow,
@@ -28,18 +29,16 @@ import {
   MarkerType,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { showModal } from '@siemens/ix-react';
 
-import { WorkflowUndoRedo } from './WorkflowUndoRedo';
 import { WorkflowContextMenu } from './WorkflowContextMenu';
-
+import { WorkflowUndoRedo } from './WorkflowUndoRedo';
+import { TC_TASK_REGISTRY } from '../../constants';
+import { useKeyboardShortcuts } from '../../hooks';
 import { useAppStore } from '../../store/useAppStore';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { type TCTaskType } from '../../types';
-import { useKeyboardShortcuts } from '../../hooks';
 import { AppWatermark, AppFooterNotice, AppPrivacyNotice, AppBetaNotice } from '../app';
 import { TaskNode, TaskProperties } from '../task';
-import { TC_TASK_REGISTRY } from '../../constants';
 
 const nodeTypes = {
   task: TaskNode,

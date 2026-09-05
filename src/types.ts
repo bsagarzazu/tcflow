@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { type Node, type Edge } from '@xyflow/react';
+import type { Node, Edge } from '@xyflow/react';
 
-import { TC_ACTION_REGISTRY, TC_TASK_REGISTRY } from './constants';
+import type { TC_ACTION_REGISTRY, TC_TASK_REGISTRY } from './constants';
 
 export type TCActionType = keyof typeof TC_ACTION_REGISTRY;
 export type TCTaskType = keyof typeof TC_TASK_REGISTRY;

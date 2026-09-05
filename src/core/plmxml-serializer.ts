@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { type ReactFlowJsonObject } from '@xyflow/react';
 import XMLBuilder from 'fast-xml-builder';
 import { XMLParser } from 'fast-xml-parser';
-import { type ReactFlowJsonObject } from '@xyflow/react';
 
 import { APP_NAME, APP_VERSION, APP_AUTHOR, TC_TASK_REGISTRY } from '../constants';
 import {

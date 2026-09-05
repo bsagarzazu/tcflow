@@ -20,10 +20,9 @@ import { IxToggle, IxSelect, IxSelectItem, IxButton, IxFieldLabel } from '@sieme
 import { Controller, useFormContext, type FieldPath } from 'react-hook-form';
 
 import { TaskHandlerArguments } from './TaskHandlerArguments';
-
 import { TC_ACTION_REGISTRY, TC_ACTION_ORDER } from '../../constants';
-import type { TaskPropertiesFormData } from '../../types';
 import { generateId } from '../../core/utils';
+import type { TaskPropertiesFormData } from '../../types';
 
 export function TaskHandlerEditor({
   handlerId,

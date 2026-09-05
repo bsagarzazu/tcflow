@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Panel } from '@xyflow/react';
-import { IxIconButton, IxTooltip } from '@siemens/ix-react';
 import { iconWarning } from '@siemens/ix-icons/icons';
+import { IxIconButton, IxTooltip } from '@siemens/ix-react';
+import { Panel } from '@xyflow/react';
 
 export function AppBetaNotice() {
   return (

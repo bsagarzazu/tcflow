@@ -21,8 +21,8 @@ import { type TreeContext } from '@siemens/ix';
 import { IxPane, IxTree, IxIcon, showModal } from '@siemens/ix-react';
 import { useReactFlow } from '@xyflow/react';
 
-import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { useWorkflowHierarchy } from '../../hooks';
+import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { type TreeTaskData } from '../../types';
 import { AppEditableText } from '../app';
 import { TaskProperties } from '../task';
