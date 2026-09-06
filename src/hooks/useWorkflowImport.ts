@@ -20,9 +20,12 @@ import { useReactFlow } from '@xyflow/react';
 
 import { deserialize as jsonToWorkflow } from '../core/json-serializer';
 import { deserialize as plmxmlToWorkflow } from '../core/plmxml-serializer';
+import { useWorkflowStore } from '../store/useWorkflowStore';
 
 export function useWorkflowImport() {
-  const { setNodes, setEdges, setViewport } = useReactFlow();
+  const { setViewport } = useReactFlow();
+  const setNodes = useWorkflowStore((state) => state.setNodes);
+  const setEdges = useWorkflowStore((state) => state.setEdges);
 
   const importFromFile = (file: File, format: 'tcflow' | 'plmxml') => {
     const reader = new FileReader();
