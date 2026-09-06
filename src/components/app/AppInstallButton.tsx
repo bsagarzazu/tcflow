@@ -27,7 +27,12 @@ export function AppInstallButton() {
   if (!canInstall) return null;
 
   return (
-    <IxButton variant="subtle-tertiary" icon={iconDownloadAdd} onClick={() => void install()}>
+    <IxButton
+      variant="subtle-tertiary"
+      icon={iconDownloadAdd}
+      onClick={() => void install()}
+      data-umami-event="install"
+    >
       Install App
     </IxButton>
   );
