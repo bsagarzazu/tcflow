@@ -17,16 +17,13 @@
  */
 
 import { useEffect, useState } from 'react';
-import { IxApplication, IxContent, IxSpinner } from '@siemens/ix-react';
+import { IxApplication, IxContent } from '@siemens/ix-react';
 import { ReactFlowProvider } from '@xyflow/react';
 
 import { AppHeader, AppMenu, AppTabs, AppMobilePlaceholder } from './components/app';
 import { WorkflowCanvas, WorkflowHierarchy } from './components/workflow';
-import { useAppStore } from './store/useAppStore';
-import { useWorkflowStore } from './store/useWorkflowStore';
 
 export default function App() {
-  const hasHydrated = useWorkflowStore.persist.hasHydrated() && useAppStore.persist.hasHydrated();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
   useEffect(() => {
@@ -34,16 +31,6 @@ export default function App() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  if (!hasHydrated) {
-    return (
-      <div
-        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
-      >
-        <IxSpinner size="large" />
-      </div>
-    );
-  }
 
   return (
     <IxApplication>
