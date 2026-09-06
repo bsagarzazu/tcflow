@@ -43,22 +43,31 @@ export function useContextMenuActions(id: string) {
 
   const pasteTaskNode = useCallback(
     (screenPosition: { x: number; y: number }) => {
-      navigator.clipboard.readText().then((text) => {
-        const nodeData = JSON.parse(text);
+      navigator.clipboard
+        .readText()
+        .then((text) => {
+          try {
+            const nodeData = JSON.parse(text);
 
-        if (nodeData.source !== 'tcflow-clipboard') return;
+            if (nodeData.source !== 'tcflow-clipboard') return;
 
-        const position = screenToFlowPosition(screenPosition);
+            const position = screenToFlowPosition(screenPosition);
 
-        const newNode = {
-          ...nodeData.payload,
-          id: generateId(),
-          position,
-          selected: true,
-        };
+            const newNode = {
+              ...nodeData.payload,
+              id: generateId(),
+              position,
+              selected: true,
+            };
 
-        setNodes(nodes.concat(newNode));
-      });
+            setNodes(nodes.concat(newNode));
+          } catch {
+            return;
+          }
+        })
+        .catch(() => {
+          return;
+        });
     },
     [nodes, setNodes, screenToFlowPosition],
   );
