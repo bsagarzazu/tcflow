@@ -19,9 +19,15 @@
 import { iconDownloadAdd } from '@siemens/ix-icons/icons';
 import { IxButton } from '@siemens/ix-react';
 
+import { useAppInstall } from '../../hooks';
+
 export function AppInstallButton() {
+  const { canInstall, install } = useAppInstall();
+
+  if (!canInstall) return null;
+
   return (
-    <IxButton variant="subtle-tertiary" icon={iconDownloadAdd}>
+    <IxButton variant="subtle-tertiary" icon={iconDownloadAdd} onClick={() => void install()}>
       Install App
     </IxButton>
   );
