@@ -1,3 +1,4 @@
+export { useAppInstall } from './useAppInstall';
 export { useContextMenuActions } from './useContextMenuActions';
 export { useKeyboardShortcuts } from './useKeyboardShortcuts';
 export { useTaskHandlerHierarchy } from './useTaskHandlerHierarchy';

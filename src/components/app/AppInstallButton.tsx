@@ -16,20 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxApplicationHeader } from '@siemens/ix-react';
+import { iconDownloadAdd } from '@siemens/ix-icons/icons';
+import { IxButton } from '@siemens/ix-react';
 
-import { AppInstallButton } from './AppInstallButton';
-import { AppLogo } from './AppLogo';
-import { WorkflowToolbar } from '../workflow';
+import { useAppInstall } from '../../hooks';
 
-export function AppHeader() {
+export function AppInstallButton() {
+  const { canInstall, install } = useAppInstall();
+
+  if (!canInstall) return null;
+
   return (
-    <IxApplicationHeader name="">
-      <div slot="logo">
-        <AppLogo />
-      </div>
-      <WorkflowToolbar />
-      <AppInstallButton />
-    </IxApplicationHeader>
+    <IxButton
+      variant="subtle-tertiary"
+      icon={iconDownloadAdd}
+      onClick={() => void install()}
+      data-umami-event="install"
+    >
+      Install App
+    </IxButton>
   );
 }

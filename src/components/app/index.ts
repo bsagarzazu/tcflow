@@ -3,6 +3,7 @@ export { AppEditableText } from './AppEditableText';
 export { AppFooterNotice } from './AppFooterNotice';
 export { AppHeader } from './AppHeader';
 export { AppIcon } from './AppIcon';
+export { AppInstallButton } from './AppInstallButton';
 export { AppLogo } from './AppLogo';
 export { AppMenu } from './AppMenu';
 export { AppMobilePlaceholder } from './AppMobilePlaceholder';
