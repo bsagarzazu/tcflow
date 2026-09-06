@@ -28,16 +28,16 @@ export function useWorkflowImport() {
     const reader = new FileReader();
 
     reader.onload = (event) => {
-      const content = event.target?.result as string;
+      const content = event.target?.result;
 
-      let workflow;
-      if (format === 'tcflow') {
-        workflow = jsonToWorkflow(content);
-      } else if (format === 'plmxml') {
-        workflow = plmxmlToWorkflow(content);
+      if (typeof content !== 'string') {
+        console.error('Failed to read file content as string.');
+        return;
       }
 
-      if (workflow) {
+      try {
+        const workflow = format === 'tcflow' ? jsonToWorkflow(content) : plmxmlToWorkflow(content);
+
         setNodes(workflow.nodes);
         setEdges(workflow.edges);
         if (
@@ -47,7 +47,13 @@ export function useWorkflowImport() {
         ) {
           setViewport(workflow.viewport);
         }
+      } catch (error) {
+        console.error('Failed to import workflow file.', error);
       }
+    };
+
+    reader.onerror = () => {
+      console.error('Failed to read workflow file.', reader.error);
     };
 
     reader.readAsText(file);
