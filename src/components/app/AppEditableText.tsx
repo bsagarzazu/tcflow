@@ -47,7 +47,7 @@ export function AppEditableText({ value, onSave }: AppEditableTextProps) {
             value={tempValue}
             onValueChange={(e) => setTempValue(e.detail)}
             onIxBlur={handleSave}
-          ></IxInput>
+           />
         </form>
       ) : (
         <span

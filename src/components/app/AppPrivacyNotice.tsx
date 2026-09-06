@@ -29,7 +29,7 @@ export function AppPrivacyNotice() {
           aria-describedby="tooltip-privacy-notice"
           variant="subtle-tertiary"
           icon={iconShieldCheck}
-        ></IxIconButton>
+         />
       </Panel>
       <IxTooltip
         id="tooltip-privacy-notice"

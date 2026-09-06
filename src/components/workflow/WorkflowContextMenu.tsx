@@ -76,7 +76,7 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
                     cutTaskNode();
                     onClick?.();
                   }}
-                ></IxDropdownItem>
+                 />
                 <IxDropdownItem
                   icon={iconCopy}
                   label="Copy"
@@ -84,7 +84,7 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
                     copyTaskNode();
                     onClick?.();
                   }}
-                ></IxDropdownItem>
+                 />
                 <IxDropdownItem
                   icon={iconPaste}
                   label="Paste"
@@ -92,7 +92,7 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
                     pasteTaskNode({ x: top, y: left });
                     onClick?.();
                   }}
-                ></IxDropdownItem>
+                 />
                 <IxDropdownItem
                   icon={iconDuplicate}
                   label="Duplicate"
@@ -100,7 +100,7 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
                     duplicateTaskNode();
                     onClick?.();
                   }}
-                ></IxDropdownItem>
+                 />
                 <IxDropdownItem
                   icon={iconTrashcan}
                   label="Delete"
@@ -108,7 +108,7 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
                     deleteTaskNode();
                     onClick?.();
                   }}
-                ></IxDropdownItem>
+                 />
               </>
             )}
 
@@ -121,7 +121,7 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
                     pasteTaskNode({ x: top, y: left });
                     onClick?.();
                   }}
-                ></IxDropdownItem>
+                 />
               </>
             )}
           </>
@@ -139,7 +139,7 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
                       updateEdgeType('conditional', 'True');
                       onClick?.();
                     }}
-                  ></IxDropdownItem>
+                   />
                 )}
                 {edge.data?.conditionValue === 'True' && (
                   <IxDropdownItem
@@ -149,7 +149,7 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
                       updateEdgeType('conditional', 'False');
                       onClick?.();
                     }}
-                  ></IxDropdownItem>
+                   />
                 )}
               </>
             ) : (
@@ -162,7 +162,7 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
                       updateEdgeType('success', undefined);
                       onClick?.();
                     }}
-                  ></IxDropdownItem>
+                   />
                 )}
                 {edge.data?.type !== 'failure' && (
                   <IxDropdownItem
@@ -172,11 +172,11 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
                       updateEdgeType('failure', undefined);
                       onClick?.();
                     }}
-                  ></IxDropdownItem>
+                   />
                 )}
               </>
             )}
-            <IxDivider></IxDivider>
+            <IxDivider />
             <IxDropdownItem
               icon={iconTrashcan}
               label="Delete Edge"
@@ -184,7 +184,7 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
                 deleteEdge();
                 onClick?.();
               }}
-            ></IxDropdownItem>
+             />
           </>
         )}
 
@@ -197,7 +197,7 @@ export function WorkflowContextMenu({ id, type, top, left, onClick }: ContextMen
                 pasteTaskNode({ x: top, y: left });
                 onClick?.();
               }}
-            ></IxDropdownItem>
+             />
           </>
         )}
       </IxDropdown>

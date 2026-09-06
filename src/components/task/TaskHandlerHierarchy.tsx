@@ -121,6 +121,6 @@ export function TaskHandlerHierarchy({
         setContext({ ...event.detail });
       }}
       renderItem={renderTreeItem}
-    ></IxTree>
+     />
   );
 }

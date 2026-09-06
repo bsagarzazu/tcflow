@@ -36,10 +36,10 @@ export function WorkflowUndoRedo({ position }: WorkflowUndoRedoProps) {
   return (
     <Panel position={position} style={{ display: 'flex', flexDirection: 'column' }}>
       <ControlButton disabled={!canUndo} onClick={() => undo()}>
-        <IxIcon name={iconUndo} size="16" style={{ opacity: canUndo ? 1 : 0.4 }}></IxIcon>
+        <IxIcon name={iconUndo} size="16" style={{ opacity: canUndo ? 1 : 0.4 }} />
       </ControlButton>
       <ControlButton disabled={!canRedo} onClick={() => redo()}>
-        <IxIcon name={iconRedo} size="16" style={{ opacity: canRedo ? 1 : 0.4 }}></IxIcon>
+        <IxIcon name={iconRedo} size="16" style={{ opacity: canRedo ? 1 : 0.4 }} />
       </ControlButton>
     </Panel>
   );

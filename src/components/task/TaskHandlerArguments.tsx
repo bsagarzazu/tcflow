@@ -77,9 +77,9 @@ export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
                         `${handlerPath}.arguments.${dataIndex}.argument` as FieldPath<TaskPropertiesFormData>,
                       )}
                       onFocus={() => setSelectedArgIndex(dataIndex)}
-                    ></IxInput>
+                     />
                   ) : (
-                    <IxInput style={{ width: '100%' }} disabled></IxInput>
+                    <IxInput style={{ width: '100%' }} disabled />
                   )}
                 </td>
                 <td>
@@ -90,9 +90,9 @@ export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
                         `${handlerPath}.arguments.${dataIndex}.value` as FieldPath<TaskPropertiesFormData>,
                       )}
                       onFocus={() => setSelectedArgIndex(dataIndex)}
-                    ></IxInput>
+                     />
                   ) : (
-                    <IxInput style={{ width: '100%' }} disabled></IxInput>
+                    <IxInput style={{ width: '100%' }} disabled />
                   )}
                 </td>
               </tr>
@@ -112,7 +112,7 @@ export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
               setStartIndex(nextIndex);
             }
           }}
-        ></IxIconButton>
+         />
         <IxIconButton
           variant="subtle-tertiary"
           icon={iconChevronDown}
@@ -124,7 +124,7 @@ export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
               setStartIndex(nextIndex - ROWS_VISIBLE + 1);
             }
           }}
-        ></IxIconButton>
+         />
         <IxIconButton
           variant="subtle-tertiary"
           icon={iconAddCircleFilled}
@@ -136,7 +136,7 @@ export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
               setStartIndex(nextIndex - ROWS_VISIBLE + 1);
             }
           }}
-        ></IxIconButton>
+         />
         <IxIconButton
           variant="subtle-tertiary"
           icon={iconRemoveCircleFilled}
@@ -149,7 +149,7 @@ export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
               setStartIndex((prev) => prev - 1);
             }
           }}
-        ></IxIconButton>
+         />
       </div>
     </div>
   );

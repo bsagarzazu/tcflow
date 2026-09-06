@@ -40,7 +40,7 @@ export default function App() {
       <div
         style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
       >
-        <IxSpinner size="large"></IxSpinner>
+        <IxSpinner size="large" />
       </div>
     );
   }

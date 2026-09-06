@@ -177,7 +177,7 @@ export function TaskHandlerEditor({
               key={actionNumber}
               value={actionNumber.toString()}
               label={TC_ACTION_REGISTRY[actionNumber]}
-            ></IxSelectItem>
+             />
           ))}
         </IxSelect>
       </div>
@@ -199,7 +199,7 @@ export function TaskHandlerEditor({
               text-on="Rule Handler"
               style={{ width: '35%' }}
               onCheckedChange={(event) => field.onChange(event.detail)}
-            ></IxToggle>
+             />
           )}
         />
         <Controller
@@ -220,7 +220,7 @@ export function TaskHandlerEditor({
                 <IxSelectItem
                   value={field.value as string}
                   label={field.value as string}
-                ></IxSelectItem>
+                 />
               )}
             </IxSelect>
           )}

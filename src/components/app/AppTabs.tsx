@@ -55,7 +55,7 @@ export function AppTabs() {
         data-umami-event="create"
         data-umami-event-object="workflow"
       >
-        <IxIcon name={iconAddCircleFilled}></IxIcon>
+        <IxIcon name={iconAddCircleFilled} />
       </IxTabItem>
     </IxTabs>
   );

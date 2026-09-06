@@ -45,7 +45,7 @@ export function WorkflowToolbar() {
             variant="subtle-tertiary"
             icon={TC_TASK_REGISTRY[type].ixIcon}
             aria-describedby={`tooltip-${type}`}
-          ></IxIconButton>
+           />
           <IxTooltip id={`tooltip-${type}`} for={`#trigger-${type}`} placement="bottom">
             {TC_TASK_REGISTRY[type].label}
           </IxTooltip>

@@ -101,7 +101,7 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
             fontSize: '1.1rem',
           }}
         >
-          <IxIcon size="32" name={TC_TASK_REGISTRY[taskNode.data.type].ixIcon}></IxIcon>
+          <IxIcon size="32" name={TC_TASK_REGISTRY[taskNode.data.type].ixIcon} />
           {taskNode.data.type === 'Start' || taskNode.data.type === 'End' ? (
             <span>{currentName}</span>
           ) : (

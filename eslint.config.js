@@ -1,6 +1,7 @@
 import js from '@eslint/js';
 import globals from 'globals';
 import importPlugin from 'eslint-plugin-import-x';
+import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
@@ -18,6 +19,7 @@ export default defineConfig([
     ],
     plugins: {
       'import-x': importPlugin,
+      react: reactPlugin,
     },
     languageOptions: {
       globals: globals.browser,
@@ -47,6 +49,13 @@ export default defineConfig([
         {
           fixStyle: 'separate-type-imports',
           prefer: 'type-imports',
+        },
+      ],
+      'react/self-closing-comp': [
+        'error',
+        {
+          component: true,
+          html: true,
         },
       ],
       '@typescript-eslint/no-unused-vars': [

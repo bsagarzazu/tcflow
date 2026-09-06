@@ -29,7 +29,7 @@ export function AppBetaNotice() {
           aria-describedby="tooltip-beta-notice"
           variant="subtle-tertiary"
           icon={iconWarning}
-        ></IxIconButton>
+         />
       </Panel>
       <IxTooltip
         id="tooltip-beta-notice"
