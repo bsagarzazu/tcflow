@@ -54,7 +54,9 @@ export function useContextMenuActions(id: string) {
     if (!node) return;
 
     const nodeData = serializeNode(node);
-    navigator.clipboard.writeText(JSON.stringify(nodeData));
+    navigator.clipboard.writeText(JSON.stringify(nodeData)).catch(() => {
+      console.error('Failed to copy task node to clipboard.');
+    });
   }, [id, getNode]);
 
   const pasteTaskNode = useCallback(
