@@ -24,6 +24,22 @@ import { generateId } from '../core/utils';
 import { useWorkflowStore } from '../store/useWorkflowStore';
 import type { TaskNodeType } from '../types';
 
+const cloneNodeWithNewIds = (node: TaskNodeType): TaskNodeType => ({
+  ...node,
+  id: generateId(),
+  data: {
+    ...node.data,
+    actions: node.data.actions.map((action) => ({
+      ...action,
+      id: generateId(),
+      handlers: action.handlers.map((handler) => ({
+        ...handler,
+        id: generateId(),
+      })),
+    })),
+  },
+});
+
 export function useContextMenuActions(id: string) {
   const { getNode, screenToFlowPosition } = useReactFlow();
 
@@ -49,15 +65,12 @@ export function useContextMenuActions(id: string) {
           try {
             const nodeData = JSON.parse(text);
 
-            if (nodeData.source !== 'tcflow-clipboard') return;
-
-            const position = screenToFlowPosition(screenPosition);
+            if (nodeData.source !== 'tcflow-clipboard' || !nodeData.payload) return;
 
             const newNode = {
-              ...nodeData.payload,
-              id: generateId(),
-              position,
+              ...cloneNodeWithNewIds(nodeData.payload as TaskNodeType),
               selected: true,
+              position: screenToFlowPosition(screenPosition),
             };
 
             setNodes(nodes.concat(newNode));
@@ -75,17 +88,18 @@ export function useContextMenuActions(id: string) {
   const duplicateTaskNode = useCallback(() => {
     const node = getNode(id);
     if (!node) return;
-    const position = { x: node.position.x + 50, y: node.position.y + 50 };
 
     const newNode = {
-      ...node,
+      ...cloneNodeWithNewIds(node as TaskNodeType),
       selected: false,
       dragging: false,
-      id: generateId(),
-      position,
+      position: {
+        x: node.position.x + 50,
+        y: node.position.y + 50,
+      },
     };
 
-    setNodes(nodes.concat(newNode as TaskNodeType));
+    setNodes(nodes.concat(newNode));
   }, [id, getNode, nodes, setNodes]);
 
   const deleteTaskNode = useCallback(() => {
