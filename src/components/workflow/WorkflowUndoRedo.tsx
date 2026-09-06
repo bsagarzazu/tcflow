@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ControlButton, Panel, type PanelPosition } from '@xyflow/react';
-import { IxIcon } from '@siemens/ix-react';
 import { iconUndo, iconRedo } from '@siemens/ix-icons/icons';
+import { IxIcon } from '@siemens/ix-react';
+import { ControlButton, Panel, type PanelPosition } from '@xyflow/react';
 import { useStore } from 'zustand';
 
 import { useWorkflowStore } from '../../store/useWorkflowStore';
@@ -36,10 +36,10 @@ export function WorkflowUndoRedo({ position }: WorkflowUndoRedoProps) {
   return (
     <Panel position={position} style={{ display: 'flex', flexDirection: 'column' }}>
       <ControlButton disabled={!canUndo} onClick={() => undo()}>
-        <IxIcon name={iconUndo} size="16" style={{ opacity: canUndo ? 1 : 0.4 }}></IxIcon>
+        <IxIcon name={iconUndo} size="16" style={{ opacity: canUndo ? 1 : 0.4 }} />
       </ControlButton>
       <ControlButton disabled={!canRedo} onClick={() => redo()}>
-        <IxIcon name={iconRedo} size="16" style={{ opacity: canRedo ? 1 : 0.4 }}></IxIcon>
+        <IxIcon name={iconRedo} size="16" style={{ opacity: canRedo ? 1 : 0.4 }} />
       </ControlButton>
     </Panel>
   );

@@ -20,24 +20,27 @@ import { useReactFlow } from '@xyflow/react';
 
 import { deserialize as jsonToWorkflow } from '../core/json-serializer';
 import { deserialize as plmxmlToWorkflow } from '../core/plmxml-serializer';
+import { useWorkflowStore } from '../store/useWorkflowStore';
 
 export function useWorkflowImport() {
-  const { setNodes, setEdges, setViewport } = useReactFlow();
+  const { setViewport } = useReactFlow();
+  const setNodes = useWorkflowStore((state) => state.setNodes);
+  const setEdges = useWorkflowStore((state) => state.setEdges);
 
   const importFromFile = (file: File, format: 'tcflow' | 'plmxml') => {
     const reader = new FileReader();
 
     reader.onload = (event) => {
-      const content = event.target?.result as string;
+      const content = event.target?.result;
 
-      let workflow;
-      if (format === 'tcflow') {
-        workflow = jsonToWorkflow(content);
-      } else if (format === 'plmxml') {
-        workflow = plmxmlToWorkflow(content);
+      if (typeof content !== 'string') {
+        console.error('Failed to read file content as string.');
+        return;
       }
 
-      if (workflow) {
+      try {
+        const workflow = format === 'tcflow' ? jsonToWorkflow(content) : plmxmlToWorkflow(content);
+
         setNodes(workflow.nodes);
         setEdges(workflow.edges);
         if (
@@ -47,7 +50,13 @@ export function useWorkflowImport() {
         ) {
           setViewport(workflow.viewport);
         }
+      } catch (error) {
+        console.error('Failed to import workflow file.', error);
       }
+    };
+
+    reader.onerror = () => {
+      console.error('Failed to read workflow file.', reader.error);
     };
 
     reader.readAsText(file);

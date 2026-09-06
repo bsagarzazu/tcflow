@@ -16,13 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { type TreeContext } from '@siemens/ix';
 import { IxPane, IxTree, IxIcon, showModal } from '@siemens/ix-react';
 import { useReactFlow } from '@xyflow/react';
 
-import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { useWorkflowHierarchy } from '../../hooks';
+import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { type TreeTaskData } from '../../types';
 import { AppEditableText } from '../app';
 import { TaskProperties } from '../task';
@@ -40,16 +40,17 @@ export function WorkflowHierarchy() {
 
   const selectedNodeId = nodes.find((node) => node.selected)?.id;
 
-  useEffect(() => {
-    if (!selectedNodeId) {
-      setContext({});
-      return;
-    }
-    setContext({ [selectedNodeId]: { isExpanded: false, isSelected: true } });
-  }, [selectedNodeId, setContext]);
+  const computedContext: TreeContext = selectedNodeId
+    ? Object.fromEntries(
+        Object.entries(context).map(([nodeId, nodeContext]) => [
+          nodeId,
+          { ...nodeContext, isSelected: nodeId === selectedNodeId },
+        ]),
+      )
+    : {};
 
   const selectNode = useCallback(
-    (event: any) => {
+    (event: CustomEvent<string>) => {
       const nodeId = event.detail;
       setNodes(nodes.map((node) => ({ ...node, selected: node.id === nodeId })));
       fitView({ nodes: [{ id: nodeId }], padding: 0.2, duration: 500, maxZoom: 1 });
@@ -66,7 +67,7 @@ export function WorkflowHierarchy() {
         });
       }
     },
-    [getNode, showModal],
+    [getNode],
   );
 
   return (
@@ -86,7 +87,7 @@ export function WorkflowHierarchy() {
       <IxTree
         root={'root'}
         model={treeModel}
-        context={context}
+        context={computedContext}
         onContextChange={({ detail }) => {
           setContext(detail);
         }}
@@ -112,7 +113,7 @@ export function WorkflowHierarchy() {
             {data.name}
           </div>
         )}
-      ></IxTree>
+       />
     </IxPane>
   );
 }

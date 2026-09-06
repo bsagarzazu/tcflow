@@ -17,7 +17,6 @@
  */
 
 import { useRef } from 'react';
-import { IxMenu, IxMenuCategory, IxMenuItem } from '@siemens/ix-react';
 import {
   iconFolderOpenFilled,
   iconDownload,
@@ -25,10 +24,11 @@ import {
   iconGithubLogo,
   iconLightDark,
 } from '@siemens/ix-icons/icons';
+import { IxMenu, IxMenuCategory, IxMenuItem } from '@siemens/ix-react';
 
-import { useAppStore } from '../../store/useAppStore';
-import { useWorkflowExport, useWorkflowImport } from '../../hooks';
 import { APP_REPO } from '../../constants';
+import { useWorkflowExport, useWorkflowImport } from '../../hooks';
+import { useAppStore } from '../../store/useAppStore';
 
 export function AppMenu() {
   const toggleTheme = useAppStore((state) => state.toggleTheme);

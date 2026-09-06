@@ -16,18 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxInput, IxIconButton } from '@siemens/ix-react';
+import { useState } from 'react';
 import {
   iconAddCircleFilled,
   iconRemoveCircleFilled,
   iconChevronUp,
   iconChevronDown,
 } from '@siemens/ix-icons/icons';
-import { useState } from 'react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { IxInput, IxIconButton } from '@siemens/ix-react';
+import {
+  useFieldArray,
+  useFormContext,
+  type FieldPath,
+  type FieldArrayPath,
+} from 'react-hook-form';
+
+import type { TaskPropertiesFormData } from '../../types';
 
 export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
-  const { register, control } = useFormContext();
+  const { register, control } = useFormContext<TaskPropertiesFormData>();
 
   const [selectedArgIndex, setSelectedArgIndex] = useState<number>(0);
   const [startIndex, setStartIndex] = useState<number>(0);
@@ -35,7 +42,7 @@ export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: `${handlerPath}.arguments` as any,
+    name: `${handlerPath}.arguments` as FieldArrayPath<TaskPropertiesFormData>,
   });
 
   return (
@@ -66,22 +73,26 @@ export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
                   {field ? (
                     <IxInput
                       style={{ width: '100%' }}
-                      {...register(`${handlerPath}.arguments.${dataIndex}.argument` as any)}
+                      {...register(
+                        `${handlerPath}.arguments.${dataIndex}.argument` as FieldPath<TaskPropertiesFormData>,
+                      )}
                       onFocus={() => setSelectedArgIndex(dataIndex)}
-                    ></IxInput>
+                     />
                   ) : (
-                    <IxInput style={{ width: '100%' }} disabled></IxInput>
+                    <IxInput style={{ width: '100%' }} disabled />
                   )}
                 </td>
                 <td>
                   {field ? (
                     <IxInput
                       style={{ width: '100%' }}
-                      {...register(`${handlerPath}.arguments.${dataIndex}.value` as any)}
+                      {...register(
+                        `${handlerPath}.arguments.${dataIndex}.value` as FieldPath<TaskPropertiesFormData>,
+                      )}
                       onFocus={() => setSelectedArgIndex(dataIndex)}
-                    ></IxInput>
+                     />
                   ) : (
-                    <IxInput style={{ width: '100%' }} disabled></IxInput>
+                    <IxInput style={{ width: '100%' }} disabled />
                   )}
                 </td>
               </tr>
@@ -101,7 +112,7 @@ export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
               setStartIndex(nextIndex);
             }
           }}
-        ></IxIconButton>
+         />
         <IxIconButton
           variant="subtle-tertiary"
           icon={iconChevronDown}
@@ -113,7 +124,7 @@ export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
               setStartIndex(nextIndex - ROWS_VISIBLE + 1);
             }
           }}
-        ></IxIconButton>
+         />
         <IxIconButton
           variant="subtle-tertiary"
           icon={iconAddCircleFilled}
@@ -125,7 +136,7 @@ export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
               setStartIndex(nextIndex - ROWS_VISIBLE + 1);
             }
           }}
-        ></IxIconButton>
+         />
         <IxIconButton
           variant="subtle-tertiary"
           icon={iconRemoveCircleFilled}
@@ -138,7 +149,7 @@ export function TaskHandlerArguments({ handlerPath }: { handlerPath: string }) {
               setStartIndex((prev) => prev - 1);
             }
           }}
-        ></IxIconButton>
+         />
       </div>
     </div>
   );

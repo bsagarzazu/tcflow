@@ -16,9 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { temporal } from 'zundo';
 import {
   type NodeChange,
   applyNodeChanges,
@@ -29,10 +26,13 @@ import {
   type Viewport,
   type XYPosition,
 } from '@xyflow/react';
+import { temporal } from 'zundo';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
+import { TC_TASK_REGISTRY } from '../constants';
 import { generateId, getInitialNodes, getActions } from '../core/utils';
 import { type TaskNodeType, type WorkflowEdgeType, type TCTaskType } from '../types';
-import { TC_TASK_REGISTRY } from '../constants';
 
 interface Workflow {
   name: string;

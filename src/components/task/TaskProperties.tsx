@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { useRef, useState } from 'react';
 import {
   IxButton,
   IxLayoutGrid,
@@ -28,27 +29,17 @@ import {
   Modal,
   type ModalRef,
 } from '@siemens/ix-react';
-import { useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 
-import { useWorkflowStore } from '../../store/useWorkflowStore';
+import { TaskHandlerEditor } from './TaskHandlerEditor';
 import { TC_TASK_REGISTRY } from '../../constants';
-import { type TaskNodeType } from '../../types';
+import { useWorkflowStore } from '../../store/useWorkflowStore';
+import type { TaskNodeType, TaskPropertiesFormData } from '../../types';
 import { AppEditableText } from '../app';
 import { TaskHandlerHierarchy } from './TaskHandlerHierarchy';
-import { TaskHandlerEditor } from './TaskHandlerEditor';
 
 type TaskPropertiesProps = {
   nodeId: string;
-};
-
-type TaskPropertiesFormData = TaskNodeType['data'] & {
-  newHandler: {
-    name: string;
-    isRule: boolean;
-    arguments: any[];
-  };
-  tempActionType: string;
 };
 
 export function TaskProperties({ nodeId }: TaskPropertiesProps) {
@@ -72,8 +63,8 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
     },
   });
 
-  const { watch, setValue, handleSubmit } = methods;
-  const currentName = watch('name');
+  const { setValue, handleSubmit } = methods;
+  const currentName = useWatch({ control: methods.control, name: 'name' });
 
   const onClose = () => {
     modalRef.current?.close('close');
@@ -110,7 +101,7 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
             fontSize: '1.1rem',
           }}
         >
-          <IxIcon size="32" name={TC_TASK_REGISTRY[taskNode.data.type].ixIcon}></IxIcon>
+          <IxIcon size="32" name={TC_TASK_REGISTRY[taskNode.data.type].ixIcon} />
           {taskNode.data.type === 'Start' || taskNode.data.type === 'End' ? (
             <span>{currentName}</span>
           ) : (
@@ -121,7 +112,7 @@ export function TaskProperties({ nodeId }: TaskPropertiesProps) {
 
       <IxModalContent style={{ overflow: 'hidden' }}>
         <FormProvider {...methods}>
-          <form id="task-properties-form" onSubmit={handleSubmit(onSubmit)}>
+          <form id="task-properties-form" onSubmit={(event) => handleSubmit(onSubmit)(event)}>
             <IxLayoutGrid>
               <IxRow>
                 <IxCol

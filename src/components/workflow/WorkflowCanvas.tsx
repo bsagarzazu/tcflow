@@ -17,6 +17,7 @@
  */
 
 import { useCallback, useState, useEffect } from 'react';
+import { showModal } from '@siemens/ix-react';
 import {
   ReactFlow,
   useReactFlow,
@@ -28,18 +29,16 @@ import {
   MarkerType,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { showModal } from '@siemens/ix-react';
 
-import { WorkflowUndoRedo } from './WorkflowUndoRedo';
 import { WorkflowContextMenu } from './WorkflowContextMenu';
-
+import { WorkflowUndoRedo } from './WorkflowUndoRedo';
+import { TC_TASK_REGISTRY } from '../../constants';
+import { useKeyboardShortcuts } from '../../hooks';
 import { useAppStore } from '../../store/useAppStore';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { type TCTaskType } from '../../types';
-import { useKeyboardShortcuts } from '../../hooks';
 import { AppWatermark, AppFooterNotice, AppPrivacyNotice, AppBetaNotice } from '../app';
 import { TaskNode, TaskProperties } from '../task';
-import { TC_TASK_REGISTRY } from '../../constants';
 
 const nodeTypes = {
   task: TaskNode,
@@ -63,7 +62,6 @@ export function WorkflowCanvas() {
   const onEdgesChange = useWorkflowStore((state) => state.onEdgesChange);
   const onViewportChange = useWorkflowStore((state) => state.onViewportChange);
   const onConnect = useWorkflowStore((state) => state.onConnect);
-  const setNodes = useWorkflowStore((state) => state.setNodes);
   const addNode = useWorkflowStore((state) => state.addNode);
 
   const nodesInitialized = useNodesInitialized();
@@ -105,14 +103,12 @@ export function WorkflowCanvas() {
 
       addNode(taskType as TCTaskType, position);
 
-      if (window.umami) {
-        window.umami.track('create', {
-          object: 'task',
-          type: taskType,
-        });
-      }
+      window.umami?.track('create', {
+        object: 'task',
+        type: taskType,
+      });
     },
-    [screenToFlowPosition, nodes, setNodes],
+    [screenToFlowPosition, addNode],
   );
 
   const onNodeContextMenu = useCallback(
@@ -156,19 +152,16 @@ export function WorkflowCanvas() {
 
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
-  const onNodeDoubleClick = useCallback(
-    async (event: React.MouseEvent, node: Node) => {
-      event.preventDefault();
+  const onNodeDoubleClick = useCallback(async (event: React.MouseEvent, node: Node) => {
+    event.preventDefault();
 
-      const isUnknownType = !TC_TASK_REGISTRY[node.data.type as TCTaskType];
-      if (isUnknownType) return;
+    const isUnknownType = !TC_TASK_REGISTRY[node.data.type as TCTaskType];
+    if (isUnknownType) return;
 
-      await showModal({
-        content: <TaskProperties nodeId={node.id} />,
-      });
-    },
-    [showModal],
-  );
+    await showModal({
+      content: <TaskProperties nodeId={node.id} />,
+    });
+  }, []);
 
   return (
     <div style={{ width: '100%', height: '100%' }}>

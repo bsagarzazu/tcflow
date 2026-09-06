@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { type ReactFlowJsonObject } from '@xyflow/react';
 import XMLBuilder from 'fast-xml-builder';
 import { XMLParser } from 'fast-xml-parser';
-import { type ReactFlowJsonObject } from '@xyflow/react';
 
 import { APP_NAME, APP_VERSION, APP_AUTHOR, TC_TASK_REGISTRY } from '../constants';
 import {
@@ -30,6 +30,13 @@ import {
   getEndNode,
 } from './utils';
 import type { TaskNodeType, WorkflowEdgeType, TCTaskType, TCAction, TCHandler } from '../types';
+import type {
+  PLMXMLRoot,
+  PLMXMLHandler,
+  PLMXMLAction,
+  PLMXMLWorkflowTemplate,
+  PLMXMLUserValue,
+} from './plmxml-types';
 
 const REVERSE_TYPE_MAP = Object.fromEntries(
   Object.entries(TC_TASK_REGISTRY).map(([key, value]) => [value.objectType, key]),
@@ -159,14 +166,14 @@ export const deserialize = (content: string) => {
       ['WorkflowTemplate', 'WorkflowAction', 'WorkflowHandler', 'UserValue'].includes(name),
   });
 
-  const jsonObject = parser.parse(content);
+  const jsonObject = parser.parse(content) as { PLMXML: PLMXMLRoot };
   const plmxml = jsonObject.PLMXML;
   if (!plmxml) return null;
 
   const handlersMap = new Map<string, TCHandler>();
-  (plmxml.WorkflowHandler || []).forEach((handler: any) => {
+  (plmxml.WorkflowHandler || []).forEach((handler: PLMXMLHandler) => {
     const args =
-      handler.Arguments?.UserValue?.map((userValue: any) => {
+      handler.Arguments?.UserValue?.map((userValue: PLMXMLUserValue) => {
         const [key, ...rest] = userValue['@_value'].split('=');
         return { argument: key, value: rest.join('=') };
       }) || [];
@@ -179,7 +186,7 @@ export const deserialize = (content: string) => {
   });
 
   const actionsMap = new Map<string, TCAction>();
-  (plmxml.WorkflowAction || []).forEach((action: any) => {
+  (plmxml.WorkflowAction || []).forEach((action: PLMXMLAction) => {
     const handlers =
       action['@_actionHandlerRefs']?.split(' ').map((id: string) => id.replace('#', '')) || [];
 
@@ -192,8 +199,10 @@ export const deserialize = (content: string) => {
 
   const xmlIdToUuid = new Map<string, string>();
   const nodes = (plmxml.WorkflowTemplate || [])
-    .filter((template: any) => template['@_templateClassification'] !== 'process')
-    .map((template: any) => {
+    .filter(
+      (template: PLMXMLWorkflowTemplate) => template['@_templateClassification'] !== 'process',
+    )
+    .map((template: PLMXMLWorkflowTemplate) => {
       const actions = getActions();
       const xmlActionIds =
         template['@_actions']?.split(' ').map((id: string) => id.replace('#', '')) || [];
@@ -238,33 +247,35 @@ export const deserialize = (content: string) => {
         },
         deletable: !(isStartNode || isEndNode),
       };
-    });
+    }) as TaskNodeType[];
 
-  if (!nodes.some((node: TaskNodeType) => node.data.name.toLowerCase() === 'start')) {
+  if (!nodes.some((node) => node.data.name.toLowerCase() === 'start')) {
     nodes.push(getStartNode());
   }
-  if (!nodes.some((node: TaskNodeType) => node.data.name.toLowerCase() === 'end')) {
+  if (!nodes.some((node) => node.data.name.toLowerCase() === 'end')) {
     nodes.push(getEndNode());
   }
 
   const edges = (plmxml.WorkflowTemplate || [])
-    .flatMap((template: any) => {
+    .flatMap((template: PLMXMLWorkflowTemplate) => {
       const deps = template['@_dependencyTaskTemplateRefs'];
       if (!deps) return [];
 
-      return deps.split(' ').map((depId: string) => ({
-        id: generateId(),
-        source: xmlIdToUuid.get(depId.replace('#', '')),
-        target: xmlIdToUuid.get(template['@_id']),
-        type: 'smoothstep',
-        data: {
-          type: 'success',
-          conditionValue: undefined,
-        },
-        label: undefined,
-      }));
+      return deps.split(' ').map(
+        (depId: string): Partial<WorkflowEdgeType> => ({
+          id: generateId(),
+          source: xmlIdToUuid.get(depId.replace('#', '')),
+          target: xmlIdToUuid.get(template['@_id']),
+          type: 'smoothstep',
+          data: {
+            type: 'success',
+            conditionValue: undefined,
+          },
+          label: undefined,
+        }),
+      );
     })
-    .filter((e: any) => e.source && e.target) as WorkflowEdgeType[];
+    .filter((e): e is WorkflowEdgeType => !!(e.source && e.target));
 
   return { nodes, edges };
 };

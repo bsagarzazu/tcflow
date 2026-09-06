@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxActionCard, IxTooltip } from '@siemens/ix-react';
 import { iconWarning } from '@siemens/ix-icons/icons';
+import { IxActionCard, IxTooltip } from '@siemens/ix-react';
 import { Handle, Position, type NodeProps } from '@xyflow/react';
 
-import { type TaskNodeType } from '../../types';
 import { TC_TASK_REGISTRY } from '../../constants';
+import { type TaskNodeType } from '../../types';
 
 export function TaskNode({ id, data, selected }: NodeProps<TaskNodeType>) {
   const config = TC_TASK_REGISTRY[data.type];

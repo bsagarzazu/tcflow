@@ -16,11 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxTabs, IxTabItem, IxIcon } from '@siemens/ix-react';
 import { iconAddCircleFilled } from '@siemens/ix-icons/icons';
+import { IxTabs, IxTabItem, IxIcon } from '@siemens/ix-react';
 
 import { AppEditableText } from './AppEditableText';
-
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 
 export function AppTabs() {
@@ -56,7 +55,7 @@ export function AppTabs() {
         data-umami-event="create"
         data-umami-event-object="workflow"
       >
-        <IxIcon name={iconAddCircleFilled}></IxIcon>
+        <IxIcon name={iconAddCircleFilled} />
       </IxTabItem>
     </IxTabs>
   );

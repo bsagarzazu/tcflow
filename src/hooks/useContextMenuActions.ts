@@ -16,13 +16,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useReactFlow } from '@xyflow/react';
 import { useCallback } from 'react';
+import { useReactFlow } from '@xyflow/react';
 
-import { useWorkflowStore } from '../store/useWorkflowStore';
-import { generateId } from '../core/utils';
 import { serializeNode } from '../core/json-serializer';
+import { generateId } from '../core/utils';
+import { useWorkflowStore } from '../store/useWorkflowStore';
 import type { TaskNodeType } from '../types';
+
+const cloneNodeWithNewIds = (node: TaskNodeType): TaskNodeType => ({
+  ...node,
+  id: generateId(),
+  data: {
+    ...node.data,
+    actions: node.data.actions.map((action) => ({
+      ...action,
+      id: generateId(),
+      handlers: action.handlers.map((handler) => ({
+        ...handler,
+        id: generateId(),
+      })),
+    })),
+  },
+});
 
 export function useContextMenuActions(id: string) {
   const { getNode, screenToFlowPosition } = useReactFlow();
@@ -38,27 +54,35 @@ export function useContextMenuActions(id: string) {
     if (!node) return;
 
     const nodeData = serializeNode(node);
-    navigator.clipboard.writeText(JSON.stringify(nodeData));
+    navigator.clipboard.writeText(JSON.stringify(nodeData)).catch(() => {
+      console.error('Failed to copy task node to clipboard.');
+    });
   }, [id, getNode]);
 
   const pasteTaskNode = useCallback(
     (screenPosition: { x: number; y: number }) => {
-      navigator.clipboard.readText().then((text) => {
-        const nodeData = JSON.parse(text);
+      navigator.clipboard
+        .readText()
+        .then((text) => {
+          try {
+            const nodeData = JSON.parse(text);
 
-        if (nodeData.source !== 'tcflow-clipboard') return;
+            if (nodeData.source !== 'tcflow-clipboard' || !nodeData.payload) return;
 
-        const position = screenToFlowPosition(screenPosition);
+            const newNode = {
+              ...cloneNodeWithNewIds(nodeData.payload as TaskNodeType),
+              selected: true,
+              position: screenToFlowPosition(screenPosition),
+            };
 
-        const newNode = {
-          ...nodeData.payload,
-          id: generateId(),
-          position,
-          selected: true,
-        };
-
-        setNodes(nodes.concat(newNode));
-      });
+            setNodes(nodes.concat(newNode));
+          } catch {
+            return;
+          }
+        })
+        .catch(() => {
+          return;
+        });
     },
     [nodes, setNodes, screenToFlowPosition],
   );
@@ -66,28 +90,29 @@ export function useContextMenuActions(id: string) {
   const duplicateTaskNode = useCallback(() => {
     const node = getNode(id);
     if (!node) return;
-    const position = { x: node.position.x + 50, y: node.position.y + 50 };
 
     const newNode = {
-      ...node,
+      ...cloneNodeWithNewIds(node as TaskNodeType),
       selected: false,
       dragging: false,
-      id: generateId(),
-      position,
+      position: {
+        x: node.position.x + 50,
+        y: node.position.y + 50,
+      },
     };
 
-    setNodes(nodes.concat(newNode as TaskNodeType));
+    setNodes(nodes.concat(newNode));
   }, [id, getNode, nodes, setNodes]);
 
   const deleteTaskNode = useCallback(() => {
     setNodes(nodes.filter((node) => node.id !== id));
     setEdges(edges.filter((edge) => edge.source !== id && edge.target !== id));
-  }, [id, setNodes, setEdges]);
+  }, [id, nodes, edges, setNodes, setEdges]);
 
   const cutTaskNode = useCallback(() => {
     copyTaskNode();
     deleteTaskNode();
-  }, [id, copyTaskNode, deleteTaskNode]);
+  }, [copyTaskNode, deleteTaskNode]);
 
   const updateEdgeType = useCallback(
     (status: 'success' | 'failure' | 'conditional', conditionValue?: 'True' | 'False') => {
@@ -98,7 +123,7 @@ export function useContextMenuActions(id: string) {
 
   const deleteEdge = useCallback(() => {
     setEdges(edges.filter((edge) => edge.id !== id));
-  }, [id, setEdges]);
+  }, [id, edges, setEdges]);
 
   return {
     cutTaskNode,

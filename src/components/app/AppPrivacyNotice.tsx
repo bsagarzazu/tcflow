@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Panel } from '@xyflow/react';
-import { IxIconButton, IxTooltip } from '@siemens/ix-react';
 import { iconShieldCheck } from '@siemens/ix-icons/icons';
+import { IxIconButton, IxTooltip } from '@siemens/ix-react';
+import { Panel } from '@xyflow/react';
 
 export function AppPrivacyNotice() {
   return (
@@ -29,7 +29,7 @@ export function AppPrivacyNotice() {
           aria-describedby="tooltip-privacy-notice"
           variant="subtle-tertiary"
           icon={iconShieldCheck}
-        ></IxIconButton>
+         />
       </Panel>
       <IxTooltip
         id="tooltip-privacy-notice"

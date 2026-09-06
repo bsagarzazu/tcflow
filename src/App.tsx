@@ -16,17 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IxApplication, IxContent, IxSpinner } from '@siemens/ix-react';
-import { ReactFlowProvider } from '@xyflow/react';
 import { useEffect, useState } from 'react';
+import { IxApplication, IxContent } from '@siemens/ix-react';
+import { ReactFlowProvider } from '@xyflow/react';
 
-import { useAppStore } from './store/useAppStore';
-import { useWorkflowStore } from './store/useWorkflowStore';
 import { AppHeader, AppMenu, AppTabs, AppMobilePlaceholder } from './components/app';
 import { WorkflowCanvas, WorkflowHierarchy } from './components/workflow';
 
 export default function App() {
-  const hasHydrated = useWorkflowStore.persist.hasHydrated() && useAppStore.persist.hasHydrated();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
   useEffect(() => {
@@ -34,16 +31,6 @@ export default function App() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  if (!hasHydrated) {
-    return (
-      <div
-        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
-      >
-        <IxSpinner size="large"></IxSpinner>
-      </div>
-    );
-  }
 
   return (
     <IxApplication>
