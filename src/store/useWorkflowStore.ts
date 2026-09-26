@@ -45,6 +45,11 @@ interface WorkflowState {
   workflows: Record<string, Workflow>;
   activeWorkflowId: string;
 
+  recentHandlers: {
+    actionHandlers: string[];
+    ruleHandlers: string[];
+  };
+
   addWorkflow: (name: string) => void;
   renameWorkflow: (workflowId: string, newName: string) => void;
   setActiveWorkflow: (workflowId: string) => void;
@@ -63,6 +68,8 @@ interface WorkflowState {
     conditionValue?: 'True' | 'False',
   ) => void;
   addNode: (type: TCTaskType, position: XYPosition) => void;
+
+  addRecentHandler: (handlerName: string, handlerType: 'action' | 'rule') => void;
 }
 
 const initialId = generateId();
@@ -92,6 +99,11 @@ export const useWorkflowStore = create<WorkflowState>()(
           },
         },
         activeWorkflowId: initialId,
+
+        recentHandlers: {
+          actionHandlers: [],
+          ruleHandlers: [],
+        },
 
         addWorkflow: (name: string) => {
           const id = generateId();
@@ -340,6 +352,23 @@ export const useWorkflowStore = create<WorkflowState>()(
             };
           });
         },
+
+        addRecentHandler: (handlerName: string, handlerType: 'action' | 'rule') => {
+          set((state) => {
+            const key = handlerType === 'action' ? 'actionHandlers' : 'ruleHandlers';
+            const currentHandlers = state.recentHandlers[key];
+
+            const filteredHandlers = currentHandlers.filter((name) => name !== handlerName);
+            const updatedHandlers = [handlerName, ...filteredHandlers].slice(0, 10); // Keep only the last 10 used handlers
+
+            return {
+              recentHandlers: {
+                ...state.recentHandlers,
+                [key]: updatedHandlers,
+              },
+            };
+          });
+        },
       }),
       {
         partialize: (state) => ({
@@ -350,6 +379,7 @@ export const useWorkflowStore = create<WorkflowState>()(
               cleanForHistory(workflow),
             ]),
           ),
+          recentHandlers: state.recentHandlers,
         }),
         equality: (pastState, currentState) => {
           if (pastState.activeWorkflowId !== currentState.activeWorkflowId) {
@@ -367,6 +397,7 @@ export const useWorkflowStore = create<WorkflowState>()(
         workflows: Object.fromEntries(
           Object.entries(state.workflows).map(([id, workflow]) => [id, cleanForPersist(workflow)]),
         ),
+        recentHandlers: state.recentHandlers,
       }),
     },
   ),
