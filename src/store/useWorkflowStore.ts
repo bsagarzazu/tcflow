@@ -69,7 +69,7 @@ interface WorkflowState {
   ) => void;
   addNode: (type: TCTaskType, position: XYPosition) => void;
 
-  addRecentHandler: (handlerName: string, handlerType: 'action' | 'rule') => void;
+  addRecentHandler: (handlerName: string, isRuleHandler: boolean) => void;
 }
 
 const initialId = generateId();
@@ -353,9 +353,9 @@ export const useWorkflowStore = create<WorkflowState>()(
           });
         },
 
-        addRecentHandler: (handlerName: string, handlerType: 'action' | 'rule') => {
+        addRecentHandler: (handlerName: string, isRuleHandler: boolean) => {
           set((state) => {
-            const key = handlerType === 'action' ? 'actionHandlers' : 'ruleHandlers';
+            const key = isRuleHandler ? 'ruleHandlers' : 'actionHandlers';
             const currentHandlers = state.recentHandlers[key];
 
             const filteredHandlers = currentHandlers.filter((name) => name !== handlerName);

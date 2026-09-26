@@ -19,6 +19,7 @@
 import { IxToggle, IxSelect, IxSelectItem, IxButton, IxFieldLabel } from '@siemens/ix-react';
 import { Controller, useFormContext, type FieldPath } from 'react-hook-form';
 
+import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { TaskHandlerArguments } from './TaskHandlerArguments';
 import { TC_ACTION_REGISTRY, TC_ACTION_ORDER } from '../../constants';
 import { generateId } from '../../core/utils';
@@ -36,6 +37,9 @@ export function TaskHandlerEditor({
   const { control, watch, setValue, getValues } = useFormContext<TaskPropertiesFormData>();
   const actions = watch('actions');
   const tempActionType = watch('tempActionType') as string;
+
+  const recentHandlers = useWorkflowStore((state) => state.recentHandlers);
+  const addRecentHandler = useWorkflowStore((state) => state.addRecentHandler);
 
   let actionIndex = -1;
   let handlerIndex = -1;
@@ -63,6 +67,8 @@ export function TaskHandlerEditor({
       isRule: boolean;
       arguments: { argument: string; value: string }[];
     };
+
+    addRecentHandler(data.name, data.isRule);
 
     const targetActionType = isEditing
       ? actions[actionIndex].actionType
@@ -177,7 +183,7 @@ export function TaskHandlerEditor({
               key={actionNumber}
               value={actionNumber.toString()}
               label={TC_ACTION_REGISTRY[actionNumber]}
-             />
+            />
           ))}
         </IxSelect>
       </div>
@@ -199,7 +205,7 @@ export function TaskHandlerEditor({
               text-on="Rule Handler"
               style={{ width: '35%' }}
               onCheckedChange={(event) => field.onChange(event.detail)}
-             />
+            />
           )}
         />
         <Controller
@@ -217,11 +223,13 @@ export function TaskHandlerEditor({
               style={{ flexGrow: 1 }}
             >
               {(field.value as string) && (
-                <IxSelectItem
-                  value={field.value as string}
-                  label={field.value as string}
-                 />
+                <IxSelectItem value={field.value as string} label={field.value as string} />
               )}
+              {recentHandlers[isRule ? 'ruleHandlers' : 'actionHandlers']
+                .filter((handlerName) => handlerName !== field.value)
+                .map((handlerName) => (
+                  <IxSelectItem key={handlerName} value={handlerName} label={handlerName} />
+                ))}
             </IxSelect>
           )}
         />
