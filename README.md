@@ -37,10 +37,6 @@ I include the features I plan to add in the [Backlog Milestone](https://github.c
 
 > **Note**: TcFlow is a personal project. While I plan to actively maintain it and fix bugs, PRs are currently not accepted. Please open an issue to discuss any ideas first.
 
-## Sponsors & Support
-
-If you find this tool useful in your daily work, consider [becoming a sponsor](https://github.com/sponsors/bsagarzazu).
-
 ## Companies using TcFlow
 
 I would love to hear if you are using TcFlow at your organization! Let me know to feature your company [here](https://www.linkedin.com/in/bsagarzazu/).
